@@ -16,6 +16,20 @@ En cas de bug plus tard, ce journal permet d'identifier immédiatement **quel fi
 
 ## 📅 Historique des Ajouts & Modifications
 
+### `[AGY-009]` — 2026-10-12 — Montagnes pointues complètes (sans coupure) + Neige en continu & Vraie Tempête Blizzard à l'enlèvement de l'Œuf
+- **Auteur** : `Antigravity` (après validation de l'utilisateur)
+- **Catégorie** : Graphismes (`Pictures` / `Tilesets`) & Script Cinématique (`009_Overworld_Cinematics_LoL.rb`)
+- **Fichiers modifiés** :
+  - `Graphics/Pictures/Fond_Sanctuaire_Glace.png` (`512×384 px` — Chaîne de vraies montagnes pointues enneigées sur 2 plans sans coupure ni bloc blanc vide, et neige continue sans démarcation carrée au sol)
+  - `Graphics/Pictures/Autel_Anivia_Vide.png` & `Graphics/Tilesets/SubTileset_2_Sanctuaire_DemiDieux.png` (Neige uniforme sans raccord visible autour du nid)
+  - `Data/Scripts/012_Overworld/009_Overworld_Cinematics_LoL.rb` (Ajout de la classe `NoxusSnowStorm` : neige douce en continu dès le début de la cinématique, puis déclenchement immédiat d'une **vraie tempête de neige / blizzard** avec 160 flocons rapides en diagonale, 28 rafales de vent glacé, voile de givre et bruit de vent hurlant dès l'instant où l'Œuf d'Anivia est soulevé de son nid)
+- **Comment tester en jeu** :
+  - Lancer le jeu et choisir **New Game** : il neige sur le sommet aux montagnes pointues, et dès que la pince soulève l'Œuf d'Anivia, la tempête de neige s'intensifie violemment en blizzard.
+- **Comment désactiver en cas de bug** :
+  - `git revert HEAD` pour revenir à l'état précédent.
+
+---
+
 ### `[AGY-008]` — 2026-10-12 — Toit de la Montagne Enneigée avec Pics de Glace & Extension du Sous-Tileset 2 (`256×2400`)
 - **Auteur** : `Antigravity` (après validation de l'utilisateur)
 - **Catégorie** : Graphismes (`Tilesets` & `Pictures`)

@@ -9,15 +9,16 @@
 #   pbCinematiqueDirigeableNoxus
 #
 # DÉROULEMENT COMPLET (Prologue Cinématique -> Début Classique Pokémon) :
-# 1. Affiche en plein écran le décor de la Caverne de Glace / Sanctuaire d'Anivia
-#    (Fond_Sanctuaire_Glace.png) pour masquer la chambre pendant le prologue.
-# 2. L'Œuf d'Anivia animé (!Oeuf_Anivia.png) repose sur son socle (y = 232).
+# 1. Affiche en plein écran le décor du Toit de la Montagne Enneigée d'Anivia
+#    (Fond_Sanctuaire_Glace.png) avec neige qui tombe en continu.
+# 2. L'Œuf d'Anivia animé (!Oeuf_Anivia.png) repose dans son nid enneigé (y = 232).
 # 3. Le Commandant Valerius et ses 2 soldats de Noxus marchent jusqu'à l'Œuf,
-#    l'encerclent et parlent.
+#    l'encerclent et parlent sous la neige.
 # 4. Le Dirigeable de Noxus arrive dans le ciel étoilé en haut (y = -18),
 #    descend son grappin jusqu'à l'Œuf (y = 232), soulève concrètement l'Œuf
-#    de son socle (qui devient VIDE au sol) et le hisse sous le bateau.
-# 5. L'éclair frappe l'hélice arrière du Dirigeable qui s'enfuit vers la droite.
+#    de son nid (qui devient VIDE au sol) -> DÉCLENCHE IMMÉDIATEMENT UNE VRAIE
+#    TEMPÊTE DE NEIGE (BLIZZARD INTENSE) et hisse l'Œuf sous le bateau.
+# 5. L'éclair frappe l'hélice arrière du Dirigeable qui s'enfuit dans le blizzard.
 # 6. Fondu au noir -> Transition narrative -> Fondu d'ouverture sur la chambre
 #    du joueur avec un [!] de réveil pour commencer l'aventure Pokémon classique !
 #===============================================================================
@@ -25,6 +26,205 @@
 class Game_Temp
   attr_accessor :noxus_dirigeable_sprite
   attr_accessor :noxus_dirigeable_viewport
+  attr_accessor :noxus_snowstorm
+end
+
+#-------------------------------------------------------------------------------
+# Système de Neige & Vraie Tempête Blizzard en temps réel (NoxusSnowStorm)
+# - Mode :snow     (Avant l'enlèvement de l'Œuf) : neige douce qui tombe
+# - Mode :blizzard (Dès que l'Œuf est enlevé)    : tempête violente avec rafales
+#-------------------------------------------------------------------------------
+class NoxusSnowStorm
+  def initialize(viewport)
+    @viewport = viewport
+    @disposed = false
+    @mode = :snow
+    @frame = 0
+    @w = Graphics.width
+    @h = Graphics.height
+
+    # Voile atmosphérique de blizzard glacé (actif en mode :blizzard)
+    @veil_sprite = Sprite.new(@viewport)
+    @veil_bmp = Bitmap.new(@w, @h)
+    @veil_bmp.fill_rect(0, 0, @w, @h, Color.new(175, 225, 255, 255))
+    @veil_sprite.bitmap = @veil_bmp
+    @veil_sprite.z = 680
+    @veil_sprite.opacity = 0
+
+    # Bitmaps partagés pour les flocons (2x2, 3x3, 4x4, 5x5) -> ultra rapide (0 lag)
+    @flake_bmps = [2, 3, 4, 5].map do |sz|
+      b = Bitmap.new(sz, sz)
+      b.fill_rect(0, 0, sz, sz, Color.new(245, 252, 255, 245))
+      if sz >= 4
+        b.fill_rect(1, 1, sz - 2, sz - 2, Color.new(255, 255, 255, 255))
+      end
+      b
+    end
+
+    # Bitmaps partagés pour les rafales de vent diagonales en mode :blizzard
+    @streak_bmp_1 = Bitmap.new(36, 16)
+    @streak_bmp_2 = Bitmap.new(24, 12)
+    16.times do |i|
+      x1 = 34 - (i * 2)
+      y1 = i
+      @streak_bmp_1.fill_rect(x1, y1, 3, 2, Color.new(220, 245, 255, 190)) if x1 >= 0
+    end
+    12.times do |i|
+      x2 = 22 - (i * 2)
+      y2 = i
+      @streak_bmp_2.fill_rect(x2, y2, 2, 1, Color.new(200, 235, 255, 160)) if x2 >= 0
+    end
+
+    # Création des 160 flocons (65 actifs en neige douce, 160 actifs en tempête !)
+    @flakes = []
+    160.times do |i|
+      spr = Sprite.new(@viewport)
+      spr.bitmap = @flake_bmps[i % @flake_bmps.length]
+      spr.z = (i % 3 == 0) ? 720 : 690
+      px = rand(@w)
+      py = rand(@h)
+      spr.x = px
+      spr.y = py
+      spr.opacity = 180 + rand(75)
+      spr.visible = (i < 65)
+      @flakes << {
+        sprite: spr,
+        x: px.to_f,
+        y: py.to_f,
+        vx_snow: -0.6 - rand * 1.1,
+        vy_snow: 1.5 + rand * 1.8,
+        vx_bliz: -8.0 - rand * 6.5,
+        vy_bliz: 4.5 + rand * 4.5,
+        phase: rand * 6.28
+      }
+    end
+
+    # Création des 28 rafales de vent glacé (visibles uniquement pendant la tempête !)
+    @streaks = []
+    28.times do |i|
+      spr = Sprite.new(@viewport)
+      spr.bitmap = (i.even? ? @streak_bmp_1 : @streak_bmp_2)
+      spr.z = 730
+      px = rand(@w)
+      py = rand(@h)
+      spr.x = px
+      spr.y = py
+      spr.visible = false
+      @streaks << {
+        sprite: spr,
+        x: px.to_f,
+        y: py.to_f,
+        vx: -15.0 - rand * 7.0,
+        vy: 6.5 + rand * 3.5
+      }
+    end
+  end
+
+  # Déclenche immédiatement la VRAIE TEMPÊTE DE NEIGE (Blizzard de Freljord) !
+  def trigger_blizzard!
+    return if @disposed || @mode == :blizzard
+    @mode = :blizzard
+    @flakes.each_with_index do |f, idx|
+      f[:sprite].visible = true if f[:sprite] && !f[:sprite].disposed?
+      f[:sprite].bitmap = @flake_bmps[(idx + 1) % @flake_bmps.length]
+    end
+    @streaks.each do |s|
+      s[:sprite].visible = true if s[:sprite] && !s[:sprite].disposed?
+    end
+    pbSEPlay("PR SFX- Icy Wind", 95, 85) rescue (pbSEPlay("Mining collapse", 80, 130) rescue nil)
+  end
+
+  def update
+    return if @disposed
+    @frame += 1
+
+    if @mode == :snow
+      @flakes.each_with_index do |f, i|
+        next if i >= 65
+        spr = f[:sprite]
+        next if !spr || spr.disposed?
+        sway = Math.sin(@frame * 0.06 + f[:phase]) * 0.6
+        f[:x] += f[:vx_snow] + sway
+        f[:y] += f[:vy_snow]
+        f[:x] += (@w + 12) if f[:x] < -8
+        f[:x] -= (@w + 12) if f[:x] > @w + 4
+        if f[:y] > @h + 4
+          f[:y] = -6.0
+          f[:x] = rand(@w).to_f
+        end
+        spr.x = f[:x].round
+        spr.y = f[:y].round
+      end
+    else
+      # Mode :blizzard — Vraie tempête de neige intense !
+      if @veil_sprite && !@veil_sprite.disposed?
+        target_op = 52 + (Math.sin(@frame * 0.14) * 20).round
+        @veil_sprite.opacity = target_op.clamp(30, 78)
+      end
+
+      # Son de rafale de blizzard périodique
+      if (@frame % 95) == 0
+        pbSEPlay("PR SFX- Icy Wind", 80, 90) rescue nil
+      end
+
+      @flakes.each do |f|
+        spr = f[:sprite]
+        next if !spr || spr.disposed?
+        f[:x] += f[:vx_bliz]
+        f[:y] += f[:vy_bliz]
+        f[:x] += (@w + 16) if f[:x] < -10
+        if f[:y] > @h + 8
+          f[:y] = -8.0
+          f[:x] = rand(@w + 80).to_f
+        end
+        spr.x = f[:x].round
+        spr.y = f[:y].round
+      end
+
+      @streaks.each do |s|
+        spr = s[:sprite]
+        next if !spr || spr.disposed?
+        s[:x] += s[:vx]
+        s[:y] += s[:vy]
+        if s[:x] < -40 || s[:y] > @h + 20
+          s[:x] = (@w + rand(120)).to_f
+          s[:y] = (rand(@h) - 60).to_f
+        end
+        spr.x = s[:x].round
+        spr.y = s[:y].round
+      end
+    end
+  end
+
+  def disposed?
+    @disposed
+  end
+
+  def dispose
+    return if @disposed
+    @disposed = true
+    @flakes.each do |f|
+      f[:sprite].dispose if f[:sprite] && !f[:sprite].disposed?
+    end
+    @streaks.each do |s|
+      s[:sprite].dispose if s[:sprite] && !s[:sprite].disposed?
+    end
+    @flake_bmps.each { |b| b.dispose if b && !b.disposed? }
+    @streak_bmp_1.dispose if @streak_bmp_1 && !@streak_bmp_1.disposed?
+    @streak_bmp_2.dispose if @streak_bmp_2 && !@streak_bmp_2.disposed?
+    @veil_sprite.dispose if @veil_sprite && !@veil_sprite.disposed?
+    @veil_bmp.dispose if @veil_bmp && !@veil_bmp.disposed?
+  end
+end
+
+# Hook dans pbUpdateSceneMap pour que la neige et la tempête continuent de tomber
+# en temps réel même pendant que les boîtes de dialogue (pbMessage) sont affichées !
+alias __noxus_cinematic_orig_pbUpdateSceneMap pbUpdateSceneMap unless defined?(__noxus_cinematic_orig_pbUpdateSceneMap)
+def pbUpdateSceneMap
+  __noxus_cinematic_orig_pbUpdateSceneMap
+  if $game_temp && $game_temp.noxus_snowstorm && !$game_temp.noxus_snowstorm.disposed?
+    $game_temp.noxus_snowstorm.update
+  end
 end
 
 # Met à jour la carte et les événements pendant une animation cinématique
@@ -148,8 +348,12 @@ def pbGetNoxusDirigeableSprite
   return $game_temp.noxus_dirigeable_sprite
 end
 
-# Supprime proprement le sprite du Dirigeable à la fin de la cinématique
+# Supprime proprement le sprite du Dirigeable et la tempête à la fin de la cinématique
 def pbDisposeNoxusDirigeableSprite
+  if $game_temp.noxus_snowstorm && !$game_temp.noxus_snowstorm.disposed?
+    $game_temp.noxus_snowstorm.dispose
+  end
+  $game_temp.noxus_snowstorm = nil
   if $game_temp.noxus_dirigeable_sprite && !$game_temp.noxus_dirigeable_sprite.disposed?
     $game_temp.noxus_dirigeable_sprite.bitmap.dispose if $game_temp.noxus_dirigeable_sprite.bitmap
     $game_temp.noxus_dirigeable_sprite.dispose
@@ -222,9 +426,10 @@ def pbDirigeableNoxus_Flottement(cycles = 2, egg_actor = nil)
 end
 
 #-------------------------------------------------------------------------------
-# ÉTAPE 2 : Le grappin descend de la coque du bateau (y = 148) jusqu'au socle
+# ÉTAPE 2 : Le grappin descend de la coque du bateau (y = 148) jusqu'au nid
 #           de l'Œuf (y = 232), l'Œuf disparaît de sa position initiale (le
-#           socle devient VIDE !) et monte concrètement de y = 232 à y = 152 !
+#           nid devient VIDE !), LA VRAIE TEMPÊTE DE NEIGE SE DÉCHAÎNE et
+#           l'Œuf monte concrètement de y = 232 à y = 152 !
 #-------------------------------------------------------------------------------
 def pbDirigeableNoxus_CaptureOeuf(egg_event = nil, egg_actor = nil, actors_to_board = [], altar_cx = 256, altar_cy = 232)
   vp = pbGetNoxusCinematicViewport
@@ -263,16 +468,21 @@ def pbDirigeableNoxus_CaptureOeuf(egg_event = nil, egg_actor = nil, actors_to_bo
   $game_screen.start_flash(Color.new(120, 235, 255, 210), 12)
   $game_screen.start_shake(5, 6, 16)
 
-  # -> L'ŒUF QUITTE CONCRÈTEMENT SA POSITION INITIALE SUR LE SOCLE :
+  # -> L'ŒUF QUITTE CONCRÈTEMENT SA POSITION INITIALE DANS LA NEIGE :
   if egg_event
     $game_self_switches[[$game_map.map_id, egg_event.id, "A"]] = true
     $game_map.need_refresh = true
     $game_map.refresh
   end
-  # On cache l'Œuf posé sur le socle : l'Autel Vide en dessous apparaît immédiatement !
+  # On cache l'Œuf posé sur le nid : le nid enneigé vide en dessous apparaît immédiatement !
   egg_actor.visible = false if egg_actor
 
-  # 3) L'Œuf saisi par le grappin part de sa position initiale sur le socle (y = 232)
+  # -> DÈS QUE L'ŒUF EST ENLEVÉ, LA VRAIE TEMPÊTE DE NEIGE (BLIZZARD) SE DÉCHAÎNE !
+  if $game_temp && $game_temp.noxus_snowstorm && !$game_temp.noxus_snowstorm.disposed?
+    $game_temp.noxus_snowstorm.trigger_blizzard!
+  end
+
+  # 3) L'Œuf saisi par le grappin part de sa position initiale (y = 232)
   #    et MONTE progressivement pixel par pixel jusqu'à la coque du Dirigeable (y = 152) !
   lift_sprite = Sprite.new(vp)
   lift_sprite.bitmap = Bitmap.new("Graphics/Pictures/Dirigeable_Grappin_Oeuf")
@@ -360,14 +570,6 @@ end
 
 #-------------------------------------------------------------------------------
 # CINÉMATIQUE COMPLÈTE AUTOMATIQUE + TRANSITION VERS LE DÉBUT CLASSIQUE POKÉMON
-#
-# Paramètres optionnels :
-# - explicit_egg_event_id : ID de l'événement Œuf sur ta carte (sinon automatique)
-# - utiliser_ma_carte     :
-#     * false (par défaut si tu es dans la chambre Map 003) : affiche l'image
-#       Fond_Sanctuaire_Glace.png par-dessus la chambre.
-#     * true (ou automatique si tu téléportes sur ta propre carte Caverne/Sanctuaire) :
-#       utilise TA vraie carte dessinée dans RPG Maker XP comme décor de fond !
 #-------------------------------------------------------------------------------
 def pbCinematiqueDirigeableNoxus(explicit_egg_event_id = nil, utiliser_ma_carte = nil)
   vp = pbGetNoxusCinematicViewport
@@ -381,7 +583,6 @@ def pbCinematiqueDirigeableNoxus(explicit_egg_event_id = nil, utiliser_ma_carte 
 
   old_transparent = $game_player ? $game_player.transparent : false
   if utiliser_ma_carte && $game_player
-    # On cache le héros pendant la cinématique pour voir uniquement ta carte et la scène
     $game_player.transparent = true
     pbUpdateSceneForCinematic(2)
   end
@@ -389,7 +590,7 @@ def pbCinematiqueDirigeableNoxus(explicit_egg_event_id = nil, utiliser_ma_carte 
   altar_cx = Graphics.width / 2
   altar_cy = 232
 
-  # 0) Fond plein écran (uniquement si on n'utilise pas une carte dédiée de RPG Maker XP)
+  # 0) Fond plein écran du Toit de la Montagne Enneigée
   bg_sprite = nil
   if !utiliser_ma_carte
     bg_sprite = Sprite.new(vp)
@@ -397,7 +598,13 @@ def pbCinematiqueDirigeableNoxus(explicit_egg_event_id = nil, utiliser_ma_carte 
     bg_sprite.z = 50
   end
 
-  # 1) Affichage du Socle de l'Autel (sauf si tu l'as déjà dessiné sur ta carte avec un événement Œuf)
+  # -> Lancement de la NEIGE EN CONTINU dès le début de la cinématique !
+  if $game_temp.noxus_snowstorm && !$game_temp.noxus_snowstorm.disposed?
+    $game_temp.noxus_snowstorm.dispose
+  end
+  $game_temp.noxus_snowstorm = NoxusSnowStorm.new(vp)
+
+  # 1) Affichage du Nid Enneigé (sauf si déjà dessiné sur la carte avec un événement Œuf)
   altar_sprite = nil
   if !egg_event
     altar_sprite = Sprite.new(vp)
@@ -412,16 +619,15 @@ def pbCinematiqueDirigeableNoxus(explicit_egg_event_id = nil, utiliser_ma_carte 
     altar_cy = egg_event.screen_y - 16
   end
 
-  # 2) Affichage de l'Œuf d'Anivia animé (!Oeuf_Anivia.png) posé SUR le socle
+  # 2) Affichage de l'Œuf d'Anivia animé (!Oeuf_Anivia.png) posé dans la neige
   egg_actor = NoxusCutsceneActor.new(vp, "!Oeuf_Anivia", altar_cx, altar_cy + 34, 2, 150)
   egg_event.transparent = true if egg_event
 
-  # 3) Arrivée et marche animée du Commandant Valerius et de ses 2 soldats vers l'Œuf !
+  # 3) Arrivée et marche animée du Commandant Valerius et de ses 2 soldats dans la neige !
   valerius = NoxusCutsceneActor.new(vp, "trainer_ROCKETBOSS", altar_cx, 90, 2, 300)
   soldat_g = NoxusCutsceneActor.new(vp, "trainer_TEAMROCKET_M", altar_cx - 68, 70, 2, 290)
   soldat_d = NoxusCutsceneActor.new(vp, "trainer_TEAMROCKET_F", altar_cx + 68, 70, 2, 290)
 
-  # Les 3 personnages marchent pas à pas sur les dalles de glace jusqu'au socle de l'Œuf
   45.times do |i|
     t = (i + 1).to_f / 45
     valerius.y = 90 + (altar_cy - 28 - 90) * t
@@ -434,37 +640,36 @@ def pbCinematiqueDirigeableNoxus(explicit_egg_event_id = nil, utiliser_ma_carte 
     pbUpdateSceneForCinematic(1)
   end
 
-  # Ils s'arrêtent autour de l'Œuf : les soldats encerclent l'Œuf, Valerius fait face
   valerius.turn(2)
-  soldat_g.turn(6) # Regarde vers l'Œuf (droite)
-  soldat_d.turn(4) # Regarde vers l'Œuf (gauche)
+  soldat_g.turn(6)
+  soldat_d.turn(4)
   pbUpdateSceneForCinematic(12)
 
-  # Dialogues des personnages dans le Sanctuaire de Glace
+  # Dialogues des personnages sur le sommet enneigé (la neige continue de tomber !)
   valerius.jump_in_place(10, 12)
-  pbMessage(_INTL("\\bCommandant Valerius :\\b Enfin... Les gardiens de Freljord ont baissé leur garde. Le Sanctuaire d'Anivia est entre nos mains !"))
+  pbMessage(_INTL("\\bCommandant Valerius :\\b Enfin... Nous avons atteint le toit de la montagne sacrée de Freljord. L'Œuf d'Anivia est entre nos mains !"))
 
   soldat_g.jump_in_place(8, 10)
-  pbMessage(_INTL("\\bSoldat de Noxus :\\b Commandant ! L'Œuf d'Anivia est juste devant nous sur son socle de givre. Les balises sont verrouillées !"))
+  pbMessage(_INTL("\\bSoldat de Noxus :\\b Commandant ! L'Œuf d'Anivia est juste devant nous au milieu des pics de glace. Les balises sont verrouillées !"))
 
   valerius.jump_in_place(10, 12)
-  pbMessage(_INTL("\\bCommandant Valerius :\\b Parfait ! Faites approcher le Dirigeable et descendez le treuil pour arracher l'Œuf de son autel !"))
+  pbMessage(_INTL("\\bCommandant Valerius :\\b Parfait ! Faites approcher le Dirigeable et descendez le treuil pour arracher l'Œuf de son nid !"))
 
-  # 4) Le Dirigeable arrive dans le ciel étoilé en haut de la caverne (y = -18)
+  # 4) Le Dirigeable arrive dans le ciel étoilé au-dessus des montagnes (y = -18)
   target_ship_x = altar_cx - 128
   pbDirigeableNoxus_Arrivee(target_ship_x, -18, 65, egg_actor)
 
-  # 5) Le grappin descend jusqu'à l'Œuf (y = 232), l'Œuf quitte sa position initiale
-  #    (le socle à y = 232 devient VIDE !) et l'Œuf monte jusqu'au Dirigeable (y = 152) !
+  # 5) Le grappin descend jusqu'à l'Œuf (y = 232), l'Œuf quitte son nid enneigé
+  #    -> LA VRAIE TEMPÊTE DE NEIGE (BLIZZARD) SE DÉCLENCHE IMMÉDIATEMENT !
   pbDirigeableNoxus_CaptureOeuf(egg_event, egg_actor, [valerius, soldat_g, soldat_d], altar_cx, altar_cy)
 
-  pbMessage(_INTL("\\bCommandant Valerius :\\b Ahahaha ! L'Œuf du Cryophénix a quitté son socle, il est à nous ! En route vers Port-Brumeux !"))
-  pbMessage(_INTL("Un cri glacial déchire soudain les cieux de Freljord ! Une tempête d'éclairs s'abat sur le dirigeable !"))
+  pbMessage(_INTL("\\bCommandant Valerius :\\b Ahahaha ! L'Œuf du Cryophénix est à nous ! Peu importe cette tempête de neige qui se lève, en route vers Port-Brumeux !"))
+  pbMessage(_INTL("Un cri glacial déchire soudain le blizzard de Freljord ! Une tempête d'éclairs s'abat sur le dirigeable !"))
 
-  # 6) Éclair, explosion de l'hélice arrière & fuite du Dirigeable avec l'Œuf
+  # 6) Éclair, explosion de l'hélice arrière & fuite du Dirigeable dans le blizzard
   pbDirigeableNoxus_ExplosionEtFuite(70, false)
 
-  pbMessage(_INTL("L'Œuf d'Anivia a été emporté par le Dirigeable de Noxus, ne laissant derrière lui que l'autel vide... Mais son hélice arrière a explosé vers la Caverne de l'Épreuve !"))
+  pbMessage(_INTL("L'Œuf d'Anivia a été emporté par le Dirigeable de Noxus au cœur de la tempête... Mais son hélice arrière a explosé vers la Caverne de l'Épreuve !"))
 
   # 7) TRANSITION DOUCE VERS LE DÉBUT CLASSIQUE POKÉMON (Réveil dans la chambre)
   fade_sprite = Sprite.new(vp)
@@ -474,13 +679,18 @@ def pbCinematiqueDirigeableNoxus(explicit_egg_event_id = nil, utiliser_ma_carte 
   fade_sprite.z = 900
   fade_sprite.opacity = 0
 
-  # Fondu au noir sur le Sanctuaire
+  # Fondu au noir sur le sommet en pleine tempête
   25.times do |i|
     fade_sprite.opacity = ((i + 1) * 255.0 / 25).round
     pbUpdateSceneForCinematic(1)
   end
 
-  # Pendant que l'écran est noir, on retire le décor du Sanctuaire de Glace
+  # Pendant que l'écran est noir, on coupe la tempête et on retire le décor de la montagne
+  if $game_temp.noxus_snowstorm && !$game_temp.noxus_snowstorm.disposed?
+    $game_temp.noxus_snowstorm.dispose
+  end
+  $game_temp.noxus_snowstorm = nil
+
   if bg_sprite && !bg_sprite.disposed?
     bg_sprite.bitmap.dispose if bg_sprite.bitmap
     bg_sprite.dispose
@@ -495,7 +705,7 @@ def pbCinematiqueDirigeableNoxus(explicit_egg_event_id = nil, utiliser_ma_carte 
 
   $game_player.turn_down if $game_player
   pbSEPlay("Battle damage normal", 80, 70) rescue nil
-  pbMessage(_INTL("Au même moment, non loin du Sanctuaire...\\nLe grondement lointain de l'explosion résonne jusque dans ta chambre !"))
+  pbMessage(_INTL("Au même moment, en contrebas de la montagne...\\nLe grondement lointain de l'explosion et de la tempête résonne jusque dans ta chambre !"))
 
   # Ouverture du fondu sur la chambre du joueur (003: \PN's house)
   25.times do |i|
