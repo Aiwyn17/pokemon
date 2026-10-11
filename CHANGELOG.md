@@ -16,6 +16,23 @@ En cas de bug plus tard, ce journal permet d'identifier immédiatement **quel fi
 
 ## 📅 Historique des Ajouts & Modifications
 
+### `[AGY-010]` — 2026-10-12 — Agrandissement de l'Œuf (+50%) & du Dirigeable (+35%), Échelle de corde d'embarquement, Grand Treuil (Œuf 100% visible) & Tonnerres/Éclairs
+- **Auteur** : `Antigravity` (après validation de l'utilisateur)
+- **Catégorie** : Graphismes (`Pictures` / `Characters`) & Script Cinématique (`009_Overworld_Cinematics_LoL.rb`)
+- **Fichiers modifiés** :
+  - `Graphics/Pictures/Oeuf_Anivia_Seul.png` (`144×120 px` — Œuf d'Anivia agrandi de +50%)
+  - `Graphics/Characters/!Oeuf_Anivia.png` (`576×480 px` — Planche d'événement 4×4 agrandie à `144×120 px` par frame)
+  - `Graphics/Pictures/Dirigeable_Grappin_Oeuf.png` (`156×154 px` — Grand Treuil mécanique à doubles chaînes dorées, large palonnier rouge/or et grandes pinces d'acier entourant l'Œuf complet de `144×120 px`)
+  - `Graphics/Pictures/Dirigeable_Noxus_1_Vol.png`, `Dirigeable_Noxus_2_Capture.png`, `Dirigeable_Noxus_3_Explosion.png` (`346×308 px` — Dirigeable agrandi de +35%, ballon 100% visible sans coupure en haut, et Grand Œuf complet suspendu sous la coque)
+  - `Graphics/Pictures/Fond_Sanctuaire_Glace.png` (`512×384 px` — Nid enneigé ajusté pour laisser tout l'espace vertical au Grand Treuil)
+  - `Data/Scripts/012_Overworld/009_Overworld_Cinematics_LoL.rb` (Ajout de `pbDirigeableNoxus_EmbarquementEchelle` où une échelle de corde se déroule depuis le pont et les 3 Noxiens grimpent les barreaux de dos jusqu'à la cabine sans téléportation, treuillage de l'Œuf complet devant la coque, et ajout des coups de tonnerre/éclairs ramifiés `strike_thunder!` dans `NoxusSnowStorm`)
+- **Comment tester en jeu** :
+  - Lancer le jeu et choisir **New Game**.
+- **Comment désactiver en cas de bug** :
+  - `git revert HEAD` pour revenir à l'état précédent.
+
+---
+
 ### `[AGY-009]` — 2026-10-12 — Montagnes pointues complètes (sans coupure) + Neige en continu & Vraie Tempête Blizzard à l'enlèvement de l'Œuf
 - **Auteur** : `Antigravity` (après validation de l'utilisateur)
 - **Catégorie** : Graphismes (`Pictures` / `Tilesets`) & Script Cinématique (`009_Overworld_Cinematics_LoL.rb`)
