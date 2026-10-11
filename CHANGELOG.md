@@ -16,6 +16,22 @@ En cas de bug plus tard, ce journal permet d'identifier immédiatement **quel fi
 
 ## 📅 Historique des Ajouts & Modifications
 
+### `[AGY-006]` — 2026-10-11 — Animation complète sur carte : Déplacement des PNJ Noxiens & Décollage concret de l'Œuf d'Anivia
+- **Auteur** : `Antigravity` (après validation de l'utilisateur)
+- **Catégorie** : Sprites (`Characters` / `Pictures`) & Script Cinématique (`009_Overworld_Cinematics_LoL.rb`)
+- **Fichiers ajoutés / modifiés** :
+  - `Graphics/Characters/!Oeuf_Anivia.png` (`384×320 px` — Planche d'événement 4×4 de l'Œuf d'Anivia In-Game sur fond transparent, à poser par-dessus l'Autel Vide)
+  - `Graphics/Pictures/Dirigeable_Grappin_Oeuf.png` (`96×120 px` — Œuf d'Anivia saisi par le grappin/treuil noxien pour l'animation de montée verticale)
+  - `Graphics/Pictures/Oeuf_Anivia_Seul.png` (`96×80 px` — Sprite de l'Œuf d'Anivia seul sur son socle de cristaux de givre)
+  - `Graphics/Pictures/Autel_Anivia_Vide.png` (`128×128 px` — Socle de l'Autel pillé qui reste visible au sol une fois l'Œuf soulevé)
+  - `Data/Scripts/012_Overworld/009_Overworld_Cinematics_LoL.rb` (Ajout de la classe `NoxusCutsceneActor`, arrivée et marche animée du Commandant Valerius et de ses 2 soldats jusqu'à l'Œuf, dialogues, descente du câble jusqu'au socle, activation automatique de l'Interrupteur Local `A` de l'Œuf pour vider le socle au sol, et montée progressive pixel par pixel de l'Œuf vers le Dirigeable)
+- **Comment tester en jeu** :
+  - Appeler `pbCinematiqueDirigeableNoxus` dans une commande `Script...` d'un événement (fonctionne automatiquement même sur une carte de test sans événement préalable, ou détecte automatiquement l'événement utilisant `!Oeuf_Anivia.png` sur la carte du Sanctuaire).
+- **Comment désactiver en cas de bug** :
+  - Retirer l'appel `pbCinematiqueDirigeableNoxus` de l'événement ou supprimer `Data/Scripts/012_Overworld/009_Overworld_Cinematics_LoL.rb`.
+
+---
+
 ### `[AGY-005]` — 2026-10-11 — Correctif PBS `GrowthRate = Medium` pour Camalyx et Ziggs
 - **Auteur** : `Antigravity`
 - **Catégorie** : Correctif PBS (`PBS/pokemon.txt`)

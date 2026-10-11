@@ -65,8 +65,11 @@ Les Pokémon suivants sont déjà intégrés dans `PBS/pokemon.txt`, `PBS/pokemo
   - `SubTileset_2_Sanctuaire_DemiDieux.png` (`256×640`)
   - `SubTileset_3_Caverne_Epreuve_Crash.png` (`256×640`)
   - `SubTileset_4_Villages_Freljord_Port.png` (`256×640`)
+- **Sprites d'Événements (`Graphics/Characters/`)** :
+  - `!Oeuf_Anivia.png` (`384×320` — Planche d'événement 4×4 de l'Œuf d'Anivia In-Game sur fond transparent)
 - **Images de Cinématique (`Graphics/Pictures/`)** :
-  - `Dirigeable_Noxus_1_Vol.png`, `Dirigeable_Noxus_2_Capture.png`, `Dirigeable_Noxus_3_Explosion.png` et `Cinematic_Dirigeable_Noxus_3Frames.png`
+  - `Dirigeable_Noxus_1_Vol.png`, `Dirigeable_Noxus_2_Capture.png`, `Dirigeable_Noxus_3_Explosion.png`, `Cinematic_Dirigeable_Noxus_3Frames.png`
+  - `Dirigeable_Grappin_Oeuf.png`, `Oeuf_Anivia_Seul.png`, `Autel_Anivia_Vide.png`
 - **Scripts personnalisés (`Data/Scripts/`)** :
-  - `Data/Scripts/012_Overworld/009_Overworld_Cinematics_LoL.rb` (Cinématique du Dirigeable de Noxus : `pbCinematiqueDirigeableNoxus`)
+  - `Data/Scripts/012_Overworld/009_Overworld_Cinematics_LoL.rb` (Cinématique complète du Dirigeable de Noxus avec déplacement des PNJ et décollage de l'Œuf : `pbCinematiqueDirigeableNoxus`)
 
