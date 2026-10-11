@@ -360,30 +360,61 @@ end
 
 #-------------------------------------------------------------------------------
 # CINÉMATIQUE COMPLÈTE AUTOMATIQUE + TRANSITION VERS LE DÉBUT CLASSIQUE POKÉMON
+#
+# Paramètres optionnels :
+# - explicit_egg_event_id : ID de l'événement Œuf sur ta carte (sinon automatique)
+# - utiliser_ma_carte     :
+#     * false (par défaut si tu es dans la chambre Map 003) : affiche l'image
+#       Fond_Sanctuaire_Glace.png par-dessus la chambre.
+#     * true (ou automatique si tu téléportes sur ta propre carte Caverne/Sanctuaire) :
+#       utilise TA vraie carte dessinée dans RPG Maker XP comme décor de fond !
 #-------------------------------------------------------------------------------
-def pbCinematiqueDirigeableNoxus(explicit_egg_event_id = nil)
+def pbCinematiqueDirigeableNoxus(explicit_egg_event_id = nil, utiliser_ma_carte = nil)
   vp = pbGetNoxusCinematicViewport
   egg_event = pbFindAniviaEggEvent(explicit_egg_event_id)
+
+  # Si tu n'es PAS dans la maison (Map 003), le script utilise automatiquement
+  # TA carte RPG Maker XP comme décor !
+  if utiliser_ma_carte.nil?
+    utiliser_ma_carte = ($game_map && $game_map.map_id != 3 && $game_map.map_id != 1)
+  end
+
+  old_transparent = $game_player ? $game_player.transparent : false
+  if utiliser_ma_carte && $game_player
+    # On cache le héros pendant la cinématique pour voir uniquement ta carte et la scène
+    $game_player.transparent = true
+    pbUpdateSceneForCinematic(2)
+  end
 
   altar_cx = Graphics.width / 2
   altar_cy = 232
 
-  # 0) Fond plein écran de la Caverne de Glace / Sanctuaire d'Anivia (masque la maison !)
-  bg_sprite = Sprite.new(vp)
-  bg_sprite.bitmap = Bitmap.new("Graphics/Pictures/Fond_Sanctuaire_Glace")
-  bg_sprite.z = 50
+  # 0) Fond plein écran (uniquement si on n'utilise pas une carte dédiée de RPG Maker XP)
+  bg_sprite = nil
+  if !utiliser_ma_carte
+    bg_sprite = Sprite.new(vp)
+    bg_sprite.bitmap = Bitmap.new("Graphics/Pictures/Fond_Sanctuaire_Glace")
+    bg_sprite.z = 50
+  end
 
-  # 1) Affichage du Socle de l'Autel (Autel_Anivia_Vide) au centre du Sanctuaire (y = 232)
-  altar_sprite = Sprite.new(vp)
-  altar_sprite.bitmap = Bitmap.new("Graphics/Pictures/Autel_Anivia_Vide")
-  altar_sprite.ox = altar_sprite.bitmap.width / 2
-  altar_sprite.oy = altar_sprite.bitmap.height / 2
-  altar_sprite.x = altar_cx
-  altar_sprite.y = altar_cy
-  altar_sprite.z = 100
+  # 1) Affichage du Socle de l'Autel (sauf si tu l'as déjà dessiné sur ta carte avec un événement Œuf)
+  altar_sprite = nil
+  if !egg_event
+    altar_sprite = Sprite.new(vp)
+    altar_sprite.bitmap = Bitmap.new("Graphics/Pictures/Autel_Anivia_Vide")
+    altar_sprite.ox = altar_sprite.bitmap.width / 2
+    altar_sprite.oy = altar_sprite.bitmap.height / 2
+    altar_sprite.x = altar_cx
+    altar_sprite.y = altar_cy
+    altar_sprite.z = 100
+  else
+    altar_cx = egg_event.screen_x
+    altar_cy = egg_event.screen_y - 16
+  end
 
-  # 2) Affichage de l'Œuf d'Anivia animé (!Oeuf_Anivia.png) posé SUR le socle (y = 264)
+  # 2) Affichage de l'Œuf d'Anivia animé (!Oeuf_Anivia.png) posé SUR le socle
   egg_actor = NoxusCutsceneActor.new(vp, "!Oeuf_Anivia", altar_cx, altar_cy + 34, 2, 150)
+  egg_event.transparent = true if egg_event
 
   # 3) Arrivée et marche animée du Commandant Valerius et de ses 2 soldats vers l'Œuf !
   valerius = NoxusCutsceneActor.new(vp, "trainer_ROCKETBOSS", altar_cx, 90, 2, 300)
@@ -431,7 +462,6 @@ def pbCinematiqueDirigeableNoxus(explicit_egg_event_id = nil)
   pbMessage(_INTL("Un cri glacial déchire soudain les cieux de Freljord ! Une tempête d'éclairs s'abat sur le dirigeable !"))
 
   # 6) Éclair, explosion de l'hélice arrière & fuite du Dirigeable avec l'Œuf
-  #    (on garde le viewport actif pour faire le fondu au noir vers la chambre !)
   pbDirigeableNoxus_ExplosionEtFuite(70, false)
 
   pbMessage(_INTL("L'Œuf d'Anivia a été emporté par le Dirigeable de Noxus, ne laissant derrière lui que l'autel vide... Mais son hélice arrière a explosé vers la Caverne de l'Épreuve !"))
@@ -451,12 +481,17 @@ def pbCinematiqueDirigeableNoxus(explicit_egg_event_id = nil)
   end
 
   # Pendant que l'écran est noir, on retire le décor du Sanctuaire de Glace
-  bg_sprite.bitmap.dispose if bg_sprite.bitmap
-  bg_sprite.dispose
-  altar_sprite.bitmap.dispose if altar_sprite.bitmap
-  altar_sprite.dispose
+  if bg_sprite && !bg_sprite.disposed?
+    bg_sprite.bitmap.dispose if bg_sprite.bitmap
+    bg_sprite.dispose
+  end
+  if altar_sprite && !altar_sprite.disposed?
+    altar_sprite.bitmap.dispose if altar_sprite.bitmap
+    altar_sprite.dispose
+  end
   egg_actor.dispose
   [valerius, soldat_g, soldat_d].each { |act| act.dispose }
+  $game_player.transparent = old_transparent if $game_player
 
   $game_player.turn_down if $game_player
   pbSEPlay("Battle damage normal", 80, 70) rescue nil
