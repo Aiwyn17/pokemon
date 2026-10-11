@@ -16,6 +16,19 @@ En cas de bug plus tard, ce journal permet d'identifier immédiatement **quel fi
 
 ## 📅 Historique des Ajouts & Modifications
 
+### `[AGY-011]` — 2026-10-12 — Tremblement d'écran réel à l'enlèvement de l'Œuf & Repositionnement de l'Œuf au-dessus de la boîte de dialogue (`Y = 166..286`)
+- **Auteur** : `Antigravity`
+- **Catégorie** : Graphismes (`Pictures`) & Script Cinématique (`009_Overworld_Cinematics_LoL.rb`)
+- **Fichiers modifiés** :
+  - `Data/Scripts/012_Overworld/009_Overworld_Cinematics_LoL.rb` (Ajout du tremblement réel du Viewport de la cinématique `@viewport.ox` / `@viewport.oy` avec `trigger_shake!` et `continuous_rumble` dès que l'Œuf est arraché de son nid et à chaque coup de tonnerre/explosion, et repositionnement de l'Œuf à `Y = 166..286` au sol et `Y = 128..282` sous le Dirigeable pour qu'il reste toujours 100% au-dessus de la boîte de texte `Y = 288..384`)
+  - `Graphics/Pictures/Fond_Sanctuaire_Glace.png`, `Dirigeable_Noxus_1_Vol.png`, `Dirigeable_Noxus_2_Capture.png`, `Dirigeable_Noxus_3_Explosion.png` (Ajustement vertical du nid enneigé et de la hauteur d'attache du treuil pour ne jamais être recouvert par la boîte de dialogue)
+- **Comment tester en jeu** :
+  - Lancer le jeu (**New Game**) : le texte en bas ne cache plus jamais l'Œuf (ni au sol ni en l'air), et tout l'écran tremble violemment dès que le treuil arrache l'Œuf.
+- **Comment désactiver en cas de bug** :
+  - `git revert HEAD` pour revenir à l'état précédent.
+
+---
+
 ### `[AGY-010]` — 2026-10-12 — Agrandissement de l'Œuf (+50%) & du Dirigeable (+35%), Échelle de corde d'embarquement, Grand Treuil (Œuf 100% visible) & Tonnerres/Éclairs
 - **Auteur** : `Antigravity` (après validation de l'utilisateur)
 - **Catégorie** : Graphismes (`Pictures` / `Characters`) & Script Cinématique (`009_Overworld_Cinematics_LoL.rb`)
