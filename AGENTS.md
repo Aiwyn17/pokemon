@@ -62,7 +62,7 @@ Les Pokémon suivants sont déjà intégrés dans `PBS/pokemon.txt`, `PBS/pokemo
 
 - **Sous-Tilesets (`Graphics/Tilesets/`, largeur stricte `256 px` pour RPG Maker XP)** :
   - `SubTileset_1_Dirigeable_Noxus.png` (`256×640`)
-  - `SubTileset_2_Sanctuaire_DemiDieux.png` (`256×640`)
+  - `SubTileset_2_Sanctuaire_DemiDieux.png` (`256×2400` — Sommet enneigé d'Anivia avec pics de glace + Grottes de glace + Cathédrale + Extérieur Freljord)
   - `SubTileset_3_Caverne_Epreuve_Crash.png` (`256×640`)
   - `SubTileset_4_Villages_Freljord_Port.png` (`256×640`)
 - **Sprites d'Événements (`Graphics/Characters/`)** :

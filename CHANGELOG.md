@@ -16,6 +16,20 @@ En cas de bug plus tard, ce journal permet d'identifier immédiatement **quel fi
 
 ## 📅 Historique des Ajouts & Modifications
 
+### `[AGY-008]` — 2026-10-12 — Toit de la Montagne Enneigée avec Pics de Glace & Extension du Sous-Tileset 2 (`256×2400`)
+- **Auteur** : `Antigravity` (après validation de l'utilisateur)
+- **Catégorie** : Graphismes (`Tilesets` & `Pictures`)
+- **Fichiers modifiés** :
+  - `Graphics/Tilesets/SubTileset_2_Sanctuaire_DemiDieux.png` (`256×2400 px` — Remplacement du cercle sci-fi en `Y=0..128` par le sommet enneigé entouré de pics de glace avec/sans l'Œuf d'Anivia, conservation de `Y=128..640` et extension complète en `Y=640..2400` avec grottes de glace, falaises enneigées, cathédrale de glace, portes géantes, sapins et ciel étoilé, 100% détouré sans croix rouges `X`)
+  - `Graphics/Pictures/Fond_Sanctuaire_Glace.png` (`512×384 px` — Décor plein écran du toit de la montagne enneigée avec pics de glace, falaises et ciel étoilé de Freljord)
+  - `Graphics/Pictures/Autel_Anivia_Vide.png` (`128×128 px` — Nid enneigé entouré de pics de glace laissé au sommet après l'enlèvement de l'Œuf)
+- **Comment tester en jeu** :
+  - Lancer le jeu et choisir **New Game** pour voir directement la cinématique sur le toit de la montagne enneigée, ou utiliser `SubTileset_2_Sanctuaire_DemiDieux.png` dans l'éditeur de cartes RPG Maker XP.
+- **Comment désactiver en cas de bug** :
+  - `git revert HEAD` pour restaurer la version précédente des 3 fichiers PNG.
+
+---
+
 ### `[AGY-007]` — 2026-10-12 — Décor plein écran du Sanctuaire de Glace (`Fond_Sanctuaire_Glace.png`) & Transition vers le réveil dans la chambre
 - **Auteur** : `Antigravity` (après validation de l'utilisateur)
 - **Catégorie** : Graphismes (`Pictures`) & Script Cinématique (`009_Overworld_Cinematics_LoL.rb`)
