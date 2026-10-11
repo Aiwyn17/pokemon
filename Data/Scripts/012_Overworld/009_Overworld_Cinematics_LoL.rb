@@ -4,24 +4,22 @@
 # Fichier : Data/Scripts/012_Overworld/009_Overworld_Cinematics_LoL.rb
 # Ajouté par : Antigravity
 #
-# UTILISATION (au lancement d'une Nouvelle Partie dans Quick start intro / Intro
-# ou dans n'importe quel événement avec "Script...") :
+# UTILISATION (dans "001: Intro" et "002: Quick start intro" ou tout événement) :
 #
 #   pbCinematiqueDirigeableNoxus
 #
-# Tout s'affiche et s'anime automatiquement sans aucune interaction requise :
-# 1. Le Sanctuaire d'Anivia, le socle et l'Œuf animé (!Oeuf_Anivia) apparaissent
-#    en bas de l'écran (y = 232, juste au-dessus de la boîte de dialogue).
-# 2. Le Commandant Valerius et ses 2 soldats de Noxus marchent jusqu'à l'Œuf,
+# DÉROULEMENT COMPLET (Prologue Cinématique -> Début Classique Pokémon) :
+# 1. Affiche en plein écran le décor de la Caverne de Glace / Sanctuaire d'Anivia
+#    (Fond_Sanctuaire_Glace.png) pour masquer la chambre pendant le prologue.
+# 2. L'Œuf d'Anivia animé (!Oeuf_Anivia.png) repose sur son socle (y = 232).
+# 3. Le Commandant Valerius et ses 2 soldats de Noxus marchent jusqu'à l'Œuf,
 #    l'encerclent et parlent.
-# 3. Le Dirigeable de Noxus arrive dans le ciel en haut de l'écran (y = -18),
-#    laissant un grand espace visible entre la coque du bateau (y = 148) et
-#    l'Œuf sur son socle (y = 232).
-# 4. Le grappin descend de y = 148 jusqu'à l'Œuf (y = 232), l'Œuf quitte
-#    concrètement son socle (qui devient VIDE à y = 232) et remonte dans les
-#    airs de y = 232 jusqu'à y = 154 sous le bateau du Dirigeable !
-# 5. L'éclair frappe l'hélice arrière et le Dirigeable s'enfuit vers la droite
-#    en emportant l'Œuf, tandis que le socle vide reste au sol.
+# 4. Le Dirigeable de Noxus arrive dans le ciel étoilé en haut (y = -18),
+#    descend son grappin jusqu'à l'Œuf (y = 232), soulève concrètement l'Œuf
+#    de son socle (qui devient VIDE au sol) et le hisse sous le bateau.
+# 5. L'éclair frappe l'hélice arrière du Dirigeable qui s'enfuit vers la droite.
+# 6. Fondu au noir -> Transition narrative -> Fondu d'ouverture sur la chambre
+#    du joueur avec un [!] de réveil pour commencer l'aventure Pokémon classique !
 #===============================================================================
 
 class Game_Temp
@@ -225,8 +223,8 @@ end
 
 #-------------------------------------------------------------------------------
 # ÉTAPE 2 : Le grappin descend de la coque du bateau (y = 148) jusqu'au socle
-#           de l'Œuf (y = 242), l'Œuf disparaît de sa position initiale (le
-#           socle devient VIDE !) et monte concrètement de y = 242 à y = 152 !
+#           de l'Œuf (y = 232), l'Œuf disparaît de sa position initiale (le
+#           socle devient VIDE !) et monte concrètement de y = 232 à y = 152 !
 #-------------------------------------------------------------------------------
 def pbDirigeableNoxus_CaptureOeuf(egg_event = nil, egg_actor = nil, actors_to_board = [], altar_cx = 256, altar_cy = 232)
   vp = pbGetNoxusCinematicViewport
@@ -331,7 +329,7 @@ end
 #-------------------------------------------------------------------------------
 # ÉTAPE 3 : Éclair du Sanctuaire, Explosion de l'hélice arrière & Fuite
 #-------------------------------------------------------------------------------
-def pbDirigeableNoxus_ExplosionEtFuite(duration_frames = 70)
+def pbDirigeableNoxus_ExplosionEtFuite(duration_frames = 70, dispose_at_end = true)
   spr = pbGetNoxusDirigeableSprite
   pbSEPlay("Battle thunder", 100, 95) rescue nil
   $game_screen.start_flash(Color.new(180, 245, 255, 240), 16)
@@ -357,27 +355,25 @@ def pbDirigeableNoxus_ExplosionEtFuite(duration_frames = 70)
     pbUpdateSceneForCinematic(1)
   end
 
-  pbDisposeNoxusDirigeableSprite
+  pbDisposeNoxusDirigeableSprite if dispose_at_end
 end
 
 #-------------------------------------------------------------------------------
-# CINÉMATIQUE COMPLÈTE AUTOMATIQUE (Fonctionne dès "Nouvelle Partie" sans interaction)
+# CINÉMATIQUE COMPLÈTE AUTOMATIQUE + TRANSITION VERS LE DÉBUT CLASSIQUE POKÉMON
 #-------------------------------------------------------------------------------
 def pbCinematiqueDirigeableNoxus(explicit_egg_event_id = nil)
   vp = pbGetNoxusCinematicViewport
   egg_event = pbFindAniviaEggEvent(explicit_egg_event_id)
 
-  $game_player.turn_up if $game_player
-  pbUpdateSceneForCinematic(4)
-
-  # Position idéale à l'écran (512x384) :
-  # - Le Dirigeable est en haut (y = -18 -> bas de la coque à y = 146)
-  # - L'Autel et l'Œuf (!Oeuf_Anivia) sont en bas au centre (x = 256, y = 232),
-  #   bien EN DESSOUS du Dirigeable et AU-DESSUS de la boîte de dialogue (y = 288) !
   altar_cx = Graphics.width / 2
   altar_cy = 232
 
-  # 1) Affichage du Socle de l'Autel (Autel_Anivia_Vide) à la position initiale (y = 232)
+  # 0) Fond plein écran de la Caverne de Glace / Sanctuaire d'Anivia (masque la maison !)
+  bg_sprite = Sprite.new(vp)
+  bg_sprite.bitmap = Bitmap.new("Graphics/Pictures/Fond_Sanctuaire_Glace")
+  bg_sprite.z = 50
+
+  # 1) Affichage du Socle de l'Autel (Autel_Anivia_Vide) au centre du Sanctuaire (y = 232)
   altar_sprite = Sprite.new(vp)
   altar_sprite.bitmap = Bitmap.new("Graphics/Pictures/Autel_Anivia_Vide")
   altar_sprite.ox = altar_sprite.bitmap.width / 2
@@ -394,12 +390,7 @@ def pbCinematiqueDirigeableNoxus(explicit_egg_event_id = nil)
   soldat_g = NoxusCutsceneActor.new(vp, "trainer_TEAMROCKET_M", altar_cx - 68, 70, 2, 290)
   soldat_d = NoxusCutsceneActor.new(vp, "trainer_TEAMROCKET_F", altar_cx + 68, 70, 2, 290)
 
-  if $scene && $scene.respond_to?(:spriteset) && $scene.spriteset && $game_player
-    $scene.spriteset.addUserAnimation(Settings::EXCLAMATION_ANIMATION_ID, $game_player.x, $game_player.y, true, 1) rescue nil
-  end
-  pbSEPlay("Exclamation", 85, 100) rescue nil
-
-  # Les 3 personnages marchent pas à pas jusqu'au socle de l'Œuf d'Anivia
+  # Les 3 personnages marchent pas à pas sur les dalles de glace jusqu'au socle de l'Œuf
   45.times do |i|
     t = (i + 1).to_f / 45
     valerius.y = 90 + (altar_cy - 28 - 90) * t
@@ -412,15 +403,15 @@ def pbCinematiqueDirigeableNoxus(explicit_egg_event_id = nil)
     pbUpdateSceneForCinematic(1)
   end
 
-  # Ils s'arrêtent autour de l'Œuf : les soldats regardent l'Œuf, Valerius regarde en bas
+  # Ils s'arrêtent autour de l'Œuf : les soldats encerclent l'Œuf, Valerius fait face
   valerius.turn(2)
   soldat_g.turn(6) # Regarde vers l'Œuf (droite)
   soldat_d.turn(4) # Regarde vers l'Œuf (gauche)
   pbUpdateSceneForCinematic(12)
 
-  # Dialogues des personnages devant l'Œuf
+  # Dialogues des personnages dans le Sanctuaire de Glace
   valerius.jump_in_place(10, 12)
-  pbMessage(_INTL("\\bCommandant Valerius :\\b Trop tard, enfant de Freljord ! Les gardiens du Sanctuaire ont baissé leur garde."))
+  pbMessage(_INTL("\\bCommandant Valerius :\\b Enfin... Les gardiens de Freljord ont baissé leur garde. Le Sanctuaire d'Anivia est entre nos mains !"))
 
   soldat_g.jump_in_place(8, 10)
   pbMessage(_INTL("\\bSoldat de Noxus :\\b Commandant ! L'Œuf d'Anivia est juste devant nous sur son socle de givre. Les balises sont verrouillées !"))
@@ -428,8 +419,7 @@ def pbCinematiqueDirigeableNoxus(explicit_egg_event_id = nil)
   valerius.jump_in_place(10, 12)
   pbMessage(_INTL("\\bCommandant Valerius :\\b Parfait ! Faites approcher le Dirigeable et descendez le treuil pour arracher l'Œuf de son autel !"))
 
-  # 4) Le Dirigeable arrive en haut de l'écran (y = -18), laissant l'Autel et l'Œuf
-  #    parfaitement visibles en bas (y = 232) !
+  # 4) Le Dirigeable arrive dans le ciel étoilé en haut de la caverne (y = -18)
   target_ship_x = altar_cx - 128
   pbDirigeableNoxus_Arrivee(target_ship_x, -18, 65, egg_actor)
 
@@ -441,13 +431,51 @@ def pbCinematiqueDirigeableNoxus(explicit_egg_event_id = nil)
   pbMessage(_INTL("Un cri glacial déchire soudain les cieux de Freljord ! Une tempête d'éclairs s'abat sur le dirigeable !"))
 
   # 6) Éclair, explosion de l'hélice arrière & fuite du Dirigeable avec l'Œuf
-  #    pendant que le socle VIDE reste bien visible en bas !
-  pbDirigeableNoxus_ExplosionEtFuite(70)
+  #    (on garde le viewport actif pour faire le fondu au noir vers la chambre !)
+  pbDirigeableNoxus_ExplosionEtFuite(70, false)
 
   pbMessage(_INTL("L'Œuf d'Anivia a été emporté par le Dirigeable de Noxus, ne laissant derrière lui que l'autel vide... Mais son hélice arrière a explosé vers la Caverne de l'Épreuve !"))
 
+  # 7) TRANSITION DOUCE VERS LE DÉBUT CLASSIQUE POKÉMON (Réveil dans la chambre)
+  fade_sprite = Sprite.new(vp)
+  fade_bmp = Bitmap.new(Graphics.width, Graphics.height)
+  fade_bmp.fill_rect(0, 0, Graphics.width, Graphics.height, Color.new(0, 0, 0, 255))
+  fade_sprite.bitmap = fade_bmp
+  fade_sprite.z = 900
+  fade_sprite.opacity = 0
+
+  # Fondu au noir sur le Sanctuaire
+  25.times do |i|
+    fade_sprite.opacity = ((i + 1) * 255.0 / 25).round
+    pbUpdateSceneForCinematic(1)
+  end
+
+  # Pendant que l'écran est noir, on retire le décor du Sanctuaire de Glace
+  bg_sprite.bitmap.dispose if bg_sprite.bitmap
+  bg_sprite.dispose
   altar_sprite.bitmap.dispose if altar_sprite.bitmap
   altar_sprite.dispose
   egg_actor.dispose
   [valerius, soldat_g, soldat_d].each { |act| act.dispose }
+
+  $game_player.turn_down if $game_player
+  pbSEPlay("Battle damage normal", 80, 70) rescue nil
+  pbMessage(_INTL("Au même moment, non loin du Sanctuaire...\\nLe grondement lointain de l'explosion résonne jusque dans ta chambre !"))
+
+  # Ouverture du fondu sur la chambre du joueur (003: \PN's house)
+  25.times do |i|
+    fade_sprite.opacity = (255.0 * (1.0 - (i + 1) / 25.0)).round
+    pbUpdateSceneForCinematic(1)
+  end
+
+  fade_bmp.dispose
+  fade_sprite.dispose
+  pbDisposeNoxusDirigeableSprite
+
+  # Petit [!] sur la tête du joueur qui se réveille dans sa chambre, prêt à jouer !
+  if $scene && $scene.respond_to?(:spriteset) && $scene.spriteset && $game_player
+    $scene.spriteset.addUserAnimation(Settings::EXCLAMATION_ANIMATION_ID, $game_player.x, $game_player.y, true, 1) rescue nil
+  end
+  pbSEPlay("Exclamation", 85, 100) rescue nil
+  pbUpdateSceneForCinematic(15)
 end

@@ -16,6 +16,19 @@ En cas de bug plus tard, ce journal permet d'identifier immédiatement **quel fi
 
 ## 📅 Historique des Ajouts & Modifications
 
+### `[AGY-007]` — 2026-10-12 — Décor plein écran du Sanctuaire de Glace (`Fond_Sanctuaire_Glace.png`) & Transition vers le réveil dans la chambre
+- **Auteur** : `Antigravity` (après validation de l'utilisateur)
+- **Catégorie** : Graphismes (`Pictures`) & Script Cinématique (`009_Overworld_Cinematics_LoL.rb`)
+- **Fichiers ajoutés / modifiés** :
+  - `Graphics/Pictures/Fond_Sanctuaire_Glace.png` (`512×384 px` — Décor complet de la Caverne de Glace / Sanctuaire d'Anivia avec ciel étoilé en haut, statues des Demi-Dieux, colonnes de glace, gouffre d'aurore boréale et tapis Avarosan)
+  - `Data/Scripts/012_Overworld/009_Overworld_Cinematics_LoL.rb` (Affichage automatique du décor `Fond_Sanctuaire_Glace` en arrière-plan de la cinématique d'ouverture pour masquer la chambre du joueur, suivi d'un fondu au noir narratif qui dévoile la chambre du joueur avec un `[!]` de réveil pour enchaîner sur le début classique Pokémon)
+- **Comment tester en jeu** :
+  - Lancer le jeu et choisir **New Game** : la cinématique s'ouvre directement dans le Sanctuaire de Glace, puis s'ouvre en fondu sur la chambre du joueur.
+- **Comment désactiver en cas de bug** :
+  - Retirer `pbCinematiqueDirigeableNoxus` de l'événement d'intro ou supprimer `Data/Scripts/012_Overworld/009_Overworld_Cinematics_LoL.rb`.
+
+---
+
 ### `[AGY-006]` — 2026-10-11 — Animation complète sur carte : Déplacement des PNJ Noxiens & Décollage concret de l'Œuf d'Anivia
 - **Auteur** : `Antigravity` (après validation de l'utilisateur)
 - **Catégorie** : Sprites (`Characters` / `Pictures`) & Script Cinématique (`009_Overworld_Cinematics_LoL.rb`)

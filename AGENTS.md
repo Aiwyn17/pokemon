@@ -68,6 +68,7 @@ Les Pokémon suivants sont déjà intégrés dans `PBS/pokemon.txt`, `PBS/pokemo
 - **Sprites d'Événements (`Graphics/Characters/`)** :
   - `!Oeuf_Anivia.png` (`384×320` — Planche d'événement 4×4 de l'Œuf d'Anivia In-Game sur fond transparent)
 - **Images de Cinématique (`Graphics/Pictures/`)** :
+  - `Fond_Sanctuaire_Glace.png` (`512×384` — Décor plein écran du Sanctuaire de Glace d'Anivia)
   - `Dirigeable_Noxus_1_Vol.png`, `Dirigeable_Noxus_2_Capture.png`, `Dirigeable_Noxus_3_Explosion.png`, `Cinematic_Dirigeable_Noxus_3Frames.png`
   - `Dirigeable_Grappin_Oeuf.png`, `Oeuf_Anivia_Seul.png`, `Autel_Anivia_Vide.png`
 - **Scripts personnalisés (`Data/Scripts/`)** :
