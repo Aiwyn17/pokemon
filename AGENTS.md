@@ -43,11 +43,30 @@ Les Pokémon suivants sont déjà intégrés dans `PBS/pokemon.txt`, `PBS/pokemo
 
 ---
 
-## 3. Règles de workflow Git (Jules AI & Local)
+## 3. Règles de workflow Git & Traçabilité (`CHANGELOG.md`)
 
 1. **Branche principale (`main`)** :
-   - Les ajouts locaux de sprites et de Pokémon validés avec **Antigravity** sont poussés directement sur `main`.
+   - Les ajouts locaux de sprites, tilesets et Pokémon validés avec **Antigravity** sont poussés sur `main` via des commits atomiques clairement nommés (ex. `feat(tilesets): ...`, `feat(cinematic): ...`).
 2. **Branches de fonctionnalités (Jules AI)** :
    - **Jules AI** crée une branche dédiée par tâche à partir de `main` et ouvre une Pull Request claire et ciblée.
    - Une branche = une fonctionnalité ou un correctif précis (ex. `feat/custom-moves`, `feat/new-trainers`, `fix/battle-ai`).
    - Ne jamais écraser ou supprimer les entrées personnalisées existantes à la fin des fichiers `PBS/*.txt`.
+3. **Traçabilité obligatoire dans `CHANGELOG.md` (RÈGLE STRICTE POUR JULES AI & ANTIGRAVITY)** :
+   - **Chaque ajout, modification de script, modification de PBS ou ajout graphique DOIT obligatoirement être documenté en haut de `CHANGELOG.md`** avec :
+     - Un identifiant unique (`[JULES-XXX]` pour Jules AI, `[AGY-XXX]` pour Antigravity), la date, la liste exacte des fichiers créés/modifiés, comment tester la nouveauté en jeu, et comment la désactiver en cas de bug.
+   - **Règle locale pour Antigravity** : toujours générer les aperçus dans le dossier d'artefacts et attendre la validation explicite de l'utilisateur avant d'écrire dans les dossiers du jeu (`Graphics/`, `PBS/`, `Data/`).
+
+---
+
+## 4. Ressources de l'Acte 1 (Freljord & Noxus) installées
+
+- **Sous-Tilesets (`Graphics/Tilesets/`, largeur stricte `256 px` pour RPG Maker XP)** :
+  - `SubTileset_1_Dirigeable_Noxus.png` (`256×640`)
+  - `SubTileset_2_Sanctuaire_DemiDieux.png` (`256×640`)
+  - `SubTileset_3_Caverne_Epreuve_Crash.png` (`256×640`)
+  - `SubTileset_4_Villages_Freljord_Port.png` (`256×640`)
+- **Images de Cinématique (`Graphics/Pictures/`)** :
+  - `Dirigeable_Noxus_1_Vol.png`, `Dirigeable_Noxus_2_Capture.png`, `Dirigeable_Noxus_3_Explosion.png` et `Cinematic_Dirigeable_Noxus_3Frames.png`
+- **Scripts personnalisés (`Data/Scripts/`)** :
+  - `Data/Scripts/012_Overworld/009_Overworld_Cinematics_LoL.rb` (Cinématique du Dirigeable de Noxus : `pbCinematiqueDirigeableNoxus`)
+
