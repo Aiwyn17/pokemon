@@ -936,6 +936,9 @@ def pbCinematiqueDirigeableNoxus(explicit_egg_event_id = nil, utiliser_ma_carte 
   end
   $game_temp.noxus_snowstorm = NoxusSnowStorm.new(vp)
 
+  # [AGY-018] BGM : Neige calme du Freljord (Route 216 — Pokémon D/P)
+  pbBGMPlay("Freljord_Calme", 85, 95)
+
   if egg_event
     altar_cx = egg_event.screen_x
     altar_cy = egg_event.screen_y - 16
@@ -986,6 +989,9 @@ def pbCinematiqueDirigeableNoxus(explicit_egg_event_id = nil, utiliser_ma_carte 
   pbMessage(_INTL("\\bCommandant Valerius :\\b Parfait ! Faites approcher le Dirigeable ! Remontons à bord par l'échelle et actionnons le grand treuil !"))
 
   # 3) Le GRAND Dirigeable arrive lentement et lourdement dans le ciel étoilé au-dessus des montagnes (260 frames)
+  # [AGY-018] BGM : Transition vers la tempête de Freljord (Battle Regi — Pokémon Pt)
+  pbBGMFade(2.5)
+  pbBGMPlay("Freljord_Tempete", 100, 90)
   target_ship_x = (Graphics.width - 346) / 2
   pbDirigeableNoxus_Arrivee(target_ship_x, 0, 260, egg_actor)
 
@@ -1013,6 +1019,8 @@ def pbCinematiqueDirigeableNoxus(explicit_egg_event_id = nil, utiliser_ma_carte 
   fade_sprite.z = 900
   fade_sprite.opacity = 0
 
+  # [AGY-018] BGM : Fondu de la musique avec le noir de fin de cinématique
+  pbBGMFade(4.0)
   65.times do |i|
     fade_sprite.opacity = ((i + 1) * 255.0 / 65).round
     pbUpdateSceneForCinematic(1)

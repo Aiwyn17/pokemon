@@ -1,4 +1,4 @@
-# 📋 CHANGELOG.md — Journal de Traçabilité du Projet (Antigravity & Jules AI)
+﻿# 📋 CHANGELOG.md — Journal de Traçabilité du Projet (Antigravity & Jules AI)
 
 Ce fichier garde une **trace exacte et chronologique de chaque ajout ou modification** effectuée sur le jeu (que ce soit en local avec **Antigravity** ou sur GitHub avec **Jules AI**).
 En cas de bug plus tard, ce journal permet d'identifier immédiatement **quel fichier** et **quel commit Git** est responsable, et comment le tester ou l'annuler.
@@ -16,6 +16,14 @@ En cas de bug plus tard, ce journal permet d'identifier immédiatement **quel fi
 
 ## 📅 Historique des Ajouts & Modifications
 
+### `[AGY-018]` --- 2026-10-12 --- Musiques BGM de la Cinematique Dirigeable de Noxus
+- **Auteur** : `Antigravity`
+- **Fichiers ajoutes** : `Audio/BGM/Freljord_Calme.mp3`, `Audio/BGM/Freljord_Tempete.mp3`
+- **Fichier modifie** : `Data/Scripts/012_Overworld/009_Overworld_Cinematics_LoL.rb`
+- **Detail** : `pbBGMPlay("Freljord_Calme")` au debut -> transition `pbBGMFade(2.5)` + `pbBGMPlay("Freljord_Tempete")` a l'arrivee du Dirigeable -> `pbBGMFade(4.0)` pendant le fondu final au noir.
+- **Sources audio** : Route 216 Day (Pokemon D/P) + Battle Regirock/Regice/Registeel (Pokemon Pt) --- archive.org
+- **Tester** : Lancer la cinematique -> neige calme au debut, tempete intense a l'arrivee du Dirigeable, fondu avec le noir.
+- **Desactiver** : Commenter les 4 lignes `# [AGY-018]` dans le script + supprimer les 2 MP3 de `Audio/BGM/`.
 ### `[AGY-017]` — 2026-10-12 — Marche initiale du Sud vers le Nord en direction de l'Œuf & Trajet propre en file indienne jusqu'à l'échelle
 - **Auteur** : `Antigravity`
 - **Catégorie** : Script Cinématique (`009_Overworld_Cinematics_LoL.rb`)
