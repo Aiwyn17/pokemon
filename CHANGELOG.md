@@ -16,6 +16,19 @@ En cas de bug plus tard, ce journal permet d'identifier immédiatement **quel fi
 
 ## 📅 Historique des Ajouts & Modifications
 
+### `[AGY-015]` — 2026-10-12 — Ajout de la Statue en Glace Pure d'Anivia au centre derrière l'Œuf (grille 3×3 identique à l'Œuf) & Glace au sol lisse
+- **Auteur** : `Antigravity`
+- **Catégorie** : Graphismes (`Pictures`)
+- **Fichiers créés / modifiés** :
+  - `Graphics/Pictures/Fond_Sanctuaire_Glace.png` (Ajout de la grande Statue en Glace Pure d'Anivia `162×150` en plein centre derrière l'Œuf d'Anivia, de bouquets de cristaux de Glace Pure sur les flancs nord, et lissage complet des plaques de glace au sol sans traits ni rayures)
+  - `Graphics/Pictures/Statue_Aigle_Glace_Anivia.png` (Sprite isolé `162×150` de la Statue en Glace Pure d'Anivia sculptée sur la même grille de blocs `3×3` et le même damier cristallin bleu/turquoise que `Oeuf_Anivia_Seul_Big.png`)
+- **Comment tester en jeu** :
+  - Lancer le jeu (**New Game**) : au sommet enneigé du Sanctuaire d'Anivia, la grande Statue en Glace Pure d'Anivia trône désormais en plein centre derrière l'Œuf (en laissant le couloir de l'échelle de corde `x = 169` totalement dégagé), et la glace au sol est parfaitement lisse.
+- **Comment désactiver en cas de bug** :
+  - `git revert HEAD` pour revenir à l'état précédent.
+
+---
+
 ### `[AGY-014]` — 2026-10-12 — Arrivée des Noxiens par le bas ("de l'autre côté") & Suppression des rochers sous l'échelle de corde
 - **Auteur** : `Antigravity`
 - **Catégorie** : Graphismes (`Pictures` / `Tilesets`) & Script Cinématique (`009_Overworld_Cinematics_LoL.rb`)
