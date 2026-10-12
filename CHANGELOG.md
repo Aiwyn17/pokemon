@@ -16,13 +16,17 @@ En cas de bug plus tard, ce journal permet d'identifier immédiatement **quel fi
 
 ## 📅 Historique des Ajouts & Modifications
 
-### `[AGY-013]` — 2026-10-12 — Ralentissement des mouvements du Dirigeable de Noxus (arrivée, flottement, treuil et fuite)
+### `[AGY-013]` — 2026-10-12 — Ralentissement global de toutes les animations de la cinématique (personnages, montée à l'échelle, grand treuil, dirigeable et fondus)
 - **Auteur** : `Antigravity`
 - **Catégorie** : Script Cinématique (`009_Overworld_Cinematics_LoL.rb`)
 - **Fichiers modifiés** :
-  - `Data/Scripts/012_Overworld/009_Overworld_Cinematics_LoL.rb` (Arrivée du Dirigeable ralentie de `65` à `150` frames avec décélération progressive, flottement ralenti, descente/remontée du treuil ralenties de `34`/`65` à `56`/`110` frames, et fuite après explosion ralentie de `70` à `150` frames)
+  - `Data/Scripts/012_Overworld/009_Overworld_Cinematics_LoL.rb` :
+    - **Cadence des pas & marche des personnages** : Marche d'arrivée ralentie de `45` à **`140` frames** (`0.75 px/frame`), cadence des jambes passée de `6` à **`14` frames/pas**, sauts ralentis de `12` à **`28` frames`.
+    - **Échelle de corde & montée à bord** : Déroulage en **`70` frames**, marche jusqu'à l'échelle en **`95` frames**, montée barreau par barreau ralentie à **`185` frames** (`0.88 px/frame`), rétractation en **`60` frames** avec pauses naturelles entre chaque étape.
+    - **Grand Treuil qui saisit l'Œuf d'Anivia** : Descente ralentie à **`130` frames**, ajout d'une séquence de verrouillage des pinces sur l'Œuf (**`55` frames** de pause dramatique au sol), et remontée lourde de l'Œuf ralentie à **`220` frames**.
+    - **Dirigeable & fondus** : Arrivée et fuite ralenties à **`260` frames** avec courbe en S douce (`t²(3-2t)`), secousses d'explosion allongées à **`95` frames`, et fondus au noir passés de `25` à **`65` frames**.
 - **Comment tester en jeu** :
-  - Lancer le jeu (**New Game**) : le Dirigeable arrive et repart plus de 2× plus lentement, avec l'inertie lourde d'un grand vaisseau aérien.
+  - Lancer le jeu (**New Game**) : toutes les animations (marche des Noxiens, montée à l'échelle, descente/verrouillage/remontée du treuil et vol du Dirigeable) se déroulent à un rythme posé et naturel.
 - **Comment désactiver en cas de bug** :
   - `git revert HEAD` pour revenir à l'état précédent.
 

@@ -371,6 +371,8 @@ class NoxusCutsceneActor
     @dir = dir
     @pattern = 0
     @anim_count = 0
+    # Cadence douce : 20 frames par étape pour l'Œuf, 14 frames par pas pour les PNJ
+    @step_div = char_name.to_s.include?("Oeuf") ? 20 : 14
     refresh_rect
     update_position
   end
@@ -378,12 +380,19 @@ class NoxusCutsceneActor
   def turn(dir)
     @dir = dir
     @pattern = 0
+    @anim_count = 0
+    refresh_rect
+  end
+
+  def stop_walk
+    @pattern = 0
+    @anim_count = 0
     refresh_rect
   end
 
   def step_frame
     @anim_count += 1
-    @pattern = (@anim_count / 6) % 4
+    @pattern = (@anim_count / @step_div) % 4
     refresh_rect
   end
 
@@ -413,7 +422,7 @@ class NoxusCutsceneActor
     @sprite.opacity = val if @sprite && !@sprite.disposed?
   end
 
-  def jump_in_place(height = 10, frames = 12)
+  def jump_in_place(height = 8, frames = 28)
     base_y = @y
     frames.times do |i|
       t = (i + 1).to_f / frames
@@ -422,6 +431,7 @@ class NoxusCutsceneActor
       pbUpdateSceneForCinematic(1)
     end
     @sprite.y = base_y.round
+    pbUpdateSceneForCinematic(14)
   end
 
   def refresh_rect
@@ -497,7 +507,7 @@ end
 #-------------------------------------------------------------------------------
 # ÉTAPE 1 : Arrivée nocturne lente et imposante du GRAND Dirigeable de Noxus (346x282, y = 0)
 #-------------------------------------------------------------------------------
-def pbDirigeableNoxus_Arrivee(target_x = nil, target_y = 0, duration_frames = 150, egg_actor = nil)
+def pbDirigeableNoxus_Arrivee(target_x = nil, target_y = 0, duration_frames = 260, egg_actor = nil)
   spr = pbGetNoxusDirigeableSprite
   spr.bitmap = Bitmap.new("Graphics/Pictures/Dirigeable_Noxus_1_Vol")
   target_x = (Graphics.width - spr.bitmap.width) / 2 if target_x.nil?
@@ -512,10 +522,10 @@ def pbDirigeableNoxus_Arrivee(target_x = nil, target_y = 0, duration_frames = 15
 
   duration_frames.times do |i|
     t = (i + 1).to_f / duration_frames
-    # Courbe de décélération lourde et fluide d'un grand dirigeable
-    ease = 1.0 - ((1.0 - t) ** 2.4)
+    # Courbe en S très douce (pas d'accélération brusque au départ)
+    ease = t * t * (3.0 - 2.0 * t)
     spr.x = (start_x + (target_x - start_x) * ease).round
-    bobbing = (Math.sin(i * 0.07) * 2.0).round
+    bobbing = (Math.sin(i * 0.045) * 2.0).round
     spr.y = (start_y + (target_y - start_y) * ease).round + bobbing
     egg_actor.step_frame if egg_actor
     pbUpdateSceneForCinematic(1)
@@ -528,9 +538,9 @@ def pbDirigeableNoxus_Flottement(cycles = 1, egg_actor = nil)
   spr = $game_temp.noxus_dirigeable_sprite
   return if !spr || spr.disposed?
   base_y = spr.y
-  total_frames = cycles * 60
+  total_frames = cycles * 90
   total_frames.times do |i|
-    spr.y = base_y + (Math.sin(i * 0.105) * 2.0).round
+    spr.y = base_y + (Math.sin(i * 0.07) * 2.0).round
     egg_actor.step_frame if egg_actor
     pbUpdateSceneForCinematic(1)
   end
@@ -538,9 +548,9 @@ def pbDirigeableNoxus_Flottement(cycles = 1, egg_actor = nil)
 end
 
 #-------------------------------------------------------------------------------
-# ÉTAPE 1-BIS : Échelle de corde déroulée depuis le pont du Dirigeable !
-#               Valerius et ses 2 soldats marchent jusqu'à l'échelle et
-#               GRIMPENT réellement les barreaux jusqu'à la cabine (sans téléportation)
+# ÉTAPE 1-BIS : Échelle de corde déroulée lentement depuis le pont du Dirigeable !
+#               Valerius et ses 2 soldats marchent calmement jusqu'à l'échelle et
+#               GRIMPENT barreau par barreau jusqu'à la cabine (sans précipitation)
 #-------------------------------------------------------------------------------
 def pbDirigeableNoxus_EmbarquementEchelle(actors_to_board = [], egg_actor = nil)
   return if actors_to_board.empty?
@@ -564,10 +574,11 @@ def pbDirigeableNoxus_EmbarquementEchelle(actors_to_board = [], egg_actor = nil)
   c_rope    = Color.new(215, 170, 78)
   c_rung    = Color.new(165, 115, 48)
 
-  # 1) L'échelle de corde se déroule depuis le pont du Dirigeable
-  pbSEPlay("Battle Throw", 75, 95) rescue nil
-  26.times do |i|
-    cur_h = ((i + 1) * max_h / 26.0).round.clamp(8, max_h)
+  # 1) L'échelle de corde se déroule lentement depuis le pont du Dirigeable (70 frames)
+  pbSEPlay("Battle Throw", 75, 85) rescue nil
+  unroll_frames = 70
+  unroll_frames.times do |i|
+    cur_h = ((i + 1) * max_h.to_f / unroll_frames).round.clamp(8, max_h)
     ladder_bmp.clear
     ladder_bmp.fill_rect(2,  0, 4, cur_h, c_outline)
     ladder_bmp.fill_rect(22, 0, 4, cur_h, c_outline)
@@ -583,14 +594,21 @@ def pbDirigeableNoxus_EmbarquementEchelle(actors_to_board = [], egg_actor = nil)
     pbUpdateSceneForCinematic(1)
   end
 
-  # 2) Les 3 Noxiens rejoignent le pied de l'échelle puis grimpent de dos (dir = 8) !
+  # Courte pause une fois l'échelle déroulée
+  25.times do
+    egg_actor.step_frame if egg_actor
+    pbUpdateSceneForCinematic(1)
+  end
+
+  # 2) Les 3 Noxiens marchent calmement jusqu'au pied de l'échelle (95 frames)
   actors_to_board.each { |a| a.z = 520 if a }
 
   start_positions = actors_to_board.map { |a| [a.x, a.y] }
   queue_offsets = [0, 24, 48]
 
-  28.times do |i|
-    t = (i + 1).to_f / 28
+  walk_to_ladder_frames = 95
+  walk_to_ladder_frames.times do |i|
+    t = (i + 1).to_f / walk_to_ladder_frames
     actors_to_board.each_with_index do |act, idx|
       next if !act
       sx, sy = start_positions[idx]
@@ -605,17 +623,27 @@ def pbDirigeableNoxus_EmbarquementEchelle(actors_to_board = [], egg_actor = nil)
     pbUpdateSceneForCinematic(1)
   end
 
-  # Ils se tournent tous vers le haut (de dos = dir 8) et grimpent les barreaux !
-  actors_to_board.each { |act| act.turn(8) if act }
-  climb_frames = 65
+  # Ils s'arrêtent au pied de l'échelle, se tournent de dos (dir = 8) et marquent une pause
+  actors_to_board.each do |act|
+    next if !act
+    act.stop_walk
+    act.turn(8)
+  end
+  25.times do
+    egg_actor.step_frame if egg_actor
+    pbUpdateSceneForCinematic(1)
+  end
+
+  # 3) Ils grimpent lentement les barreaux un par un jusqu'au pont (185 frames) !
+  climb_frames = 185
   climb_frames.times do |i|
     actors_to_board.each do |act|
       next if !act
       if act.y > ladder_top_y + 12
-        act.y -= 2.45
+        act.y -= 0.88
         act.step_frame
-        if (i % 12) == 0 && act == actors_to_board[0]
-          pbSEPlay("Player bump", 60, 130) rescue nil
+        if (i % 22) == 0 && act == actors_to_board[0]
+          pbSEPlay("Player bump", 55, 120) rescue nil
         end
       else
         act.visible = false
@@ -626,15 +654,22 @@ def pbDirigeableNoxus_EmbarquementEchelle(actors_to_board = [], egg_actor = nil)
   end
   actors_to_board.each { |act| act.visible = false if act }
 
-  # 3) L'échelle de corde se rétracte sur le pont
-  18.times do |i|
-    cur_h = (max_h * (1.0 - (i + 1) / 18.0)).round.clamp(0, max_h)
+  # 4) L'échelle de corde se rétracte tranquillement sur le pont (60 frames)
+  retract_frames = 60
+  retract_frames.times do |i|
+    cur_h = (max_h * (1.0 - (i + 1).to_f / retract_frames)).round.clamp(0, max_h)
     ladder_bmp.clear
     if cur_h > 4
       ladder_bmp.fill_rect(2,  0, 4, cur_h, c_outline)
       ladder_bmp.fill_rect(22, 0, 4, cur_h, c_outline)
       ladder_bmp.fill_rect(3,  0, 2, cur_h, c_rope)
       ladder_bmp.fill_rect(23, 0, 2, cur_h, c_rope)
+      ry = 6
+      while ry < cur_h - 2
+        ladder_bmp.fill_rect(5, ry - 1, 18, 4, c_outline)
+        ladder_bmp.fill_rect(5, ry,     18, 2, c_rung)
+        ry += 10
+      end
     end
     egg_actor.step_frame if egg_actor
     pbUpdateSceneForCinematic(1)
@@ -642,12 +677,18 @@ def pbDirigeableNoxus_EmbarquementEchelle(actors_to_board = [], egg_actor = nil)
 
   ladder_bmp.dispose
   ladder_spr.dispose
+
+  # Pause avant l'activation du treuil
+  30.times do
+    egg_actor.step_frame if egg_actor
+    pbUpdateSceneForCinematic(1)
+  end
 end
 
 #-------------------------------------------------------------------------------
-# ÉTAPE 2 : Le GRAND TREUIL descend jusqu'au Grand Œuf (144x120, y = 226),
-#           L'ÉCRAN TREMBLE VIOLEMMENT, LA TEMPÊTE + TONNERRES ÉCLATENT,
-#           et le treuil hisse lourdement l'Œuf 100% COMPLET sous la coque (y = 205,
+# ÉTAPE 2 : Le GRAND TREUIL descend lentement jusqu'au Grand Œuf (144x120, y = 226),
+#           se verrouille dessus, L'ÉCRAN TREMBLE VIOLEMMENT, LA TEMPÊTE + TONNERRES ÉCLATENT,
+#           et le treuil hisse lentement l'Œuf 100% COMPLET sous la coque (y = 205,
 #           100% au-dessus de la boîte de dialogue Y = 288 !)
 #-------------------------------------------------------------------------------
 def pbDirigeableNoxus_CaptureOeuf(egg_event = nil, egg_actor = nil, altar_cx = 256, altar_cy = 226)
@@ -656,7 +697,7 @@ def pbDirigeableNoxus_CaptureOeuf(egg_event = nil, egg_actor = nil, altar_cx = 2
 
   ship_belly_y = spr.y + 140 # Bas de la coque du grand Dirigeable
 
-  # 1) Descente du GRAND TREUIL (doubles chaînes épaisses + câble central + large palonnier 116px)
+  # 1) Descente lente et lourde du GRAND TREUIL (130 frames)
   cable_sprite = Sprite.new(vp)
   cable_sprite.z = 515
   max_cable_len = (altar_cy - ship_belly_y - 12).clamp(36, 160)
@@ -671,10 +712,11 @@ def pbDirigeableNoxus_CaptureOeuf(egg_event = nil, egg_actor = nil, altar_cx = 2
   c_red     = Color.new(195, 38, 46)
 
   pbSEPlay("Battle Throw", 85, 65) rescue nil
-  descent_frames = 56
+  descent_frames = 130
   descent_frames.times do |i|
     t = (i + 1).to_f / descent_frames
-    cur_len = (max_cable_len * t).round.clamp(12, max_cable_len)
+    ease = t * t * (3.0 - 2.0 * t)
+    cur_len = (max_cable_len * ease).round.clamp(12, max_cable_len)
     cable_bmp.clear
     cable_bmp.fill_rect(28, 0, 8, cur_len - 10, c_outline)
     cable_bmp.fill_rect(30, 0, 4, cur_len - 10, c_gold)
@@ -684,40 +726,56 @@ def pbDirigeableNoxus_CaptureOeuf(egg_event = nil, egg_actor = nil, altar_cx = 2
     cable_bmp.fill_rect(62, 0, 4, cur_len - 10, c_red)
     cable_bmp.fill_rect(6,  cur_len - 12, 116, 12, c_outline)
     cable_bmp.fill_rect(8,  cur_len - 10, 112, 8,  c_red)
+    if (i % 32) == 0 && i > 0
+      pbSEPlay("Battle catch click", 65, 75) rescue nil
+    end
     egg_actor.step_frame if egg_actor
     pbUpdateSceneForCinematic(1)
   end
 
-  # 2) Les grandes pinces du treuil se referment sur le Grand Œuf d'Anivia !
+  # 2) Les grandes pinces du treuil s'accrochent et se verrouillent sur l'Œuf (pause de 55 frames !)
   pbSEPlay("Battle catch click", 95, 80) rescue nil
-  $game_screen.start_flash(Color.new(120, 235, 255, 220), 14)
+  $game_screen.start_flash(Color.new(120, 235, 255, 220), 18)
 
   if egg_event
     $game_self_switches[[$game_map.map_id, egg_event.id, "A"]] = true
     $game_map.need_refresh = true
     $game_map.refresh
   end
-  # L'Œuf quitte le nid au sol : le socle de glace pure d'Anivia apparaît !
+  # L'Œuf est maintenant dans les pinces du Grand Treuil :
   egg_actor.visible = false if egg_actor
 
-  # -> DÈS QUE L'ŒUF EST ENLEVÉ :
-  #    1) L'ÉCRAN TREMBLE VIOLEMMENT (tremblement du Viewport + secousses continues) !
-  #    2) LA VRAIE TEMPÊTE (BLIZZARD + TONNERRES) ÉCLATENT !
-  if $game_temp && $game_temp.noxus_snowstorm && !$game_temp.noxus_snowstorm.disposed?
-    $game_temp.noxus_snowstorm.trigger_blizzard!
-  end
-
-  # 3) Le GRAND TREUIL hisse lourdement le GRAND ŒUF COMPLET (156x154, z = 525 devant la coque !)
   lift_sprite = Sprite.new(vp)
   lift_sprite.bitmap = Bitmap.new("Graphics/Pictures/Dirigeable_Grappin_Oeuf")
   lift_sprite.ox = lift_sprite.bitmap.width / 2
   lift_sprite.oy = lift_sprite.bitmap.height / 2
   lift_sprite.z = 525
+  lift_sprite.x = altar_cx
+  lift_sprite.y = altar_cy
 
+  # Pause dramatique pendant que les pinces enserrent l'Œuf au sol avant de l'arracher
+  30.times do |i|
+    pbSEPlay("Battle catch click", 85, 95) rescue nil if i == 15
+    pbUpdateSceneForCinematic(1)
+  end
+
+  # -> DÈS QUE L'ŒUF EST ARRACHÉ DU SOL :
+  #    1) L'ÉCRAN TREMBLE VIOLEMMENT (tremblement du Viewport + secousses continues) !
+  #    2) LA VRAIE TEMPÊTE (BLIZZARD + TONNERRES) ÉCLATE !
+  if $game_temp && $game_temp.noxus_snowstorm && !$game_temp.noxus_snowstorm.disposed?
+    $game_temp.noxus_snowstorm.trigger_blizzard!
+  end
+
+  # Courte secousse sur place au moment où l'Œuf se détache de sa glace pure (25 frames)
+  25.times do
+    pbUpdateSceneForCinematic(1)
+  end
+
+  # 3) Le GRAND TREUIL hisse lentement et lourdement le GRAND ŒUF COMPLET (220 frames !)
   start_lift_y = altar_cy
   end_lift_y   = spr.y + 128 + (lift_sprite.bitmap.height / 2) # Aligné au pixel près avec Dirigeable_Noxus_2_Capture (y = 205, bas de l'Œuf à y = 282 < 288 !)
 
-  lift_frames = 110
+  lift_frames = 220
   pbSEPlay("Mining reveal", 85, 65) rescue nil
   lift_frames.times do |i|
     t = (i + 1).to_f / lift_frames
@@ -726,8 +784,8 @@ def pbDirigeableNoxus_CaptureOeuf(egg_event = nil, egg_actor = nil, altar_cx = 2
     lift_sprite.x = altar_cx
     lift_sprite.y = cur_y
 
-    # Grondement sismique supplémentaire à mi-montée
-    if i == 50
+    # Grondements sismiques pendant la lente montée de l'Œuf
+    if i == 75 || i == 150
       pbSEPlay("Mining collapse", 85, 75) rescue nil
       if $game_temp && $game_temp.noxus_snowstorm && !$game_temp.noxus_snowstorm.disposed?
         $game_temp.noxus_snowstorm.trigger_shake!(8, 30)
@@ -770,7 +828,7 @@ end
 #-------------------------------------------------------------------------------
 # ÉTAPE 3 : Tonnerre géant sur l'hélice arrière, Explosion & Fuite lourde dans la tempête
 #-------------------------------------------------------------------------------
-def pbDirigeableNoxus_ExplosionEtFuite(duration_frames = 150, dispose_at_end = true)
+def pbDirigeableNoxus_ExplosionEtFuite(duration_frames = 260, dispose_at_end = true)
   spr = pbGetNoxusDirigeableSprite
 
   if $game_temp && $game_temp.noxus_snowstorm && !$game_temp.noxus_snowstorm.disposed?
@@ -783,9 +841,9 @@ def pbDirigeableNoxus_ExplosionEtFuite(duration_frames = 150, dispose_at_end = t
   spr.bitmap = Bitmap.new("Graphics/Pictures/Dirigeable_Noxus_3_Explosion")
 
   base_y = spr.y
-  50.times do |i|
-    spr.y = base_y + ((i % 4 < 2) ? -3 : 3)
-    if i == 24 && $game_temp && $game_temp.noxus_snowstorm && !$game_temp.noxus_snowstorm.disposed?
+  95.times do |i|
+    spr.y = base_y + ((i % 6 < 3) ? -2 : 2)
+    if i == 45 && $game_temp && $game_temp.noxus_snowstorm && !$game_temp.noxus_snowstorm.disposed?
       $game_temp.noxus_snowstorm.strike_thunder!(spr.x + 260, true, 10)
     end
     pbUpdateSceneForCinematic(1)
@@ -796,9 +854,9 @@ def pbDirigeableNoxus_ExplosionEtFuite(duration_frames = 150, dispose_at_end = t
   end_x   = Graphics.width + 40
   duration_frames.times do |i|
     t = (i + 1).to_f / duration_frames
-    ease = (t ** 1.6)
+    ease = t * t * (3.0 - 2.0 * t)
     spr.x = (start_x + (end_x - start_x) * ease).round
-    spr.y = base_y - (t * 14).round + (Math.sin(i * 0.14) * 3.0).round
+    spr.y = base_y - (t * 14).round + (Math.sin(i * 0.06) * 2.5).round
     pbUpdateSceneForCinematic(1)
   end
 
@@ -861,13 +919,14 @@ def pbCinematiqueDirigeableNoxus(explicit_egg_event_id = nil, utiliser_ma_carte 
   egg_actor = NoxusCutsceneActor.new(vp, "!Oeuf_Anivia", altar_cx, altar_cy + 60, 2, 150)
   egg_event.transparent = true if egg_event
 
-  # 2) Arrivée et marche animée du Commandant Valerius et de ses 2 soldats dans la neige !
+  # 2) Arrivée et marche calme du Commandant Valerius et de ses 2 soldats dans la neige (140 frames) !
   valerius = NoxusCutsceneActor.new(vp, "trainer_ROCKETBOSS", altar_cx, 100, 2, 300)
   soldat_g = NoxusCutsceneActor.new(vp, "trainer_TEAMROCKET_M", altar_cx - 84, 88, 2, 290)
   soldat_d = NoxusCutsceneActor.new(vp, "trainer_TEAMROCKET_F", altar_cx + 84, 88, 2, 290)
 
-  45.times do |i|
-    t = (i + 1).to_f / 45
+  walk_in_frames = 140
+  walk_in_frames.times do |i|
+    t = (i + 1).to_f / walk_in_frames
     valerius.y = 100 + (altar_cy - 42 - 100) * t
     soldat_g.y = 88 + (altar_cy + 8 - 88) * t
     soldat_d.y = 88 + (altar_cy + 8 - 88) * t
@@ -878,36 +937,42 @@ def pbCinematiqueDirigeableNoxus(explicit_egg_event_id = nil, utiliser_ma_carte 
     pbUpdateSceneForCinematic(1)
   end
 
+  valerius.stop_walk
+  soldat_g.stop_walk
+  soldat_d.stop_walk
   valerius.turn(2)
   soldat_g.turn(6)
   soldat_d.turn(4)
-  pbUpdateSceneForCinematic(12)
+  30.times do
+    egg_actor.step_frame
+    pbUpdateSceneForCinematic(1)
+  end
 
   # Dialogues des personnages sur le sommet enneigé (l'Œuf est 100% visible au-dessus du texte !)
-  valerius.jump_in_place(10, 12)
+  valerius.jump_in_place(8, 28)
   pbMessage(_INTL("\\bCommandant Valerius :\\b Enfin... Nous avons atteint le toit de la montagne sacrée de Freljord. L'Œuf d'Anivia est entre nos mains !"))
 
-  soldat_g.jump_in_place(8, 10)
+  soldat_g.jump_in_place(7, 26)
   pbMessage(_INTL("\\bSoldat de Noxus :\\b Commandant ! L'Œuf du Cryophénix est gigantesque ! Les balises de treuillage sont verrouillées !"))
 
-  valerius.jump_in_place(10, 12)
+  valerius.jump_in_place(8, 28)
   pbMessage(_INTL("\\bCommandant Valerius :\\b Parfait ! Faites approcher le Dirigeable ! Remontons à bord par l'échelle et actionnons le grand treuil !"))
 
-  # 3) Le GRAND Dirigeable arrive lentement et lourdement dans le ciel étoilé au-dessus des montagnes (y = 0)
+  # 3) Le GRAND Dirigeable arrive lentement et lourdement dans le ciel étoilé au-dessus des montagnes (260 frames)
   target_ship_x = (Graphics.width - 346) / 2
-  pbDirigeableNoxus_Arrivee(target_ship_x, 0, 150, egg_actor)
+  pbDirigeableNoxus_Arrivee(target_ship_x, 0, 260, egg_actor)
 
-  # 4) L'échelle de corde se déroule et les 3 Noxiens grimpent réellement à bord !
+  # 4) L'échelle de corde se déroule et les 3 Noxiens grimpent calmement à bord !
   pbDirigeableNoxus_EmbarquementEchelle([valerius, soldat_g, soldat_d], egg_actor)
 
-  # 5) Le GRAND TREUIL descend jusqu'à l'Œuf, le saisit -> TREMBLEMENT D'ÉCRAN + TEMPÊTE + TONNERRES !
+  # 5) Le GRAND TREUIL descend lentement jusqu'à l'Œuf, le saisit -> TREMBLEMENT D'ÉCRAN + TEMPÊTE + TONNERRES !
   pbDirigeableNoxus_CaptureOeuf(egg_event, egg_actor, altar_cx, altar_cy)
 
   pbMessage(_INTL("\\bCommandant Valerius :\\b Ahahaha ! L'Œuf d'Anivia est suspendu sous notre coque ! Peu importe ce séisme et ce blizzard, en route vers Port-Brumeux !"))
   pbMessage(_INTL("Un cri glacial déchire soudain la tempête de Freljord ! La foudre s'abat violemment sur le dirigeable !"))
 
-  # 6) Tonnerre géant, explosion de l'hélice arrière & fuite lourde du Dirigeable avec le Grand Œuf complet
-  pbDirigeableNoxus_ExplosionEtFuite(150, false)
+  # 6) Tonnerre géant, explosion de l'hélice arrière & fuite lourde du Dirigeable avec le Grand Œuf complet (260 frames)
+  pbDirigeableNoxus_ExplosionEtFuite(260, false)
 
   pbMessage(_INTL("L'Œuf d'Anivia a été emporté par le Dirigeable de Noxus au cœur de l'orage de neige... Mais son hélice arrière a explosé vers la Caverne de l'Épreuve !"))
 
@@ -921,8 +986,8 @@ def pbCinematiqueDirigeableNoxus(explicit_egg_event_id = nil, utiliser_ma_carte 
   fade_sprite.z = 900
   fade_sprite.opacity = 0
 
-  25.times do |i|
-    fade_sprite.opacity = ((i + 1) * 255.0 / 25).round
+  65.times do |i|
+    fade_sprite.opacity = ((i + 1) * 255.0 / 65).round
     pbUpdateSceneForCinematic(1)
   end
 
@@ -943,8 +1008,8 @@ def pbCinematiqueDirigeableNoxus(explicit_egg_event_id = nil, utiliser_ma_carte 
   pbSEPlay("Battle damage normal", 80, 70) rescue nil
   pbMessage(_INTL("Au même moment, en contrebas de la montagne...\\nLe grondement lointain du tonnerre et de l'explosion résonne jusque dans ta chambre !"))
 
-  25.times do |i|
-    fade_sprite.opacity = (255.0 * (1.0 - (i + 1) / 25.0)).round
+  65.times do |i|
+    fade_sprite.opacity = (255.0 * (1.0 - (i + 1) / 65.0)).round
     pbUpdateSceneForCinematic(1)
   end
 
@@ -956,5 +1021,5 @@ def pbCinematiqueDirigeableNoxus(explicit_egg_event_id = nil, utiliser_ma_carte 
     $scene.spriteset.addUserAnimation(Settings::EXCLAMATION_ANIMATION_ID, $game_player.x, $game_player.y, true, 1) rescue nil
   end
   pbSEPlay("Exclamation", 85, 100) rescue nil
-  pbUpdateSceneForCinematic(15)
+  pbUpdateSceneForCinematic(25)
 end
