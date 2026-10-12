@@ -16,6 +16,27 @@ En cas de bug plus tard, ce journal permet d'identifier immédiatement **quel fi
 
 ## 📅 Historique des Ajouts & Modifications
 
+### `[AGY-024]` — 2026-10-13 — Audit Complet & Suppression de Tous les Murs Invisibles du Village (`Data/Map022.rxdata`, `Data/Tilesets.rxdata`)
+- **Auteur** : `Antigravity`
+- **Catégorie** : Collisions & Priorités RPG Maker XP (`Data/Map022.rxdata`, `Data/Tilesets.rxdata`)
+- **Cause des blocages invisibles identifiée et corrigée (en conservant 100 % des dernières modifications de l'utilisateur sur `Map022`)** :
+  1. **Angle interne de la route pavée `tid = 680 (0, 1184)` qui avait `Passage = 15`** :
+     - Bloquait les 3 carrefours pavés aux coordonnées **`Map(19, 16)`**, **`Map(26, 16)`** et **`Map(24, 24)`**. Remis en **`Passage = 0, Priority = 0`** dans `Data/Tilesets.rxdata`.
+  2. **Cases 100 % transparentes (`opaquePx < 20`) de `SubTileset_4_Villages_Freljord_Port.png` qui avaient hérité de `Passage = 15`** :
+     - Lors de la sélection rectangulaire d'éléments multi-cases dans RPG Maker XP (lampadaires, rochers, ancien pic de glace), les cases vides adjacentes avaient été posées sur le Layer 2 (`z = 2`) et bloquaient le passage à **`Map(24, 18)`** (route sous la lanterne du lampadaire central), **`Map(30, 24..25)`** (route sous la lanterne du lampadaire près du Poro), **`Map(26, 12..15)`** (avenue du Sanctuaire Nord), **`Map(23, 12)`** (parvis du Sanctuaire), et **`Map(21, 11)` / `Map(34, 11)` / `Map(44, 24)`** (près des rochers).
+     - **Correctif permanent** : Suppression de ces `11` tuiles transparentes sur `Data/Map022.rxdata` ET remise à zéro (`P = 0, Pr = 0, T = 0`) des `70` cases transparentes dans `Data/Tilesets.rxdata` (`Tileset 25`) pour qu'aucune sélection rectangulaire dans RPG Maker XP ne puisse jamais recréer de mur invisible.
+  3. **Tuiles de neige bloquantes `tid = 1351 (224, 3840)` (`Passage = 15`) restées sur le Layer 0 (`z = 0`) dans les zones ouvertes** :
+     - Dans Pokémon Essentials (`004_Game_Map.rb#playerPassable?`), lorsqu'une case a `Passage = 0` sur le Layer 2 avec `Priority > 0` (ou est vide sur les Layers 2 et 1), le moteur vérifie le Layer 0 (`z = 0`). Les cases de neige `tid = 1351` restées en haut (`Y = 6..8` autour du Sanctuaire) et en bas (`Y = 35..36` sous le Laboratoire et le Lac où des sapins avaient été gommes) bloquaient le joueur sur de la neige ouverte.
+     - **Correctif** : Remplacement par la neige marchable normale `tid = 544 (0, 640)` (`Passage = 0`) dans tout l'intérieur du village et derrière la première ligne de cimes d'arbres du bas (`Y = 36`), tout en conservant `tid = 1351` uniquement sous les sapins des 4 murs de forêt extérieurs (`X <= 9`, `X >= 46`, `Y <= 8` hors Sanctuaire, `Y >= 37`).
+  4. **Touffes de neige/fleurs au sol `tid = 1037 (160, 2592)` & Niche enneigée `(43..44, 10..11)` + Nettoyage des `161` gommes d'autotiles vides (`tid = 1..383`)** :
+     - Les petites touffes au sol `(160, 2592)` sont désormais marchables (`P = 0`) comme les fleurs `(128, 2592)`, le haut du toit de la petite niche au Nord-Est `(0..32, 2976)` passe en `P = 0, Pr = 1` (effet 3D derrière le toit), et les `161` cases d'autotiles vides (`tid = 1..383`) ont été nettoyées en vraies cases vides (`tid = 0`).
+- **Comment tester en jeu** :
+  - Fermer et rouvrir **RPG Maker XP** (si ouvert) puis lancer le jeu : toutes les routes, carrefours, portes, abords des lampadaires, avenue du Sanctuaire et neige sous le Labo/Lac sont 100 % fluides sans aucun blocage invisible.
+- **Comment désactiver en cas de bug** :
+  - `git checkout HEAD~1 -- Data/Map022.rxdata Data/Tilesets.rxdata`
+
+---
+
 ### `[AGY-023]` — 2026-10-13 — Décalage du Village, Ajout de la Forêt Boréale Sans Fin sur les 4 Côtés (`56×44` cases, Zéro Vide Noir) & Décorations Enneigées (`Data/Map022.rxdata`, `Data/Tilesets.rxdata`)
 - **Auteur** : `Antigravity`
 - **Catégorie** : Cartes RPG Maker XP (`Data/Map022.rxdata`, `Data/Tilesets.rxdata`)
