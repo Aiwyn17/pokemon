@@ -16,6 +16,22 @@ En cas de bug plus tard, ce journal permet d'identifier immédiatement **quel fi
 
 ## 📅 Historique des Ajouts & Modifications
 
+### `[AGY-016]` — 2026-10-12 — Agrandissement de l'Œuf d'Anivia (+36 % en blocs 3×3), suppression des cristaux latéraux & nettoyage du socle de glace
+- **Auteur** : `Antigravity`
+- **Catégorie** : Graphismes (`Pictures` / `Characters`) & Script Cinématique (`009_Overworld_Cinematics_LoL.rb`)
+- **Fichiers modifiés** :
+  - `Graphics/Pictures/Fond_Sanctuaire_Glace.png` (Suppression des 2 petits amas de cristaux turquoise sur les côtés, nettoyage des pixels blancs isolés/croix sombre au centre de la glace, et agrandissement du socle de Glace Pure sous l'Œuf `168×138`)
+  - `Graphics/Pictures/Statue_Aigle_Glace_Anivia.png` (Nettoyage complet du socle de glace `3×3` sans point blanc ni découpe en vague)
+  - `Graphics/Pictures/Oeuf_Anivia_Seul.png` & `Graphics/Characters/!Oeuf_Anivia.png` (Agrandissement de l'Œuf d'Anivia à `168×138` par frame, soit `672×552` pour la planche 4×4, avec un dôme d'Œuf +36 % plus grand sur la grille `3×3`)
+  - `Graphics/Pictures/Dirigeable_Grappin_Oeuf.png`, `Graphics/Pictures/Dirigeable_Noxus_2_Capture.png`, `Graphics/Pictures/Dirigeable_Noxus_3_Explosion.png`, `Graphics/Pictures/Cinematic_Dirigeable_Noxus_3Frames.png` (Intégration de l'Œuf agrandi et nettoyé dans les pinces du treuil du Dirigeable)
+  - `Data/Scripts/012_Overworld/009_Overworld_Cinematics_LoL.rb` (Alignement au pixel près de `!Oeuf_Anivia` agrandi `168×138` sur `y = 150..288`)
+- **Comment tester en jeu** :
+  - Lancer le jeu (**New Game**) : l'Œuf d'Anivia est nettement plus grand et imposant devant la Statue en Glace d'Anivia (et dans les pinces du treuil lors de la capture), les petits cristaux sur les côtés ont disparu et le socle de glace est parfaitement propre.
+- **Comment désactiver en cas de bug** :
+  - `git revert HEAD` pour revenir à l'état précédent.
+
+---
+
 ### `[AGY-015]` — 2026-10-12 — Ajout de la Statue en Glace Pure d'Anivia au centre derrière l'Œuf (grille 3×3 identique à l'Œuf) & Glace au sol lisse
 - **Auteur** : `Antigravity`
 - **Catégorie** : Graphismes (`Pictures`)

@@ -935,9 +935,9 @@ def pbCinematiqueDirigeableNoxus(explicit_egg_event_id = nil, utiliser_ma_carte 
     altar_cy = egg_event.screen_y - 16
   end
 
-  # 1) Affichage du GRAND Œuf d'Anivia animé (!Oeuf_Anivia.png : 144x120 par frame)
-  #    Bas du sprite à altar_cy + 60 = 286 (juste au-dessus de la boîte de texte à Y = 288 !)
-  egg_actor = NoxusCutsceneActor.new(vp, "!Oeuf_Anivia", altar_cx, altar_cy + 60, 2, 150)
+  # 1) Affichage du GRAND Œuf d'Anivia animé (!Oeuf_Anivia.png : 168x138 par frame)
+  #    Bas du sprite à altar_cy + 62 = 288 (aligné au pixel près sur y = 150..288 au-dessus de la boîte de texte !)
+  egg_actor = NoxusCutsceneActor.new(vp, "!Oeuf_Anivia", altar_cx, altar_cy + 62, 2, 150)
   egg_event.transparent = true if egg_event
 
   # 2) Arrivée par le bas du plateau (de l'autre côté, en montant vers l'Œuf : dir = 8, 150 frames) !
@@ -948,9 +948,9 @@ def pbCinematiqueDirigeableNoxus(explicit_egg_event_id = nil, utiliser_ma_carte 
   walk_in_frames = 150
   walk_in_frames.times do |i|
     t = (i + 1).to_f / walk_in_frames
-    valerius.y = 382 + (244 - 382) * t
-    soldat_g.y = 398 + (268 - 398) * t
-    soldat_d.y = 392 + (256 - 392) * t
+    valerius.y = 382 + (248 - 382) * t
+    soldat_g.y = 398 + (270 - 398) * t
+    soldat_d.y = 392 + (260 - 392) * t
     valerius.step_frame
     soldat_g.step_frame
     soldat_d.step_frame
