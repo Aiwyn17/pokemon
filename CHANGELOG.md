@@ -1,4 +1,4 @@
-﻿# 📋 CHANGELOG.md — Journal de Traçabilité du Projet (Antigravity & Jules AI)
+# 📋 CHANGELOG.md — Journal de Traçabilité du Projet (Antigravity & Jules AI)
 
 Ce fichier garde une **trace exacte et chronologique de chaque ajout ou modification** effectuée sur le jeu (que ce soit en local avec **Antigravity** ou sur GitHub avec **Jules AI**).
 En cas de bug plus tard, ce journal permet d'identifier immédiatement **quel fichier** et **quel commit Git** est responsable, et comment le tester ou l'annuler.
@@ -15,6 +15,24 @@ En cas de bug plus tard, ce journal permet d'identifier immédiatement **quel fi
 ---
 
 ## 📅 Historique des Ajouts & Modifications
+
+### `[AGY-019]` — 2026-10-12 — Extension majeure (6×) du Sous-Tileset 4 du Premier Village (`SubTileset_4_Villages_Freljord_Port.png`, `256×3840 px`)
+- **Auteur** : `Antigravity`
+- **Catégorie** : Graphismes (`Graphics/Tilesets/`)
+- **Fichier modifié** :
+  - `Graphics/Tilesets/SubTileset_4_Villages_Freljord_Port.png` (Agrandissement de `256×640 px` à **`256×3840 px`**, soit 120 lignes de tuiles `32×32`) :
+    - **`Y = 0..640` (Base 100 % rétro-compatible)** : Conservation stricte des coordonnées existantes pour ne casser aucune carte déjà commencée + détourage 100 % transparent du sapin individuel à `(192, 0)`.
+    - **`Y = 640..1280` (Sols, Sentiers, Routes & Pavés)** : Neige poudreuse, congères, sentiers de neige tassée avec virages complets, routes de pierre froide, escaliers en bois/pierre, pavés de place publique, terre gelée et hautes herbes enneigées.
+    - **`Y = 1280..1920` (Forêt Boréale, Arbres & Clôtures)** : Sapins individuels détourés (`2×3` cases sur fond transparent), bloc de forêt dense répétable, grands arbres ronds enneigés, petits conifères givrés, et kit complet de barrières/clôtures en bois et pierre.
+    - **`Y = 1920..2560` (Falaises, Ponts, Quais & Eau glacée)** : Falaises enneigées complètes, entrée de grotte, rebords sautables, grand pic rocheux (`64×128`), ponts suspendus en bois (horizontaux et verticaux), grand escalier monumental en pierre, pontons en bois, berges d'eau glacée et pilotis du port.
+    - **`Y = 2560..3200` (Mobilier urbain, Stands, Phare & Props)** : Panneaux en bois/pierre, boîtes aux lettres, pots de fleurs givrées, caisses, parterres de fleurs des neiges, 2 stands de marché couverts, lampadaires (orientés gauche/droite), phare rond du port, obélisque/statue, bancs publics, niches à Pokémon et camions de ravitaillement (100 % débarrassés des cases de croix rouges/bleues d'instructions).
+    - **`Y = 3200..3840` (9 Bâtiments complets de Bourg-Givré)** : Maison de Soren, Maison à deux étages, Chalet en rondins, Sanctuaire de pierre, Boutique Pokémon (`MART`), Maison villageoise bleu glacier, Auberge/Taverne lavande, Petit cottage à toit bleu, Arène / Hall des Épreuves (`GYM`) + bannières tribales, braseros et Poros.
+- **Comment tester en jeu / dans RPG Maker XP** :
+  - Ouvrir **RPG Maker XP** -> *Base de données (F9)* -> onglet *Tilesets* -> sélectionner le tileset utilisant `SubTileset_4_Villages_Freljord_Port.png` pour configurer les praticabilités/priorités des nouvelles lignes (`Y = 640..3840`) et mapper **Bourg-Givré**.
+- **Comment désactiver en cas de bug** :
+  - `git checkout HEAD~1 -- Graphics/Tilesets/SubTileset_4_Villages_Freljord_Port.png` pour revenir à la version `256×640 px`.
+
+---
 
 ### `[AGY-018]` --- 2026-10-12 --- Musiques BGM de la Cinematique Dirigeable de Noxus
 - **Auteur** : `Antigravity`
