@@ -16,6 +16,32 @@ En cas de bug plus tard, ce journal permet d'identifier immédiatement **quel fi
 
 ## 📅 Historique des Ajouts & Modifications
 
+### `[AGY-022]` — 2026-10-12 — Création de la Map du Premier Village « Bourg-Givré » (`Data/Map022.rxdata`, `40×32`) & Configuration complète des Collisions / Priorités 3D / Terrain Tags (`Data/Tilesets.rxdata` — `Tileset 25`)
+- **Auteur** : `Antigravity`
+- **Catégorie** : Cartes RPG Maker XP (`Data/Map022.rxdata`, `Data/Tilesets.rxdata`) & Graphismes (`Graphics/Tilesets/SubTileset_4_Villages_Freljord_Port.png`)
+- **Fichiers modifiés** :
+  - `Graphics/Tilesets/SubTileset_4_Villages_Freljord_Port.png` (`256×4480 px`) :
+    - **Sapin individuel `2×3` (`192, 0, 64, 96`)** : Ré-extrait en entier depuis `(16, 1760, 64, 96)` de `Outside.png` (100 % plein, non coupé à gauche).
+    - **Laboratoire du Professeur à Colonnes (`0, 3328, 160, 128`)** : Bâtiment officiel à colonnes symétriques (`0, 5984` de `Outside.png`) coiffé d'un toit de neige blanche, bien distinct des maisons.
+    - **Maisons `5×4` et `4×4` 100 % complètes (`0, 4128`, `0, 3200`, `0, 4256`, `128, 3456`)** : Sans aucun objet dessiné par-dessus les murs/fenêtres et avec portes alignées.
+    - **Kit de Lac Moitié Eau / Moitié Glace Lisse (`0, 3840, 224, 96`)** : Moitié eau glacée liquide (`128, 3840`), colonne de transition nette (`96, 3840`) et moitié glace lisse naturelle (`0, 3840`), plus tuile de neige collisionnable (`224, 3840`) pour bloquer proprement les bordures de carte sous les sapins.
+    - **Statues des Demi-Dieux de Freljord (`0, 3936, 224, 96`)** : Statue de l'Aigle de Glace d'Anivia (`96×96`), Statue de Volibear (`64×96`) et Statue du Loup de Glace (`64×96`) détourées sur fond transparent.
+    - **Grand Escalier Monumental en Pierre `4×4` (`128, 4256, 128, 128`)** : Complet avec ses deux balustrades latérales.
+  - `Data/Tilesets.rxdata` (`Tileset 25` — `"Bourg-Givre / Villages Freljord"`) :
+    - Extension des tables `@passages`, `@priorities` et `@terrain_tags` de `544` à **`1504` tuiles** (`384` autotiles + `1120` tuiles).
+    - Configuration complète des **collisions (`@passages`)**, des **priorités 3D (`@priorities`)** (cimes des sapins `Pr=1`, haut des toits de maisons/labo `Pr=1`, haut des boîtes aux lettres `Pr=1`, lanternes de lampadaires `Pr=2`, haut des statues `Pr=2`) et des **Terrain Tags Pokémon Essentials (`@terrain_tags`)** (`Water = 7` sur la moitié eau du lac pour Surf/Pêche, `Ice = 13` sur la moitié glace du lac pour glisser sur la glace, `17` sur les escaliers).
+  - `Data/Map022.rxdata` (`"village 1"`, redimensionnée en **`40×32` cases**, `tileset_id = 25`) :
+    - **4 Maisons espacées avec chacune sa boîte aux lettres** : Notre Maison (`X=4..8, Y=6..9`), Maison du Rival (`X=28..32, Y=6..9`), Maison d'Habitant 1 (`X=5..8, Y=14..17`), Maison d'Habitant 2 (`X=28..31, Y=12..15`).
+    - **Laboratoire du Professeur (`X=5..9, Y=22..25`)** : Architecture à colonnes au Sud-Ouest avec grande cour pavée, panneau officiel et parterres de fleurs givrées.
+    - **Sanctuaire des Demi-Dieux de Freljord (`X=14..25, Y=2..9`) & Place de la Fontaine Gelée (`X=16..23, Y=10..17`)** : Statues d'Anivia, Volibear et du Loup de Glace au sommet du Grand Escalier `4×4`, surplombant la Fontaine de Glace circulaire et ses bancs.
+    - **Lac Moitié Eau / Moitié Glace Lisse (`X=25..34, Y=19..26`)** au Sud-Est et **7 lampadaires** disposés le long des trottoirs.
+- **Comment tester en jeu / dans RPG Maker XP** :
+  - Ouvrir **RPG Maker XP** -> double-cliquer sur la carte **`022 : village 1`** en bas à gauche (ou téléporter le joueur sur la `Map 022` en mode Debug).
+- **Comment désactiver en cas de bug** :
+  - `git checkout HEAD~1 -- Graphics/Tilesets/SubTileset_4_Villages_Freljord_Port.png Data/Tilesets.rxdata Data/Map022.rxdata`
+
+---
+
 ### `[AGY-021]` — 2026-10-12 — Remplacement de l'effet « Glace » sur les Toits par un Épais Manteau de Vraie Neige Blanche (`SubTileset_4_Villages_Freljord_Port.png`)
 - **Auteur** : `Antigravity`
 - **Catégorie** : Graphismes (`Graphics/Tilesets/`)
