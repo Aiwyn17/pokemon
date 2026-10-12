@@ -16,6 +16,19 @@ En cas de bug plus tard, ce journal permet d'identifier immédiatement **quel fi
 
 ## 📅 Historique des Ajouts & Modifications
 
+### `[AGY-012]` — 2026-10-12 — Suppression des mini-œufs parasites, rochers et tas de neige + Plaques de glace vive & Glace pure issue de l'Œuf d'Anivia
+- **Auteur** : `Antigravity` (après validation de l'utilisateur)
+- **Catégorie** : Graphismes (`Pictures` / `Tilesets`)
+- **Fichiers modifiés** :
+  - `Graphics/Pictures/Fond_Sanctuaire_Glace.png` (`512×384 px` — Suppression totale des petits cristaux-œufs `32×32`, des rochers ronds et des tas de neige ; ajout de plaques de glace vive fissurée et du socle de glace pure turquoise issu directement de la base de l'Œuf d'Anivia)
+  - `Graphics/Pictures/Autel_Anivia_Vide.png` & `Graphics/Tilesets/SubTileset_2_Sanctuaire_DemiDieux.png` (Mise à jour du nid avec uniquement la glace pure d'Anivia et les grands pics de glace)
+- **Comment tester en jeu** :
+  - Lancer le jeu (**New Game**) : le sommet ne comporte plus aucun petit œuf ni rocher parasite, et lorsque l'Œuf d'Anivia est soulevé, seule sa glace pure turquoise reste incrustée dans la plaque gelée.
+- **Comment désactiver en cas de bug** :
+  - `git revert HEAD` pour revenir à l'état précédent.
+
+---
+
 ### `[AGY-011]` — 2026-10-12 — Tremblement d'écran réel à l'enlèvement de l'Œuf & Repositionnement de l'Œuf au-dessus de la boîte de dialogue (`Y = 166..286`)
 - **Auteur** : `Antigravity`
 - **Catégorie** : Graphismes (`Pictures`) & Script Cinématique (`009_Overworld_Cinematics_LoL.rb`)
