@@ -16,6 +16,19 @@ En cas de bug plus tard, ce journal permet d'identifier immédiatement **quel fi
 
 ## 📅 Historique des Ajouts & Modifications
 
+### `[AGY-014]` — 2026-10-12 — Arrivée des Noxiens par le bas ("de l'autre côté") & Suppression des rochers sous l'échelle de corde
+- **Auteur** : `Antigravity`
+- **Catégorie** : Graphismes (`Pictures` / `Tilesets`) & Script Cinématique (`009_Overworld_Cinematics_LoL.rb`)
+- **Fichiers modifiés** :
+  - `Graphics/Pictures/Fond_Sanctuaire_Glace.png`, `Graphics/Pictures/Autel_Anivia_Vide.png`, `Graphics/Tilesets/SubTileset_2_Sanctuaire_DemiDieux.png` (Suppression des 4 blocs de pics/rochers situés derrière l'Œuf pour dégager à 100% la zone d'atterrissage de l'échelle de corde)
+  - `Data/Scripts/012_Overworld/009_Overworld_Cinematics_LoL.rb` (Arrivée de Valerius et de ses 2 soldats par le bas de l'écran en montant vers l'Œuf `dir = 8`, positionnement à gauche et à droite de l'Œuf au-dessus de la boîte de dialogue, et déploiement de l'échelle sur la neige 100% dégagée à `x = spr.x + 92`)
+- **Comment tester en jeu** :
+  - Lancer le jeu (**New Game**) : les 3 Noxiens arrivent par le bas du plateau enneigé (au lieu de surgir de la falaise du haut), et l'échelle de corde se déroule sur la neige dégagée sans aucun rocher en dessous.
+- **Comment désactiver en cas de bug** :
+  - `git revert HEAD` pour revenir à l'état précédent.
+
+---
+
 ### `[AGY-013]` — 2026-10-12 — Ralentissement global de toutes les animations de la cinématique (personnages, montée à l'échelle, grand treuil, dirigeable et fondus)
 - **Auteur** : `Antigravity`
 - **Catégorie** : Script Cinématique (`009_Overworld_Cinematics_LoL.rb`)

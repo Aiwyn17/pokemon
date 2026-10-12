@@ -557,9 +557,9 @@ def pbDirigeableNoxus_EmbarquementEchelle(actors_to_board = [], egg_actor = nil)
   vp = pbGetNoxusCinematicViewport
   spr = pbGetNoxusDirigeableSprite
 
-  ladder_x = spr.x + 116 # Sous le bastingage/cabine du pont
+  ladder_x = spr.x + 92  # Sur la neige 100% dégagée à gauche de l'Œuf (plus aucun rocher !)
   ladder_top_y = spr.y + 84
-  ladder_bot_y = 196
+  ladder_bot_y = 192
   max_h = ladder_bot_y - ladder_top_y
 
   ladder_spr = Sprite.new(vp)
@@ -600,13 +600,11 @@ def pbDirigeableNoxus_EmbarquementEchelle(actors_to_board = [], egg_actor = nil)
     pbUpdateSceneForCinematic(1)
   end
 
-  # 2) Les 3 Noxiens marchent calmement jusqu'au pied de l'échelle (95 frames)
-  actors_to_board.each { |a| a.z = 520 if a }
-
+  # 2) Les 3 Noxiens marchent calmement jusqu'au pied de l'échelle sur la neige dégagée (105 frames)
   start_positions = actors_to_board.map { |a| [a.x, a.y] }
   queue_offsets = [0, 24, 48]
 
-  walk_to_ladder_frames = 95
+  walk_to_ladder_frames = 105
   walk_to_ladder_frames.times do |i|
     t = (i + 1).to_f / walk_to_ladder_frames
     actors_to_board.each_with_index do |act, idx|
@@ -614,14 +612,37 @@ def pbDirigeableNoxus_EmbarquementEchelle(actors_to_board = [], egg_actor = nil)
       sx, sy = start_positions[idx]
       tx = ladder_x.to_f
       ty = (ladder_bot_y + queue_offsets[idx]).to_f
-      act.turn(sx < tx ? 6 : 4) if i == 0
-      act.x = sx + (tx - sx) * t
-      act.y = sy + (ty - sy) * t
+      if sx > 260
+        # Le soldat de droite contourne proprement l'Œuf par l'arrière (sans traverser l'Œuf !)
+        act.z = (t < 0.75) ? 140 : 520
+        if t < 0.45
+          sub_t = t / 0.45
+          act.turn(8) if i == 0
+          act.x = sx
+          act.y = sy + (158.0 - sy) * sub_t
+        else
+          sub_t = (t - 0.45) / 0.55
+          act.turn(4) if (t - 0.45).abs < 0.02
+          act.x = sx + (tx - sx) * sub_t
+          act.y = 158.0 + (ty - 158.0) * sub_t
+        end
+      else
+        act.z = 520
+        if (tx - sx).abs > (ty - sy).abs
+          act.turn(sx < tx ? 6 : 4) if i == 0
+        else
+          act.turn(sy < ty ? 2 : 8) if i == 0
+        end
+        act.x = sx + (tx - sx) * t
+        act.y = sy + (ty - sy) * t
+      end
       act.step_frame
     end
     egg_actor.step_frame if egg_actor
     pbUpdateSceneForCinematic(1)
   end
+
+  actors_to_board.each { |a| a.z = 520 if a }
 
   # Ils s'arrêtent au pied de l'échelle, se tournent de dos (dir = 8) et marquent une pause
   actors_to_board.each do |act|
@@ -919,17 +940,17 @@ def pbCinematiqueDirigeableNoxus(explicit_egg_event_id = nil, utiliser_ma_carte 
   egg_actor = NoxusCutsceneActor.new(vp, "!Oeuf_Anivia", altar_cx, altar_cy + 60, 2, 150)
   egg_event.transparent = true if egg_event
 
-  # 2) Arrivée et marche calme du Commandant Valerius et de ses 2 soldats dans la neige (140 frames) !
-  valerius = NoxusCutsceneActor.new(vp, "trainer_ROCKETBOSS", altar_cx, 100, 2, 300)
-  soldat_g = NoxusCutsceneActor.new(vp, "trainer_TEAMROCKET_M", altar_cx - 84, 88, 2, 290)
-  soldat_d = NoxusCutsceneActor.new(vp, "trainer_TEAMROCKET_F", altar_cx + 84, 88, 2, 290)
+  # 2) Arrivée par le bas du plateau (de l'autre côté, en montant vers l'Œuf : dir = 8, 150 frames) !
+  valerius = NoxusCutsceneActor.new(vp, "trainer_ROCKETBOSS", altar_cx - 96, 382, 8, 300)
+  soldat_g = NoxusCutsceneActor.new(vp, "trainer_TEAMROCKET_M", altar_cx - 132, 398, 8, 290)
+  soldat_d = NoxusCutsceneActor.new(vp, "trainer_TEAMROCKET_F", altar_cx + 100, 392, 8, 290)
 
-  walk_in_frames = 140
+  walk_in_frames = 150
   walk_in_frames.times do |i|
     t = (i + 1).to_f / walk_in_frames
-    valerius.y = 100 + (altar_cy - 42 - 100) * t
-    soldat_g.y = 88 + (altar_cy + 8 - 88) * t
-    soldat_d.y = 88 + (altar_cy + 8 - 88) * t
+    valerius.y = 382 + (244 - 382) * t
+    soldat_g.y = 398 + (268 - 398) * t
+    soldat_d.y = 392 + (256 - 392) * t
     valerius.step_frame
     soldat_g.step_frame
     soldat_d.step_frame
@@ -940,9 +961,9 @@ def pbCinematiqueDirigeableNoxus(explicit_egg_event_id = nil, utiliser_ma_carte 
   valerius.stop_walk
   soldat_g.stop_walk
   soldat_d.stop_walk
-  valerius.turn(2)
-  soldat_g.turn(6)
-  soldat_d.turn(4)
+  valerius.turn(6) # Tourné vers l'Œuf à droite
+  soldat_g.turn(6) # Tourné vers l'Œuf à droite
+  soldat_d.turn(4) # Tournée vers l'Œuf à gauche
   30.times do
     egg_actor.step_frame
     pbUpdateSceneForCinematic(1)
