@@ -16,6 +16,20 @@ En cas de bug plus tard, ce journal permet d'identifier immédiatement **quel fi
 
 ## 📅 Historique des Ajouts & Modifications
 
+### `[AGY-017]` — 2026-10-12 — Marche initiale du Sud vers le Nord en direction de l'Œuf & Trajet propre en file indienne jusqu'à l'échelle
+- **Auteur** : `Antigravity`
+- **Catégorie** : Script Cinématique (`009_Overworld_Cinematics_LoL.rb`)
+- **Fichiers modifiés** :
+  - `Data/Scripts/012_Overworld/009_Overworld_Cinematics_LoL.rb` :
+    - **Début de la cinématique (`pbCinematiqueDirigeableNoxus`)** : Valerius (`x = 256`) et ses 2 soldats (`x = 200` et `x = 312`) arrivent désormais en marchant du **Sud vers le Nord (`dir = 8`) directement en direction de l'Œuf d'Anivia**, et s'arrêtent devant l'Œuf face au Nord (`y = 288..296`).
+    - **Trajet jusqu'à l'échelle de corde (`pbDirigeableNoxus_EmbarquementEchelle`)** : Suppression du contournement par le haut (qui faisait passer la soldate de droite à travers un pic de glace et glisser en diagonale). Les 3 Noxiens marchent désormais proprement en file indienne selon un trajet orthogonal **Ouest (`dir = 4`) sur la neige dégagée au Sud de l'Œuf jusqu'à `x = ladder_x`**, puis **Nord (`dir = 8`) tout droit dans le couloir dégagé jusqu'au pied de l'échelle**.
+- **Comment tester en jeu** :
+  - Lancer le jeu (**New Game**) : au début de la cinématique, on voit les 3 personnages marcher du Sud vers le Nord en direction de l'Œuf ; puis, quand l'échelle se déroule, ils rejoignent l'échelle en marchant vers la gauche puis vers le haut sans traverser aucun pic de glace ni glisser en diagonale.
+- **Comment désactiver en cas de bug** :
+  - `git revert HEAD` pour revenir à l'état précédent.
+
+---
+
 ### `[AGY-016]` — 2026-10-12 — Agrandissement de l'Œuf d'Anivia (+36 % en blocs 3×3), suppression des cristaux latéraux & nettoyage du socle de glace
 - **Auteur** : `Antigravity`
 - **Catégorie** : Graphismes (`Pictures` / `Characters`) & Script Cinématique (`009_Overworld_Cinematics_LoL.rb`)

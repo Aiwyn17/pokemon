@@ -354,7 +354,7 @@ end
 # Acteur animé (PNJ ou Objet 4x4 depuis Graphics/Characters/)
 #-------------------------------------------------------------------------------
 class NoxusCutsceneActor
-  attr_reader :sprite
+  attr_reader :sprite, :dir
 
   # dir : 2 = Bas, 4 = Gauche, 6 = Droite, 8 = Haut
   def initialize(viewport, char_name, x, y, dir = 2, z = 300)
@@ -600,56 +600,62 @@ def pbDirigeableNoxus_EmbarquementEchelle(actors_to_board = [], egg_actor = nil)
     pbUpdateSceneForCinematic(1)
   end
 
-  # 2) Les 3 Noxiens marchent calmement jusqu'au pied de l'échelle sur la neige dégagée (105 frames)
-  start_positions = actors_to_board.map { |a| [a.x, a.y] }
+  # 2) Les 3 Noxiens marchent calmement en file indienne vers la gauche (dir = 4) sur la neige au Sud de l'Œuf
+  #    jusqu'à l'axe de l'échelle (x = ladder_x), puis tournent au Nord (dir = 8) et montent
+  #    tout droit dans le couloir dégagé jusqu'au pied de l'échelle !
   queue_offsets = [0, 24, 48]
-
-  walk_to_ladder_frames = 105
-  walk_to_ladder_frames.times do |i|
-    t = (i + 1).to_f / walk_to_ladder_frames
-    actors_to_board.each_with_index do |act, idx|
-      next if !act
-      sx, sy = start_positions[idx]
-      tx = ladder_x.to_f
-      ty = (ladder_bot_y + queue_offsets[idx]).to_f
-      if sx > 260
-        # Le soldat de droite contourne proprement l'Œuf par l'arrière (sans traverser l'Œuf !)
-        act.z = (t < 0.75) ? 140 : 520
-        if t < 0.45
-          sub_t = t / 0.45
-          act.turn(8) if i == 0
-          act.x = sx
-          act.y = sy + (158.0 - sy) * sub_t
-        else
-          sub_t = (t - 0.45) / 0.55
-          act.turn(4) if (t - 0.45).abs < 0.02
-          act.x = sx + (tx - sx) * sub_t
-          act.y = 158.0 + (ty - 158.0) * sub_t
-        end
-      else
-        act.z = 520
-        if (tx - sx).abs > (ty - sy).abs
-          act.turn(sx < tx ? 6 : 4) if i == 0
-        else
-          act.turn(sy < ty ? 2 : 8) if i == 0
-        end
-        act.x = sx + (tx - sx) * t
-        act.y = sy + (ty - sy) * t
-      end
-      act.step_frame
-    end
-    egg_actor.step_frame if egg_actor
-    pbUpdateSceneForCinematic(1)
-  end
+  target_ys     = queue_offsets.map { |off| (ladder_bot_y + off).to_f }
+  start_delays  = [0, 52, 25] # Décalage naturel pour qu'ils se suivent en file indienne sans jamais se chevaucher
+  walk_speed    = 1.35        # Vitesse de marche constante et naturelle (px/frame)
 
   actors_to_board.each { |a| a.z = 520 if a }
 
-  # Ils s'arrêtent au pied de l'échelle, se tournent de dos (dir = 8) et marquent une pause
-  actors_to_board.each do |act|
-    next if !act
-    act.stop_walk
-    act.turn(8)
+  frame_idx = 0
+  loop do
+    frame_idx += 1
+    all_arrived = true
+    actors_to_board.each_with_index do |act, idx|
+      next if !act
+      if frame_idx <= start_delays[idx]
+        all_arrived = false
+        next
+      end
+
+      tx = ladder_x.to_f
+      ty = target_ys[idx]
+
+      if (act.x - tx).abs > 0.8
+        # Étape A : Marche horizontale vers l'alignement de l'échelle (sur la neige dégagée au Sud de l'Œuf)
+        all_arrived = false
+        dir_h = (act.x > tx) ? 4 : 6
+        act.turn(dir_h) if act.dir != dir_h
+        step_x = (tx - act.x).clamp(-walk_speed, walk_speed)
+        act.x += step_x
+        act.step_frame
+      elsif (act.y - ty).abs > 0.8
+        # Étape B : Une fois aligné sur x = ladder_x, marche verticale tout droit vers le Nord jusqu'à l'échelle !
+        all_arrived = false
+        act.x = tx
+        dir_v = (act.y > ty) ? 8 : 2
+        act.turn(dir_v) if act.dir != dir_v
+        step_y = (ty - act.y).clamp(-walk_speed, walk_speed)
+        act.y += step_y
+        act.step_frame
+      else
+        # Arrivé à sa place au pied de l'échelle : s'arrête proprement de dos (dir = 8)
+        act.x = tx
+        act.y = ty
+        act.stop_walk
+        act.turn(8)
+      end
+    end
+
+    egg_actor.step_frame if egg_actor
+    pbUpdateSceneForCinematic(1)
+    break if all_arrived
   end
+
+  # Courte pause au pied de l'échelle avant de grimper
   25.times do
     egg_actor.step_frame if egg_actor
     pbUpdateSceneForCinematic(1)
@@ -940,17 +946,17 @@ def pbCinematiqueDirigeableNoxus(explicit_egg_event_id = nil, utiliser_ma_carte 
   egg_actor = NoxusCutsceneActor.new(vp, "!Oeuf_Anivia", altar_cx, altar_cy + 62, 2, 150)
   egg_event.transparent = true if egg_event
 
-  # 2) Arrivée par le bas du plateau (de l'autre côté, en montant vers l'Œuf : dir = 8, 150 frames) !
-  valerius = NoxusCutsceneActor.new(vp, "trainer_ROCKETBOSS", altar_cx - 96, 382, 8, 300)
-  soldat_g = NoxusCutsceneActor.new(vp, "trainer_TEAMROCKET_M", altar_cx - 132, 398, 8, 290)
-  soldat_d = NoxusCutsceneActor.new(vp, "trainer_TEAMROCKET_F", altar_cx + 100, 392, 8, 290)
+  # 2) Arrivée par le Sud du plateau en marchant vers le Nord directement en direction de l'Œuf (dir = 8, 155 frames) !
+  valerius = NoxusCutsceneActor.new(vp, "trainer_ROCKETBOSS",   altar_cx,      398, 8, 300)
+  soldat_g = NoxusCutsceneActor.new(vp, "trainer_TEAMROCKET_M", altar_cx - 56, 414, 8, 290)
+  soldat_d = NoxusCutsceneActor.new(vp, "trainer_TEAMROCKET_F", altar_cx + 56, 414, 8, 290)
 
-  walk_in_frames = 150
+  walk_in_frames = 155
   walk_in_frames.times do |i|
     t = (i + 1).to_f / walk_in_frames
-    valerius.y = 382 + (248 - 382) * t
-    soldat_g.y = 398 + (270 - 398) * t
-    soldat_d.y = 392 + (260 - 392) * t
+    valerius.y = 398 + (288 - 398) * t
+    soldat_g.y = 414 + (296 - 414) * t
+    soldat_d.y = 414 + (296 - 414) * t
     valerius.step_frame
     soldat_g.step_frame
     soldat_d.step_frame
@@ -961,9 +967,9 @@ def pbCinematiqueDirigeableNoxus(explicit_egg_event_id = nil, utiliser_ma_carte 
   valerius.stop_walk
   soldat_g.stop_walk
   soldat_d.stop_walk
-  valerius.turn(6) # Tourné vers l'Œuf à droite
-  soldat_g.turn(6) # Tourné vers l'Œuf à droite
-  soldat_d.turn(4) # Tournée vers l'Œuf à gauche
+  valerius.turn(8) # Tourné vers le Nord (face à l'Œuf d'Anivia)
+  soldat_g.turn(8) # Tourné vers le Nord (face à l'Œuf d'Anivia)
+  soldat_d.turn(8) # Tournée vers le Nord (face à l'Œuf d'Anivia)
   30.times do
     egg_actor.step_frame
     pbUpdateSceneForCinematic(1)
