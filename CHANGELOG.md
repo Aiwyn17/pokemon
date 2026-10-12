@@ -16,6 +16,20 @@ En cas de bug plus tard, ce journal permet d'identifier immédiatement **quel fi
 
 ## 📅 Historique des Ajouts & Modifications
 
+### `[AGY-021]` — 2026-10-12 — Remplacement de l'effet « Glace » sur les Toits par un Épais Manteau de Vraie Neige Blanche (`SubTileset_4_Villages_Freljord_Port.png`)
+- **Auteur** : `Antigravity`
+- **Catégorie** : Graphismes (`Graphics/Tilesets/`)
+- **Fichier modifié** :
+  - `Graphics/Tilesets/SubTileset_4_Villages_Freljord_Port.png` (`256×4480 px`) :
+    - **Tous les bâtiments des Colonnes 1 (`Y = 192..576`), 5 (`Y = 2768..3008`), 6 (`Y = 3200..3840`) et 7 (`Y = 4128..4480`)** : Suppression totale du quadrillage de tuiles bleutées/glacées et des pentes bleues au profit d'un **épais coussin de neige blanche poudreuse** (`RGB(252, 254, 255)` / `RGB(244, 248, 254)`), avec courbes organiques de congères (`RGB(220, 230, 242)`) et rebord de neige gonflé débordant sur les gouttières (`RGB(196, 212, 228)`), tout en préservant les cheminées en pierre (coiffées d'un tas de neige), les pignons avant et les enseignes (`MART`, `GYM`).
+    - **Igloos de la Colonne 7 (`Y = 4000..4096`)** : Sommet des dômes adouci en neige blanche fraîche et joints en gris-neige doux au lieu du bleu glace.
+- **Comment tester en jeu / dans RPG Maker XP** :
+  - Ouvrir **RPG Maker XP** -> *Base de données (F9)* -> onglet *Tilesets* -> vérifier les toits des bâtiments de `SubTileset_4_Villages_Freljord_Port.png` (Colonnes 1, 5, 6 et 7).
+- **Comment désactiver en cas de bug** :
+  - `git checkout HEAD~1 -- Graphics/Tilesets/SubTileset_4_Villages_Freljord_Port.png`
+
+---
+
 ### `[AGY-020]` — 2026-10-12 — Ajout des Toits Enneigés, Lac Gelé, Feu de Camp, Igloos, Chalets en Bois & Cabanes en Rondins (`SubTileset_4_Villages_Freljord_Port.png`, `256×4480 px`)
 - **Auteur** : `Antigravity`
 - **Catégorie** : Graphismes (`Graphics/Tilesets/`)
