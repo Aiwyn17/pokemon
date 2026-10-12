@@ -16,6 +16,18 @@ En cas de bug plus tard, ce journal permet d'identifier immédiatement **quel fi
 
 ## 📅 Historique des Ajouts & Modifications
 
+### `[AGY-013]` — 2026-10-12 — Ralentissement des mouvements du Dirigeable de Noxus (arrivée, flottement, treuil et fuite)
+- **Auteur** : `Antigravity`
+- **Catégorie** : Script Cinématique (`009_Overworld_Cinematics_LoL.rb`)
+- **Fichiers modifiés** :
+  - `Data/Scripts/012_Overworld/009_Overworld_Cinematics_LoL.rb` (Arrivée du Dirigeable ralentie de `65` à `150` frames avec décélération progressive, flottement ralenti, descente/remontée du treuil ralenties de `34`/`65` à `56`/`110` frames, et fuite après explosion ralentie de `70` à `150` frames)
+- **Comment tester en jeu** :
+  - Lancer le jeu (**New Game**) : le Dirigeable arrive et repart plus de 2× plus lentement, avec l'inertie lourde d'un grand vaisseau aérien.
+- **Comment désactiver en cas de bug** :
+  - `git revert HEAD` pour revenir à l'état précédent.
+
+---
+
 ### `[AGY-012]` — 2026-10-12 — Suppression des mini-œufs parasites, rochers et tas de neige + Plaques de glace vive & Glace pure issue de l'Œuf d'Anivia
 - **Auteur** : `Antigravity` (après validation de l'utilisateur)
 - **Catégorie** : Graphismes (`Pictures` / `Tilesets`)
