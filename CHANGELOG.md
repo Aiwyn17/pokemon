@@ -16,6 +16,26 @@ En cas de bug plus tard, ce journal permet d'identifier immédiatement **quel fi
 
 ## 📅 Historique des Ajouts & Modifications
 
+### `[AGY-023]` — 2026-10-13 — Décalage du Village, Ajout de la Forêt Boréale Sans Fin sur les 4 Côtés (`56×44` cases, Zéro Vide Noir) & Décorations Enneigées (`Data/Map022.rxdata`, `Data/Tilesets.rxdata`)
+- **Auteur** : `Antigravity`
+- **Catégorie** : Cartes RPG Maker XP (`Data/Map022.rxdata`, `Data/Tilesets.rxdata`)
+- **Fichiers modifiés** :
+  - `Data/Map022.rxdata` (`"village 1"`, agrandie en **`56×44` cases**) :
+    - **Conservation à 100 % des modifications de l'utilisateur** (Sanctuaire en pierre au Nord + panneau d'emblème + grand pic de glace + rochers, Place Centrale ouverte avec le Poro, Maison du Rival à arche, Laboratoire bleu-glacier, clôtures en pierre autour de la moitié eau du lac, buissons givrés).
+    - **Décalage complet du village de `(+8, +6)` cases** pour créer une **Forêt Boréale Sans Fin** sur les **4 côtés** :
+      - **5 colonnes de sapins (`10` cases de large)** à **Gauche (`X = 0..9`)** et à **Droite (`X = 46..55`)**,
+      - **3 rangées de sapins (`9` cases de profondeur)** en **Haut (`Y = 0..8`)** et en **Bas (`Y = 35..43`)**, avec prolongement des routes pavées Nord (`X = 19..20`) et Sud (`X = 27..28`) jusqu'aux bords de la carte.
+      - **Remplissage intégral du Layer 0 sous toute la forêt avec la neige collisionnable `(224, 3840)` (`Passage = 15`)** : supprime totalement le fond noir entre les sapins et empêche de voir du vide noir quand le joueur marche près des arbres à gauche, à droite, en haut ou en bas.
+    - **Ajout de décorations enneigées Gen 4** : bancs enneigés sur la Place Centrale et face à la partie gelée du lac, panneaux en bois (carrefour central et entrée du lac), lampadaires symétriques le long des avenues, perron pavé devant la porte de la Maison du Rival, sapins `2×3` supplémentaires, rochers enneigés et touffes de fleurs givrées.
+  - `Data/Tilesets.rxdata` (`Tileset 25`) :
+    - Ajout des priorités 3D (`Pr = 1`) sur le haut du toit du Sanctuaire Nord (`160..224, 192`) et de la Maison du Rival (`0..128, 448`), ouverture de la porte (`32, 512` `P = 0`), et collision solide (`P = 15`) sur le Poro (`128, 160`).
+- **Comment tester en jeu / dans RPG Maker XP** :
+  - Fermer et rouvrir **RPG Maker XP** (pour recharger `Map022.rxdata`) ou lancer le jeu et marcher tout à gauche, à droite, en haut et en bas du village.
+- **Comment désactiver en cas de bug** :
+  - `git checkout HEAD~1 -- Data/Map022.rxdata Data/Tilesets.rxdata`
+
+---
+
 ### `[AGY-022]` — 2026-10-12 — Création de la Map du Premier Village « Bourg-Givré » (`Data/Map022.rxdata`, `40×32`) & Configuration complète des Collisions / Priorités 3D / Terrain Tags (`Data/Tilesets.rxdata` — `Tileset 25`)
 - **Auteur** : `Antigravity`
 - **Catégorie** : Cartes RPG Maker XP (`Data/Map022.rxdata`, `Data/Tilesets.rxdata`) & Graphismes (`Graphics/Tilesets/SubTileset_4_Villages_Freljord_Port.png`)
