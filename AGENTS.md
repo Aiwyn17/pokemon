@@ -64,7 +64,7 @@ Les Pokémon suivants sont déjà intégrés dans `PBS/pokemon.txt`, `PBS/pokemo
   - `SubTileset_1_Dirigeable_Noxus.png` (`256×640`)
   - `SubTileset_2_Sanctuaire_DemiDieux.png` (`256×2400` — Sommet enneigé d'Anivia avec pics de glace + Grottes de glace + Cathédrale + Extérieur Freljord)
   - `SubTileset_3_Caverne_Epreuve_Crash.png` (`256×640`)
-  - `SubTileset_4_Villages_Freljord_Port.png` (`256×3840` — Premier Village Bourg-Givré ultra-étoffé : sols, sentiers, forêt boréale, falaises, ponts, stands de marché, phare, 9 bâtiments dont Maison de Soren, Mart & Arène)
+  - `SubTileset_4_Villages_Freljord_Port.png` (`256×4480` — Premier Village Bourg-Givré ultra-complet : sols, sentiers, forêt boréale, falaises, ponts, stands de marché, phare, 9 bâtiments à toits enneigés, lac gelé complet, feu de camp & marmite, igloos, chalets en bois chaud, cabanes en rondins & tente nordique)
 - **Sprites d'Événements (`Graphics/Characters/`)** :
   - `!Oeuf_Anivia.png` (`384×320` — Planche d'événement 4×4 de l'Œuf d'Anivia In-Game sur fond transparent)
 - **Images de Cinématique (`Graphics/Pictures/`)** :

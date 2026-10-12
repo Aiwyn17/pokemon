@@ -16,6 +16,25 @@ En cas de bug plus tard, ce journal permet d'identifier immédiatement **quel fi
 
 ## 📅 Historique des Ajouts & Modifications
 
+### `[AGY-020]` — 2026-10-12 — Ajout des Toits Enneigés, Lac Gelé, Feu de Camp, Igloos, Chalets en Bois & Cabanes en Rondins (`SubTileset_4_Villages_Freljord_Port.png`, `256×4480 px`)
+- **Auteur** : `Antigravity`
+- **Catégorie** : Graphismes (`Graphics/Tilesets/`)
+- **Fichier modifié** :
+  - `Graphics/Tilesets/SubTileset_4_Villages_Freljord_Port.png` (Agrandissement de `256×3840 px` à **`256×4480 px`**, soit 7 colonnes de `640 px` / 140 lignes de tuiles `32×32`) :
+    - **Colonne 4 (`Y = 2240..2560, X = 160..256`)** : Restauration complète en largeur `96 px` (`3×3` cases) du lac et des berges enneigées.
+    - **Colonne 6 (`Y = 3200..3840`) — Maisons & Bâtiments avec neige épaisse sur les toits + stalactites** : Manteau de neige blanche sculptée sur le dessus des toits des 9 bâtiments (en préservant le relief de chaque ligne de tuiles) + stalactites de glace le long des gouttières.
+    - **Colonne 7 (`Y = 3840..4480`) — Esprit Neige (Lac Gelé, Feu de Camp, Igloos, Chalets & Cabanes en Bois)** :
+      - **`Y = 3840..3936` (Kit complet de Lac Gelé)** : Lac gelé `3×3` avec berges de neige + 4 coins internes + 4 tuiles de glace (`Glace brillante à reflets`, `Glace fissurée`, `Patinoire lisse`, `Trou d'eau glacée / Trou de pêche`) + grand pic de glace et rochers enneigés sur la glace.
+      - **`Y = 3936..4000` (Coin Feu de Camp & Bivouac)** : Grand Feu de camp entouré de pierres enneigées (`64×64`), Feu de camp de trappeur avec marmite suspendue sur trépied (`64×64`), Petit Feu de camp (`32×32`), billot de bois avec hache plantée, bancs en gros troncs d'arbres enneigés (horizontal `64×32` et vertical `32×64`) et grand tas de bûches sous la neige (`64×32`).
+      - **`Y = 4000..4128` (Igloos & Décorations d'Hiver)** : Grand Igloo familial en briques de neige/glace avec tunnel voûté et lueur chaude (`128×96`), Igloo traditionnel (`96×96`), Bonhomme de neige (`32×64`), souche-tabouret enneigée, traîneau en bois, séchoir à poissons, barrière en rondins sous la neige, tonneaux enneigés et puits gelé.
+      - **`Y = 4128..4480` (Chalets en Bois Chaud, Cabanes en Rondins & Tente Nordique)** : Grand Chalet Alpin en bois chaud avec fenêtres dorées et gros toit de neige (`160×128`), Chalet en bois à 2 étages (`96×128`), Grande Cabane de Bûcheron / Trappeur en rondins avec bois de cerf et tas de bûches (`160×128`), Petite Cabane en bois enneigée (`96×96`), Refuge/Taverne de montagne en bois chaud (`160×96`) et Tente/Yourte nordique en fourrure et bois sous la neige (`96×96`).
+- **Comment tester en jeu / dans RPG Maker XP** :
+  - Ouvrir **RPG Maker XP** -> *Base de données (F9)* -> onglet *Tilesets* -> sélectionner le tileset utilisant `SubTileset_4_Villages_Freljord_Port.png` pour utiliser les nouvelles lignes (`Y = 3840..4480`) et les toits enneigés (`Y = 3200..3840`).
+- **Comment désactiver en cas de bug** :
+  - `git checkout HEAD~1 -- Graphics/Tilesets/SubTileset_4_Villages_Freljord_Port.png` pour revenir à la version `256×3840 px`.
+
+---
+
 ### `[AGY-019]` — 2026-10-12 — Extension majeure (6×) du Sous-Tileset 4 du Premier Village (`SubTileset_4_Villages_Freljord_Port.png`, `256×3840 px`)
 - **Auteur** : `Antigravity`
 - **Catégorie** : Graphismes (`Graphics/Tilesets/`)
