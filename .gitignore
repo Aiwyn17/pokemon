@@ -31,8 +31,3 @@ Thumbs.db
 # Temp files
 
 ~*
-auto_crops/
-verification.png
-verification2.png
-*.py
-original_grid.png
