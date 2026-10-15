@@ -1,5 +1,13 @@
 # 📋 CHANGELOG.md — Journal de Traçabilité du Projet (Antigravity & Jules AI)
 
+## [JULES-001] - 2024-10-15
+### Added
+- Created `Graphics/Tilesets/Snow_Generated.png` by automatically aligning the provided generated tileset into the 32x32 standard grid of RPG Maker XP.
+
+### How to test
+- Use `Snow_Generated.png` inside RPG Maker XP to map new areas.
+- To disable, remove the file from `Graphics/Tilesets/`.
+
 Ce fichier garde une **trace exacte et chronologique de chaque ajout ou modification** effectuée sur le jeu (que ce soit en local avec **Antigravity** ou sur GitHub avec **Jules AI**).
 En cas de bug plus tard, ce journal permet d'identifier immédiatement **quel fichier** et **quel commit Git** est responsable, et comment le tester ou l'annuler.
 
