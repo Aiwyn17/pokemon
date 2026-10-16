@@ -40,6 +40,10 @@ Les Pokémon suivants sont déjà intégrés dans `PBS/pokemon.txt`, `PBS/pokemo
 | `[XENOSAI]` | **Xenosai** | `GROUND,DARK` | Prédatrice souterraine cuirassée du Néant (*Rek'Sai*) |
 | `[OMBREVEX]` | **Ombrevex** | `DARK,GHOST` | Créature féline-lapin mélancolique à ombre vivante (*Vex*) |
 | `[FIDDLEFFROI]` | **Fiddleffroi** | `GHOST,DARK` | Épouvantail-corbeau spectral à lanterne ardente (*Fiddlesticks*) |
+| `[VOLIBJORN]` | **Volibjorn** | `FIGHTING,ELECTRIC` | Ours ancestral de la tempête et de la foudre (*Volibear* — Starter Stade 3) |
+| `[VEILLIRIS]` | **Veilliris** | `PSYCHIC` | Esprit éthéré sur stèle runique (*Veilleurs* — Starter Stade 1) |
+| `[RUNOLITHE]` | **Runolithe** | `PSYCHIC,GROUND` | Idole tellurique éveillée à mains flottantes (Starter Stade 2) |
+| `[RAGNARUNE]` | **Ragnarune** | `PSYCHIC,GROUND` | Titan tellurique ancestral au-dessus du vortex tellurique (Starter Stade 3) |
 
 ---
 

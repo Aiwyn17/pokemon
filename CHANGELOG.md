@@ -16,6 +16,23 @@ En cas de bug plus tard, ce journal permet d'identifier immédiatement **quel fi
 
 ## 📅 Historique des Ajouts & Modifications
 
+### `[AGY-029]` — 2026-10-16 — Unification de la Branche Principale sur `main` & Sécurisation Intégrale des 14 Pokémon Personnalisés
+- **Auteur** : `Antigravity`
+- **Catégorie** : Architecture Git & Préservation Intégrale des Données du Projet
+- **Actions réalisées** :
+  - **Unification de la branche principale** : La branche locale et distante `main` a été alignée exactement sur l'état complet et fonctionnel (`code-only`). La branche temporaire `code-only` a été supprimée proprement. `main` est désormais l'unique branche de référence du projet.
+  - **Audit & Sécurisation des Pokémon Runeterra & Starters (14 au total)** :
+    - Tous les 14 Pokémon disposent de l'intégralité de leurs 7 variantes de sprites validées et testées dans `Graphics/Pokemon/` (`Front/`, `Front shiny/`, `Back/`, `Back shiny/`, `Icons/`, `Icons shiny/`, `Footprints/`).
+    - Liste des 14 Pokémon vérifiés à 100 % : `CAMALYX`, `ZIGGS`, `KINDRAME`, `AURELIASTRE`, `VORAGATH`, `SYLVERN`, `ROCPHITE`, `XENOSAI`, `OMBREVEX`, `FIDDLEFFROI`, `VOLIBJORN`, `VEILLIRIS`, `RUNOLITHE`, `RAGNARUNE`.
+    - Les fiches statistiques complètes, movesets et courbes d'expérience sont scrupuleusement encodées en UTF-8 propre dans `PBS/pokemon.txt` et `PBS/pokemon_metrics.txt`.
+- **Comment tester en jeu** :
+  - Lancer le jeu en mode Debug (`F9`).
+  - Vérifier la présence et les sprites de dos à 180° de chaque Pokémon en combat.
+- **Comment désactiver en cas de bug** :
+  - `git checkout HEAD~1`
+
+---
+
 ### `[AGY-028]` — 2026-10-16 — Création du Nouveau Tileset Authentique des Routes de Freljord (`SubTileset_5_Routes_Freljord.png`)
 - **Auteur** : `Antigravity`
 - **Catégorie** : Graphismes / Tilesets Overworld (`Graphics/Tilesets/`)
