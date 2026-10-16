@@ -66,40 +66,40 @@ GameData::Stat.register({
 
 GameData::Stat.register({
   :id         => :ATTACK,
-  :name       => _INTL("Attack"),
-  :name_brief => _INTL("Atk"),
+  :name       => _INTL("AD"),
+  :name_brief => _INTL("AD"),
   :type       => :main_battle,
   :pbs_order  => 1
 })
 
 GameData::Stat.register({
   :id         => :DEFENSE,
-  :name       => _INTL("Defense"),
-  :name_brief => _INTL("Def"),
+  :name       => _INTL("Armure"),
+  :name_brief => _INTL("Armure"),
   :type       => :main_battle,
   :pbs_order  => 2
 })
 
 GameData::Stat.register({
   :id         => :SPECIAL_ATTACK,
-  :name       => _INTL("Special Attack"),
-  :name_brief => _INTL("SpAtk"),
+  :name       => _INTL("AP"),
+  :name_brief => _INTL("AP"),
   :type       => :main_battle,
   :pbs_order  => 4
 })
 
 GameData::Stat.register({
   :id         => :SPECIAL_DEFENSE,
-  :name       => _INTL("Special Defense"),
-  :name_brief => _INTL("SpDef"),
+  :name       => _INTL("Res. Magique"),
+  :name_brief => _INTL("RM"),
   :type       => :main_battle,
   :pbs_order  => 5
 })
 
 GameData::Stat.register({
   :id         => :SPEED,
-  :name       => _INTL("Speed"),
-  :name_brief => _INTL("Spd"),
+  :name       => _INTL("MS"),
+  :name_brief => _INTL("MS"),
   :type       => :main_battle,
   :pbs_order  => 3
 })
