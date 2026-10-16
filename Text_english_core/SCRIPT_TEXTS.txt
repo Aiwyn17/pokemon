@@ -274,26 +274,26 @@ Rare
 Rare
 HP
 HP
-Attack
-Attack
-Atk
-Atk
-Defense
-Defense
-Def
-Def
-Special Attack
-Special Attack
-SpAtk
-SpAtk
-Special Defense
-Special Defense
-SpDef
-SpDef
-Speed
-Speed
-Spd
-Spd
+AD
+AD
+AD
+AD
+Armure
+Armure
+Armure
+Armure
+AP
+AP
+AP
+AP
+RM
+RM
+RM
+RM
+MS
+MS
+MS
+MS
 accuracy
 accuracy
 Acc
@@ -1590,10 +1590,10 @@ But it does not have enough HP left to make a substitute!
 {1} is no longer protected by Safeguard!!
 {1}'s stats can't be raised further!
 {1}'s stats can't be raised further!
-{1} switched all changes to its Attack and Sp. Atk with the target!
-{1} switched all changes to its Attack and Sp. Atk with the target!
-{1} switched all changes to its Defense and Sp. Def with the target!
-{1} switched all changes to its Defense and Sp. Def with the target!
+{1} switched all changes to its AD and AP with the target!
+{1} switched all changes to its AD and AP with the target!
+{1} switched all changes to its Armure and RM with the target!
+{1} switched all changes to its Armure and RM with the target!
 {1} switched stat changes with the target!
 {1} switched stat changes with the target!
 {1} copied {2}'s stat changes!
@@ -1608,10 +1608,10 @@ All stat changes were eliminated!
 All stat changes were eliminated!
 {1} became shrouded in mist!
 {1} became shrouded in mist!
-{1} switched its Attack and Defense!
-{1} switched its Attack and Defense!
-{1} switched Speed with its target!
-{1} switched Speed with its target!
+{1} switched its AD and Armure!
+{1} switched its AD and Armure!
+{1} switched MS with its target!
+{1} switched MS with its target!
 {1} shared its power with the target!
 {1} shared its power with the target!
 {1} shared its guard with the target!
@@ -1928,10 +1928,10 @@ Use on which Pokémon?
 Use on which Pokémon?
 Restore which move?
 Restore which move?
-Max. HP<r>+{1}<<n>>Attack<r>+{2}<<n>>Defense<r>+{3}<<n>>Sp. Atk<r>+{4}<<n>>Sp. Def<r>+{5}<<n>>Speed<r>+{6}
-Max. HP<r>+{1}<<n>>Attack<r>+{2}<<n>>Defense<r>+{3}<<n>>Sp. Atk<r>+{4}<<n>>Sp. Def<r>+{5}<<n>>Speed<r>+{6}
-Max. HP<r>{1}<<n>>Attack<r>{2}<<n>>Defense<r>{3}<<n>>Sp. Atk<r>{4}<<n>>Sp. Def<r>{5}<<n>>Speed<r>{6}
-Max. HP<r>{1}<<n>>Attack<r>{2}<<n>>Defense<r>{3}<<n>>Sp. Atk<r>{4}<<n>>Sp. Def<r>{5}<<n>>Speed<r>{6}
+Max. HP<r>+{1}<<n>>AD<r>+{2}<<n>>Armure<r>+{3}<<n>>AP<r>+{4}<<n>>RM<r>+{5}<<n>>MS<r>+{6}
+Max. HP<r>+{1}<<n>>AD<r>+{2}<<n>>Armure<r>+{3}<<n>>AP<r>+{4}<<n>>RM<r>+{5}<<n>>MS<r>+{6}
+Max. HP<r>{1}<<n>>AD<r>{2}<<n>>Armure<r>{3}<<n>>AP<r>{4}<<n>>RM<r>{5}<<n>>MS<r>{6}
+Max. HP<r>{1}<<n>>AD<r>{2}<<n>>Armure<r>{3}<<n>>AP<r>{4}<<n>>RM<r>{5}<<n>>MS<r>{6}
 Graphics/UI/Battle/cursor_command
 Graphics/UI/Battle/cursor_command
 Graphics/UI/Battle/cursor_fight
@@ -2748,36 +2748,36 @@ Boost PP of which move?
 {1} became more friendly. Its base HP can't go lower.
 {1} became more friendly. However, its base HP fell!
 {1} became more friendly. However, its base HP fell!
-{1} adores you! Its base Attack fell!
-{1} adores you! Its base Attack fell!
-{1} became more friendly. Its base Attack can't go lower.
-{1} became more friendly. Its base Attack can't go lower.
-{1} became more friendly. However, its base Attack fell!
-{1} became more friendly. However, its base Attack fell!
-{1} adores you! Its base Defense fell!
-{1} adores you! Its base Defense fell!
-{1} became more friendly. Its base Defense can't go lower.
-{1} became more friendly. Its base Defense can't go lower.
-{1} became more friendly. However, its base Defense fell!
-{1} became more friendly. However, its base Defense fell!
-{1} adores you! Its base Special Attack fell!
-{1} adores you! Its base Special Attack fell!
-{1} became more friendly. Its base Special Attack can't go lower.
-{1} became more friendly. Its base Special Attack can't go lower.
-{1} became more friendly. However, its base Special Attack fell!
-{1} became more friendly. However, its base Special Attack fell!
-{1} adores you! Its base Special Defense fell!
-{1} adores you! Its base Special Defense fell!
-{1} became more friendly. Its base Special Defense can't go lower.
-{1} became more friendly. Its base Special Defense can't go lower.
-{1} became more friendly. However, its base Special Defense fell!
-{1} became more friendly. However, its base Special Defense fell!
-{1} adores you! Its base Speed fell!
-{1} adores you! Its base Speed fell!
-{1} became more friendly. Its base Speed can't go lower.
-{1} became more friendly. Its base Speed can't go lower.
-{1} became more friendly. However, its base Speed fell!
-{1} became more friendly. However, its base Speed fell!
+{1} adores you! Its base AD fell!
+{1} adores you! Its base AD fell!
+{1} became more friendly. Its base AD can't go lower.
+{1} became more friendly. Its base AD can't go lower.
+{1} became more friendly. However, its base AD fell!
+{1} became more friendly. However, its base AD fell!
+{1} adores you! Its base Armure fell!
+{1} adores you! Its base Armure fell!
+{1} became more friendly. Its base Armure can't go lower.
+{1} became more friendly. Its base Armure can't go lower.
+{1} became more friendly. However, its base Armure fell!
+{1} became more friendly. However, its base Armure fell!
+{1} adores you! Its base AP fell!
+{1} adores you! Its base AP fell!
+{1} became more friendly. Its base AP can't go lower.
+{1} became more friendly. Its base AP can't go lower.
+{1} became more friendly. However, its base AP fell!
+{1} became more friendly. However, its base AP fell!
+{1} adores you! Its base RM fell!
+{1} adores you! Its base RM fell!
+{1} became more friendly. Its base RM can't go lower.
+{1} became more friendly. Its base RM can't go lower.
+{1} became more friendly. However, its base RM fell!
+{1} became more friendly. However, its base RM fell!
+{1} adores you! Its base MS fell!
+{1} adores you! Its base MS fell!
+{1} became more friendly. Its base MS can't go lower.
+{1} became more friendly. Its base MS can't go lower.
+{1} became more friendly. However, its base MS fell!
+{1} became more friendly. However, its base MS fell!
 Do you want to change {1}'s Ability?
 Do you want to change {1}'s Ability?
 {1}'s Ability changed! Its Ability is now {2}!
