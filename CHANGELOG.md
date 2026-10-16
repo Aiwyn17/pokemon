@@ -16,6 +16,25 @@ En cas de bug plus tard, ce journal permet d'identifier immédiatement **quel fi
 
 ## 📅 Historique des Ajouts & Modifications
 
+### `[AGY-037]` — 2026-10-16 — Correction de la Posture de Combat et de l'Orientation du Dos de Fiddleffroi
+- **Auteur** : `Antigravity`
+- **Catégorie** : Graphismes / Sprites Combat de Dos (`Graphics/Pokemon/Back/` & `Back shiny/`)
+- **Problème résolu & Exigence Canonique Gen 5** :
+  - **Correction anatomique et orientation fidèle** : Sur l'ancien sprite, la posture était raide, flottante et les membres étaient inversés. La nouvelle vue de combat à 180° replace fidèlement la **faux dans la main droite levée** (à droite de l'écran, prête à frapper) et l'**aile démoniaque de corbeau sur l'épaule gauche** (à gauche de l'écran).
+  - **Posture 3/4 vers l'adversaire** : Tête en sac de jute inclinée vers le haut-droite fixant le Pokémon adverse, chapeau pointu vu de dos avec ses clochettes dorées, et cape déchirée laissant voir les braises incandescentes du thorax.
+  - **Cadrage Gen 5** : Posé au sol (`Y = 159`) coupé à mi-corps pour une immersion de combat optimale.
+  - **Déclinaison Shiny synchronisée** (`Back shiny/FIDDLEFFROI.png`) : Chapeau teal mystique, tête ardoise spectrale et ailes aux plumes cyan étincelantes.
+- **Fichiers modifiés** :
+  - `Graphics/Pokemon/Back/FIDDLEFFROI.png`
+  - `Graphics/Pokemon/Back shiny/FIDDLEFFROI.png`
+  - `CHANGELOG.md`
+- **Comment tester en jeu** :
+  - Lancer un combat en mode Debug avec Fiddleffroi en tête d'équipe pour admirer sa posture de combat avec la faux levée prête à frapper.
+- **Comment désactiver en cas de bug** :
+  - `git revert HEAD`
+
+---
+
 ### `[AGY-036]` — 2026-10-16 — Validation et Intégration du Vrai Dos de Combat de Runolithe (Vue 180° Orientée vers l'Adversaire et Coupée au Premier Plan)
 - **Auteur** : `Antigravity`
 - **Catégorie** : Graphismes / Sprites Combat de Dos (`Graphics/Pokemon/Back/` & `Back shiny/`)
