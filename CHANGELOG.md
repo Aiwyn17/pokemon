@@ -16,6 +16,21 @@ En cas de bug plus tard, ce journal permet d'identifier immédiatement **quel fi
 
 ## 📅 Historique des Ajouts & Modifications
 
+### `[AGY-030]` — 2026-10-16 — Intégration de la Nomenclature League of Legends pour les Statistiques (AD, AP, Armure, Res. Magique, MS)
+- **Auteur** : `Antigravity` (portage des travaux de `Jules AI`)
+- **Catégorie** : Scripts Moteur UI & Textes Système (`Data/Scripts/`, `Text_english_core/`)
+- **Fichiers modifiés** :
+  - `Data/Scripts/010_Data/001_Hardcoded data/008_Stat.rb` : Définition des noms et abréviations des statistiques de combat dans le registre de données (`ATTACK` -> `AD`, `DEFENSE` -> `Armure`, `SPECIAL_ATTACK` -> `AP`, `SPECIAL_DEFENSE` -> `Res. Magique` / `RM`, `SPEED` -> `MS`).
+  - `Data/Scripts/016_UI/006_UI_Summary.rb` : Écran du Résumé Pokémon (Summary) mis à jour pour afficher fidèlement `AD`, `Armure`, `AP`, `Res. Magique`, `MS`.
+  - `Text_english_core/SCRIPT_TEXTS.txt` : Remplacement complet des chaînes de combat, messages d'altération de stats, objets boosters de statistiques et baies anti-EVs avec la nomenclature LoL.
+- **Comment tester en jeu** :
+  - Ouvrir le menu Pokémon -> `Résumé` d'un Pokémon -> Page des statistiques : observer les intitulés `AD`, `Armure`, `AP`, `Res. Magique`, `MS`.
+  - Tester une capacité modifiant les statistiques en combat (ex: *Danse-Lames*, *Groz'Yeux*) pour voir les messages adaptés.
+- **Comment désactiver en cas de bug** :
+  - `git revert HEAD` ou restaurer les 3 fichiers concernés avec `git checkout HEAD~1 -- Data/Scripts/010_Data/001_Hardcoded\ data/008_Stat.rb Data/Scripts/016_UI/006_UI_Summary.rb Text_english_core/SCRIPT_TEXTS.txt`.
+
+---
+
 ### `[AGY-029]` — 2026-10-16 — Unification de la Branche Principale sur `main` & Sécurisation Intégrale des 14 Pokémon Personnalisés
 - **Auteur** : `Antigravity`
 - **Catégorie** : Architecture Git & Préservation Intégrale des Données du Projet
