@@ -16,6 +16,24 @@ En cas de bug plus tard, ce journal permet d'identifier immédiatement **quel fi
 
 ## 📅 Historique des Ajouts & Modifications
 
+### `[AGY-036]` — 2026-10-16 — Validation et Intégration du Vrai Dos de Combat de Runolithe (Vue 180° Orientée vers l'Adversaire et Coupée au Premier Plan)
+- **Auteur** : `Antigravity`
+- **Catégorie** : Graphismes / Sprites Combat de Dos (`Graphics/Pokemon/Back/` & `Back shiny/`)
+- **Problème résolu & Exigence Canonique Gen 5** :
+  - Intégration d'une **véritable vue de dos à 180°** sans visage (nuque, colonne de lumière runique, anneau et mégalithes vus de derrière), **orientée vers le haut-droite (face à l'adversaire)** exactement comme le modèle de référence **Camalyx**.
+  - Cadrage immersif Gen 5 : **coupé net à mi-corps sous l'anneau** et posé au ras du bas de l'écran (`Y = 159`).
+  - Déclinaison chromatique assortie (`Back shiny/RUNOLITHE.png`) avec l'esprit de flamme dorée et les mégalithes d'ambre.
+- **Fichiers modifiés** :
+  - `Graphics/Pokemon/Back/RUNOLITHE.png`
+  - `Graphics/Pokemon/Back shiny/RUNOLITHE.png`
+  - `CHANGELOG.md`
+- **Comment tester en jeu** :
+  - Lancer un combat en Debug (`F9`) avec Runolithe pour observer sa posture de dos tournée vers l'adversaire et son cadrage mi-corps.
+- **Comment désactiver en cas de bug** :
+  - `git revert HEAD`
+
+---
+
 ### `[AGY-033]` — 2026-10-16 — Refonte Visuelle Complète des Évolutions de Veilliris (Direction A : Gardien Spectral Runique)
 - **Auteur** : `Antigravity`
 - **Catégorie** : Sprites Pokémon Combat 5G (`Graphics/Pokemon/`)
