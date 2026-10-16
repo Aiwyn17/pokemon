@@ -40,6 +40,11 @@ Les Pokémon suivants sont déjà intégrés dans `PBS/pokemon.txt`, `PBS/pokemo
 | `[XENOSAI]` | **Xenosai** | `GROUND,DARK` | Prédatrice souterraine cuirassée du Néant (*Rek'Sai*) |
 | `[OMBREVEX]` | **Ombrevex** | `DARK,GHOST` | Créature féline-lapin mélancolique à ombre vivante (*Vex*) |
 | `[FIDDLEFFROI]` | **Fiddleffroi** | `GHOST,DARK` | Épouvantail-corbeau spectral à lanterne ardente (*Fiddlesticks*) |
+| `[GELOUPIOT]` | **Geloupiot** | `ICE` | Louveteau agile de la banquise (Starter Stade 1) |
+| `[LYCANGLAS]` | **Lycanglas** | `ICE,DARK` | Chasseur furtif des neiges à crocs de glace (Starter Stade 2) |
+| `[FENRIMAS]` | **Fenrimas** | `ICE,DARK` | Grand loup spectral du blizzard boréal (Starter Stade 3) |
+| `[TYRAKOUP]` | **Tyrakoup** | `FIGHTING` | Ourson bagarreur aux brassards de cuir (Starter Stade 1) |
+| `[THORAKLAK]` | **Thoraklak** | `FIGHTING,ELECTRIC` | Ours de foudre aux pointes dorsales crépitantes (Starter Stade 2) |
 | `[VOLIBJORN]` | **Volibjorn** | `FIGHTING,ELECTRIC` | Ours ancestral de la tempête et de la foudre (*Volibear* — Starter Stade 3) |
 | `[VEILLIRIS]` | **Veilliris** | `PSYCHIC` | Esprit éthéré sur stèle runique (*Veilleurs* — Starter Stade 1) |
 | `[RUNOLITHE]` | **Runolithe** | `PSYCHIC,GROUND` | Idole tellurique éveillée à mains flottantes (Starter Stade 2) |

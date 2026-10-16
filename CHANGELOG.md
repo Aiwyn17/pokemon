@@ -16,6 +16,39 @@ En cas de bug plus tard, ce journal permet d'identifier immédiatement **quel fi
 
 ## 📅 Historique des Ajouts & Modifications
 
+### `[AGY-032]` — 2026-10-16 — Déploiement Intégral des 3 Lignées de Starters de Bourg-Givré (9 Pokémon & 63 Sprites In-Game)
+- **Auteur** : `Antigravity`
+- **Catégorie** : Pokémon Starters / Sprites Combat 5G (`Graphics/Pokemon/`) & Données PBS (`PBS/pokemon.txt`, `PBS/pokemon_metrics.txt`)
+- **Pokémon intégrés & finalisés (3 Lignées complètes de 3 Stades)** :
+  1. **Lignée Loup de Glace Pure** :
+     - **Geloupiot** (`[GELOUPIOT]`, Niv. 5 — Glace)
+     - **Lycanglas** (`[LYCANGLAS]`, Niv. 16 — Glace / Ténèbres)
+     - **Fenrimas** (`[FENRIMAS]`, Niv. 36 — Glace / Ténèbres)
+  2. **Lignée Ours de la Tempête (*Volibear*)** :
+     - **Tyrakoup** (`[TYRAKOUP]`, Niv. 5 — Combat)
+     - **Thoraklak** (`[THORAKLAK]`, Niv. 16 — Combat / Électrik)
+     - **Volibjorn** (`[VOLIBJORN]`, Niv. 36 — Combat / Électrik)
+  3. **Lignée Esprit Runique des Veilleurs** :
+     - **Veilliris** (`[VEILLIRIS]`, Niv. 5 — Psy)
+     - **Runolithe** (`[RUNOLITHE]`, Niv. 16 — Psy / Sol)
+     - **Ragnarune** (`[RAGNARUNE]`, Niv. 36 — Psy / Sol)
+- **Ressources ajoutées pour chaque Pokémon** :
+  - `Graphics/Pokemon/Front/` & `Front shiny/` (160×160 PNG Gen 5 pixel art).
+  - `Graphics/Pokemon/Back/` & `Back shiny/` (160×160 PNG dos de combat 180°).
+  - `Graphics/Pokemon/Icons/` & `Icons shiny/` (128×64 PNG icônes 2-frames animées).
+  - `Graphics/Pokemon/Footprints/` (16×16 PNG empreintes uniques de pas).
+  - `PBS/pokemon.txt` : Fiches complètes (BST équilibrés, Talents réguliers et cachés, Movesets complets jusqu'au niv. 70+, chaînes d'évolution aux niveaux 16 et 36, courbes paraboliques).
+  - `PBS/pokemon_metrics.txt` : Métriques d'ombres et positionnement en combat.
+- **Aperçu visuel de validation** :
+  - `apercu_officiel_9_starters_complets.png` (Dossier d'artefacts).
+- **Comment tester en jeu** :
+  - Lancer en Debug (`F9`) -> Menu Pokémon -> Donner Pokémon (`GELOUPIOT`, `TYRAKOUP`, `VEILLIRIS`, etc.).
+  - Faire monter de niveau pour tester les évolutions aux niveaux 16 et 36.
+- **Comment désactiver en cas de bug** :
+  - `git revert HEAD`
+
+---
+
 ### `[AGY-031]` — 2026-10-16 — Correction du Paramètre `Shape = HeadArms` pour les 3 Starters (Veilliris, Runolithe, Ragnarune)
 - **Auteur** : `Antigravity`
 - **Catégorie** : Données PBS (`PBS/pokemon.txt`)
