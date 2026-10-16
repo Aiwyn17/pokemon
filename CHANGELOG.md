@@ -16,6 +16,32 @@ En cas de bug plus tard, ce journal permet d'identifier immédiatement **quel fi
 
 ## 📅 Historique des Ajouts & Modifications
 
+### `[AGY-035]` — 2026-10-16 — Correction Complète de l'Orientation 180°, Halos Alpha et Anatomie des Sprites de Dos Combat
+- **Auteur** : `Antigravity`
+- **Catégorie** : Graphismes / Sprites Combat de Dos (`Graphics/Pokemon/Back/` & `Back shiny/`)
+- **Problèmes résolus** :
+  - **Veilliris (`[VEILLIRIS]`)** : Élimination intégrale du nuage/halo sombre résiduel (`#323c4a`) qui entourait l'ectoplasme cyan. Fond transparent pur à 100 %.
+  - **Runolithe (`[RUNOLITHE]`)** : Vraie vue arrière 180° sans visage, montrant l'échine spirituelle cyan, l'arrière des mégalithes flottants et le dos des gantelets runiques.
+  - **Ragnarune (`[RAGNARUNE]`)** : Vraie vue arrière 180° éliminant la face avant (yeux, bouche et plastron). Vue dorsale du titan d'obsidienne, sa couronne cornue vue de derrière, ailes de flammes cyan émergeant des omoplates et plaques vertébrales runiques.
+  - **Sylvern (`[SYLVERN]`)** : Correction anatomique de la tête et de l'orientation : suppression du dôme orange plat buggué, chevelure de feuillage organique d'où émergent les ramures de bois, fleur sur la corne gauche anatomique.
+  - **Fiddleffroi (`[FIDDLEFFROI]`)** : Correction de l'orientation en combat : faux tenue dans la main droite levée, aile démoniaque sur l'épaule gauche, chapeau pointu et braises intérieures orientés face à l'arène.
+  - **Déclinaisons Shiny** : Recalibrage des teintes chromatiques arrière correspondantes (`Back shiny/`).
+- **Fichiers modifiés** :
+  - `Graphics/Pokemon/Back/VEILLIRIS.png`, `Graphics/Pokemon/Back shiny/VEILLIRIS.png`
+  - `Graphics/Pokemon/Back/RUNOLITHE.png`, `Graphics/Pokemon/Back shiny/RUNOLITHE.png`
+  - `Graphics/Pokemon/Back/RAGNARUNE.png`, `Graphics/Pokemon/Back shiny/RAGNARUNE.png`
+  - `Graphics/Pokemon/Back/SYLVERN.png`, `Graphics/Pokemon/Back shiny/SYLVERN.png`
+  - `Graphics/Pokemon/Back/FIDDLEFFROI.png`, `Graphics/Pokemon/Back shiny/FIDDLEFFROI.png`
+  - `CHANGELOG.md`
+- **Aperçu visuel de validation** :
+  - `comparatif_backs_corriges_final.png` (Dossier d'artefacts).
+- **Comment tester en jeu** :
+  - Lancer un combat en Debug (`F9`) avec Veilliris, Runolithe, Ragnarune, Sylvern ou Fiddleffroi pour vérifier la parfaite orientation de combat et l'absence de halos.
+- **Comment désactiver en cas de bug** :
+  - `git revert HEAD`
+
+---
+
 ### `[AGY-034]` — 2026-10-16 — Standardisation Complète des Sprites de Dos Combat Gen 5 (Gros Plan Buste/Taille, Coupe Basse à Mi-Corps comme Camalyx & Vrai Dos 180° de Runolithe)
 - **Auteur** : `Antigravity`
 - **Catégorie** : Graphismes / Sprites Combat de Dos (`Graphics/Pokemon/Back/` & `Back shiny/`)
