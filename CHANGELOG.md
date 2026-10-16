@@ -16,6 +16,19 @@ En cas de bug plus tard, ce journal permet d'identifier immédiatement **quel fi
 
 ## 📅 Historique des Ajouts & Modifications
 
+### `[AGY-031]` — 2026-10-16 — Correction du Paramètre `Shape = HeadArms` pour les 3 Starters (Veilliris, Runolithe, Ragnarune)
+- **Auteur** : `Antigravity`
+- **Catégorie** : Données PBS (`PBS/pokemon.txt`)
+- **Fichier modifié** :
+  - `PBS/pokemon.txt` : Remplacement de la valeur non reconnue `Shape = HeadWithArms` par la constante valide du moteur Pokémon Essentials v21.1 `Shape = HeadArms` (`GameData::BodyShape` id `:HeadArms`) pour `[VEILLIRIS]`, `[RUNOLITHE]` et `[RAGNARUNE]`.
+- **Résultat** : Résolution définitive de l'erreur de compilation PBS et validation de la fiche Pokédex.
+- **Comment tester en jeu** :
+  - Lancer le jeu en mode Debug (`F9`) pour vérifier la compilation sans erreur de `PBS/pokemon.txt`.
+- **Comment désactiver en cas de bug** :
+  - `git revert HEAD`
+
+---
+
 ### `[AGY-030]` — 2026-10-16 — Intégration de la Nomenclature League of Legends pour les Statistiques (AD, AP, Armure, Res. Magique, MS)
 - **Auteur** : `Antigravity` (portage des travaux de `Jules AI`)
 - **Catégorie** : Scripts Moteur UI & Textes Système (`Data/Scripts/`, `Text_english_core/`)
