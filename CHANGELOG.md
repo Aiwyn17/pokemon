@@ -16,6 +16,26 @@ En cas de bug plus tard, ce journal permet d'identifier immédiatement **quel fi
 
 ## 📅 Historique des Ajouts & Modifications
 
+### `[AGY-038]` — 2026-10-16 — Intégration du Vrai Dos de Combat de Sylvern (Vue 180° / Légère Orientation 3/4 Droite et Nettoyage de Feuillage)
+- **Auteur** : `Antigravity`
+- **Catégorie** : Graphismes / Sprites Combat de Dos (`Graphics/Pokemon/Back/` & `Back shiny/`)
+- **Problème résolu & Exigence Canonique Gen 5** :
+  - **Véritable vue arrière 180°** : Suppression de l'effet "visage effacé" antérieur. Sylvern présente fidèlement l'arrière de son crâne d'écorce sculptée, sa collerette feuillue enveloppante et ses ramures en perspective arrière.
+  - **Orientation de combat naturelle** : Légère rotation d'environ 10° vers la droite (direction du Pokémon adverse en haut à droite de l'arène de combat DS), avec la fleur de tournesol fidèlement positionnée sur sa corne gauche (côté gauche de l'écran vu de dos).
+  - **Nettoyage pixel-art** : Élimination de la feuille parasite détachée sur le flanc gauche pour une silhouette parfaitement nette et fluide.
+  - **Cadrage Gen 5 officiel** : Format strict 160×160 px, coupe naturelle au niveau du bas du torse posée à la ligne d'assise (`Y = 159`).
+  - **Déclinaison Shiny synchronisée** (`Back shiny/SYLVERN.png`) : Écorce de bouleau mystique clair aux reflets lilas, collerette florale sakura rose et tournesol bleu cyan éclatant.
+- **Fichiers modifiés** :
+  - `Graphics/Pokemon/Back/SYLVERN.png`
+  - `Graphics/Pokemon/Back shiny/SYLVERN.png`
+  - `CHANGELOG.md`
+- **Comment tester en jeu** :
+  - Lancer un combat avec Sylvern en tête d'équipe pour admirer son nouveau dos de combat orienté vers l'adversaire.
+- **Comment désactiver en cas de bug** :
+  - `git revert HEAD`
+
+---
+
 ### `[AGY-037]` — 2026-10-16 — Correction de la Posture de Combat et de l'Orientation du Dos de Fiddleffroi
 - **Auteur** : `Antigravity`
 - **Catégorie** : Graphismes / Sprites Combat de Dos (`Graphics/Pokemon/Back/` & `Back shiny/`)
