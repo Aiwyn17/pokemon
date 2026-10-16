@@ -16,6 +16,31 @@ En cas de bug plus tard, ce journal permet d'identifier immédiatement **quel fi
 
 ## 📅 Historique des Ajouts & Modifications
 
+### `[AGY-033]` — 2026-10-16 — Refonte Visuelle Complète des Évolutions de Veilliris (Direction A : Gardien Spectral Runique)
+- **Auteur** : `Antigravity`
+- **Catégorie** : Sprites Pokémon Combat 5G (`Graphics/Pokemon/`)
+- **Fichiers modifiés / remplacés** :
+  - **Runolithe (`[RUNOLITHE]`, Stade 2 — Psy / Sol)** :
+    - Remplacement de l'ancien modèle de roche compacte par le design **Direction A** : Esprit spectral cyan élancé et gracieux émergeant d'un cercle de mégalithes, avec anneau d'orbes/runes orbitales et gantelets de pierre taillée.
+    - `Graphics/Pokemon/Front/RUNOLITHE.png` & `Front shiny/RUNOLITHE.png` (`160×160 px`).
+    - `Graphics/Pokemon/Back/RUNOLITHE.png` & `Back shiny/RUNOLITHE.png` (`160×160 px`, perspective dorsale 180°).
+    - `Graphics/Pokemon/Icons/RUNOLITHE.png` & `Icons shiny/RUNOLITHE.png` (`128×64 px`).
+    - `Graphics/Pokemon/Footprints/RUNOLITHE.png` (`16×16 px`).
+  - **Ragnarune (`[RAGNARUNE]`, Stade 3 — Psy / Sol)** :
+    - Remplacement du golem massif par le design **Direction A** : Titan céleste/spectral de Freljord aux immenses ailes de flammes cyan, plastron d'obsidienne gravée, couronne royale et gantelets mégalithiques flottants crépitants d'aura magique.
+    - `Graphics/Pokemon/Front/RAGNARUNE.png` & `Front shiny/RAGNARUNE.png` (`160×160 px`).
+    - `Graphics/Pokemon/Back/RAGNARUNE.png` & `Back shiny/RAGNARUNE.png` (`160×160 px`, perspective dorsale 180°).
+    - `Graphics/Pokemon/Icons/RAGNARUNE.png` & `Icons shiny/RAGNARUNE.png` (`128×64 px`).
+    - `Graphics/Pokemon/Footprints/RAGNARUNE.png` (`16×16 px`).
+- **Aperçu de validation (Dossier d'artefacts)** :
+  - `apercu_final_direction_a_integree.png` (Tableau 12 sprites de la lignée complète Veilliris -> Runolithe -> Ragnarune sur damier transparent).
+- **Comment tester en jeu** :
+  - Lancer en Debug (`F9`) -> Menu Pokémon -> Donner Pokémon (`RUNOLITHE`, `RAGNARUNE`) pour observer les nouveaux sprites de face, de dos et shiny en combat.
+- **Comment désactiver en cas de bug** :
+  - `git revert HEAD`
+
+---
+
 ### `[AGY-032]` — 2026-10-16 — Déploiement Intégral des 3 Lignées de Starters de Bourg-Givré (9 Pokémon & 63 Sprites In-Game)
 - **Auteur** : `Antigravity`
 - **Catégorie** : Pokémon Starters / Sprites Combat 5G (`Graphics/Pokemon/`) & Données PBS (`PBS/pokemon.txt`, `PBS/pokemon_metrics.txt`)
