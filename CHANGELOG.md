@@ -16,6 +16,126 @@ En cas de bug plus tard, ce journal permet d'identifier immédiatement **quel fi
 
 ## 📅 Historique des Ajouts & Modifications
 
+### `[AGY-028]` — 2026-10-16 — Création du Nouveau Tileset Authentique des Routes de Freljord (`SubTileset_5_Routes_Freljord.png`)
+- **Auteur** : `Antigravity`
+- **Catégorie** : Graphismes / Tilesets Overworld (`Graphics/Tilesets/`)
+- **Fichier créé** :
+  - `Graphics/Tilesets/SubTileset_5_Routes_Freljord.png` (`256×2752 px`, PNG ARGB 32-bit avec fond transparent, 8 colonnes × 86 rangées de tuiles unifiées `32×32 px`).
+- **Conception & Harmonie Graphique** :
+  - **100 % basé sur la charte graphique officielle des sous-tilesets existants (`SubTileset_1` à `SubTileset_4`)** pour une continuité visuelle parfaite avec Bourg-Givré et le Sanctuaire des Demi-Dieux (zéro discordance de style, zéro problème d'alignement).
+- **Contenu Exhaustif pour les Routes de Haute Montagne de Freljord (Acte 1)** :
+  1. **Sols & Chemins** : Neige fraîche poudreuse, sentiers de neige tassée et damée avec virages et carrefours complets, dalles et pavés de pierre froide, marches de sentier.
+  2. **Glace & Hautes Herbes Sauvages** : Lac gelé complet (berges, transition eau/glace, patinoire de glace lisse), dalles de glace bleutée, et kit complet de **hautes herbes enneigées** de rencontre sauvage Pokémon.
+  3. **Reliefs, Montagnes & Falaises** : Parois rocheuses enneigées, angles de falaises, corniches / *ledges* sautables Pokémon, grand pic rocheux monumental, parois de glace pure et échelles de corde.
+  4. **Grottes & Cavernes Naturelles** : Entrée de caverne rocheuse sous falaise, entrée monumentale de sanctuaire de glace, stalagmites, pics de glace et trous dans la glace.
+  5. **Forêt Boréale Boréale** : Sapins boréaux individuels (2×3), cimes d'arbres enneigées, forêt dense répétable, conifères givrés et buissons de baies enneigés.
+  6. **Passages & Franchissements** : Ponts suspendus en bois (horizontaux et verticaux) et grand escalier monumental en pierre à double balustrade.
+  7. **Bivouac & Campements Nomades (League of Legends)** : Tente / yourte nordique en fourrure et bois avec lueur intérieure chaude (3×3), grand feu de camp de trappeur avec marmite fumante sur trépied, grand feu de camp de pierres, petit feu de camp compact, billot de bois avec hache plantée, puits gelé, souches-sièges, bancs en gros troncs d'arbres enneigés, grand tas de bûches, traîneau en bois, séchoir à poissons, barrières en rondins, bonhomme de neige nordique, cabane-refuge en bois chaud, igloo et caisses de provisions.
+  8. **Lore & Demi-Dieux de Freljord** : Grandes statues d'**Anivia**, de **Volibear** et du **Loup de Glace**, Poro sauvage, grand autel d'Anivia à socle de glace pure, piliers runiques, pierres sacrées et bannières tribales.
+  9. **Signalétique & Mobilier de Route** : Panneaux indicateurs en bois/pierre de Freljord, lampadaires nordiques, bancs de pierre et barrières de sentier.
+- **Aperçus de validation (Dossier d'artefacts)** :
+  - `SubTileset_5_Routes_Freljord.png` (Tileset 256×2752 px).
+  - `SubTileset_5_Routes_Freljord_grid.png` (Superposition de grille 32×32 px).
+- **Comment tester en jeu** :
+  - Ouvrir le projet dans **RPG Maker XP** -> Base de données (`F9`) -> Onglet `Tilesets`.
+  - Assigner `SubTileset_5_Routes_Freljord` au tileset de votre route de Freljord.
+  - Peindre la route de montagne sur les calques 1, 2 et 3.
+- **Comment désactiver en cas de bug** :
+  - Supprimer `Graphics/Tilesets/SubTileset_5_Routes_Freljord.png`.
+
+---
+
+### `[AGY-027]` — 2026-10-15 — Perfectionnement Dorsal & Cimes de Ragnarune, Intégration Flawless de Runolithe & Synthèse des 3 Starters
+- **Auteur** : `Antigravity`
+- **Catégorie** : Pokémon Starters / Sprites Combat 5G (`Graphics/Pokemon/`) & Synthèse Globale
+- **Fichiers modifiés / remplacés** :
+  - **Ragnarune (`[RAGNARUNE]`, Stade 3 Final — Types Psy / Sol)** :
+    - `Graphics/Pokemon/Front/RAGNARUNE.png` & `Front shiny/RAGNARUNE.png` : Rallonge et finition naturelle des 5 éléments supérieurs coupés nets par le cadre de carte (cimes pointues en biseau de pierre pour les stèles gauche/droite et cornes recourbées pour la couronne de tête).
+    - `Graphics/Pokemon/Back/RAGNARUNE.png` & `Back shiny/RAGNARUNE.png` : **Version Dorsale 100% fidèle à la face** (silhouette, épaules en blocs de basalte, mains de golem flottantes vues de dos avec jointures de roche et éclairs violets, stèles en lévitation, vortex tellurique et casque de basalte lisse et massif avec fissure runique lumineuse axiale sans aucun artéfact rectangulaire ni découpe).
+    - `Graphics/Pokemon/Icons/RAGNARUNE.png` & `Icons shiny/RAGNARUNE.png` (icônes d'équipe 128×64 actualisées).
+  - **Runolithe (`[RUNOLITHE]`, Stade 2 Intermédiaire — Types Psy / Sol)** :
+    - `Graphics/Pokemon/Front/RUNOLITHE.png` & `Back/RUNOLITHE.png` : Idole mégalithique éveillée avec anneau rotatif d'arcanes, stèles de protection flottantes, cornes naissantes et poussière de terre (nettoyage 100% pixel-perfect : zéro texte "RUNOLITHE/SOL", zéro bordure de carte).
+    - `Graphics/Pokemon/Front shiny/RUNOLITHE.png` & `Back shiny/RUNOLITHE.png` (variante magma / grès incandescent).
+    - `Graphics/Pokemon/Icons/RUNOLITHE.png` & `Icons shiny/RUNOLITHE.png` (`128×64 px`).
+    - `Graphics/Pokemon/Footprints/RUNOLITHE.png` (`16×16 px`).
+- **Aperçus de validation générés (Dossier d'artefacts)** :
+  - `apercu_final_3_starters_veilliris.png` (Vue détaillée des 3 stades de la lignée Veilliris : 12 sprites 160×160 sur damier transparent).
+  - `apercu_synthese_globale_3_starters.png` (Synthèse comparative des 3 lignées de starters de Bourg-Givré).
+- **Comment tester en jeu** :
+  - Lancer en Debug -> `Donner Pokémon` -> tester `RUNOLITHE` et `RAGNARUNE` en combat dresseur / sauvage pour admirer les sprites de dos à 180°.
+- **Comment désactiver en cas de bug** :
+  - Revenir au commit précédent avec `git checkout HEAD~1 -- Graphics/Pokemon/`.
+
+---
+
+### `[AGY-026]` — 2026-10-15 — Intégration Complète des Starters de Bourg-Givré (Volibjorn, Veilliris, Ragnarune) & Correction Dorsale
+- **Auteur** : `Antigravity`
+- **Catégorie** : Pokémon Starters / Sprites Combat 5G (`Graphics/Pokemon/`) & Données PBS (`PBS/pokemon.txt`, `PBS/pokemon_metrics.txt`)
+- **Fichiers ajoutés / créés** :
+  - **Volibjorn (`[VOLIBJORN]`, Stade 3 Final — Combat / Électrik)** :
+    - `Graphics/Pokemon/Front/VOLIBJORN.png` (`160×160 px`)
+    - `Graphics/Pokemon/Back/VOLIBJORN.png` (`160×160 px`)
+    - `Graphics/Pokemon/Front shiny/VOLIBJORN.png` (`160×160 px`)
+    - `Graphics/Pokemon/Back shiny/VOLIBJORN.png` (`160×160 px`)
+    - `Graphics/Pokemon/Icons/VOLIBJORN.png` (`128×64 px` — Icône animée 2 frames)
+    - `Graphics/Pokemon/Icons shiny/VOLIBJORN.png` (`128×64 px`)
+    - `Graphics/Pokemon/Footprints/VOLIBJORN.png` (`16×16 px`)
+  - **Veilliris (`[VEILLIRIS]`, Stade 1 — Psy)** :
+    - `Graphics/Pokemon/Front/VEILLIRIS.png` (`160×160 px` — Extrait de l'image 1 Ligne 1, esprit éthéré entourant la stèle)
+    - `Graphics/Pokemon/Back/VEILLIRIS.png` (`160×160 px`)
+    - `Graphics/Pokemon/Front shiny/VEILLIRIS.png` (`160×160 px`)
+    - `Graphics/Pokemon/Back shiny/VEILLIRIS.png` (`160×160 px`)
+    - `Graphics/Pokemon/Icons/VEILLIRIS.png` & `Icons shiny/VEILLIRIS.png` (`128×64 px`)
+    - `Graphics/Pokemon/Footprints/VEILLIRIS.png` (`16×16 px`)
+  - **Ragnarune (`[RAGNARUNE]`, Stade 3 Final — Psy / Sol)** :
+    - `Graphics/Pokemon/Front/RAGNARUNE.png` (`160×160 px` — Titan tellurique aux 5 yeux, vortex abyssal et stèles)
+    - `Graphics/Pokemon/Back/RAGNARUNE.png` (`160×160 px` — **Version Dos Corrigée sans bugs** : ajout des mains articulées en perspective dorsale, stèles runiques flottantes avec arcs d'éclairs violets et vortex circulaire préservé)
+    - `Graphics/Pokemon/Front shiny/RAGNARUNE.png` (`160×160 px` — Teinte magma / lave solaire)
+    - `Graphics/Pokemon/Back shiny/RAGNARUNE.png` (`160×160 px` — **Version Dos Shiny Corrigée**)
+    - `Graphics/Pokemon/Icons/RAGNARUNE.png` & `Icons shiny/RAGNARUNE.png` (`128×64 px`)
+    - `Graphics/Pokemon/Footprints/RAGNARUNE.png` (`16×16 px`)
+- **Fichiers modifiés** :
+  - `PBS/pokemon.txt` : Ajout des fiches statistiques complètes pour `[VOLIBJORN]`, `[VEILLIRIS]`, `[RUNOLITHE]` et `[RAGNARUNE]` (BST équilibrés, Talents, Courbes d'expérience, Movesets thématiques Freljord).
+  - `PBS/pokemon_metrics.txt` : Ajout des métriques de positionnement et ombres de combat pour les 4 Pokémon.
+- **Aperçus de validation générés** :
+  - `apercu_final_volibjorn.png` (4 vues Volibjorn 160×160 sur damier transparent)
+  - `apercu_final_veilliris.png` (4 vues Veilliris 160×160 sur damier transparent)
+  - `apercu_final_ragnarune_parfait.png` (4 vues Ragnarune 160×160 avec dos corrigé sans coupure ni moiré)
+- **Comment tester en jeu** :
+  - Lancer le jeu en mode Debug via RPG Maker XP (F9 en jeu ou Menu Développeur -> `Donner Pokémon` -> choisir `VOLIBJORN`, `VEILLIRIS` ou `RAGNARUNE`).
+- **Comment désactiver en cas de bug** :
+  - Supprimer les sprites correspondants dans `Graphics/Pokemon/` et retirer les sections `[VOLIBJORN]`, `[VEILLIRIS]`, `[RUNOLITHE]`, `[RAGNARUNE]` à la fin de `PBS/pokemon.txt` et `PBS/pokemon_metrics.txt`.
+
+---
+
+### `[AGY-025]` — 2026-10-14 — Formatage & Correction d'Orientation des 5 Planches de Personnages Overworld (`Graphics/Characters/`)
+- **Auteur** : `Antigravity`
+- **Catégorie** : Sprites d'Événements / Personnages (`Graphics/Characters/`)
+- **Fichiers ajoutés / créés** :
+  - `Graphics/Characters/valerius_walk.png` (`128×192 px` — Format standard Essentials) + `valerius_walk_hd.png` (`192×256 px`) : **Commandant Valerius** (Officier noxien avec lunettes de pilote, cape rouge à double hache)
+  - `Graphics/Characters/soldat_noxus_walk.png` (`128×192 px`) + `soldat_noxus_walk_hd.png` (`192×256 px`) : **Soldat / Assassin de Noxus** (Queue de cheval rouge, masque ninja, cape noxienne)
+  - `Graphics/Characters/prof_meleze_walk.png` (`128×192 px`) + `prof_meleze_walk_hd.png` (`192×256 px`) : **Professeur Mélèze** (Vieux sage à barbe blanche, toque et runes nordiques)
+  - `Graphics/Characters/soren_walk.png` (`128×192 px`) + `soren_walk_hd.png` (`192×256 px`) : **Soren (Le Rival)** (Cheveux argentés, bandeau noir, écharpe ambrée et sacoche)
+  - `Graphics/Characters/hero_walk.png` (`128×192 px`) + `hero_walk_hd.png` (`192×256 px`) : **Le Héros / Joueur** (Cheveux bleu nuit, bandeau et écharpe rouge, manteau boréal et sac à dos)
+- **Corrections apportées sur les dessins bruts** :
+  1. **Remise en ordre stricte des 4 directions RPG Maker XP / Pokémon Essentials** :
+     - **Ligne 0 (y = 0..47)** : **BAS (Face)** — 4 frames : Repos (Frame 0), Pas 1 (Frame 1), Repos (Frame 2), Pas 2 (Frame 3).
+     - **Ligne 1 (y = 48..95)** : **GAUCHE (Profil)** — 4 frames : Repos, Pas 1, Repos, Pas 2 (tous tournés vers la gauche, suppression des frames tournées à droite sur Hero et Professeur Mélèze).
+     - **Ligne 2 (y = 96..143)** : **DROITE (Profil)** — 4 frames : Repos, Pas 1, Repos, Pas 2 (tous tournés vers la droite, 100% cohérents sans aucune inversion de regard).
+     - **Ligne 3 (y = 144..191)** : **HAUT (Dos)** — 4 frames : Repos, Pas 1, Repos, Pas 2.
+  2. **Détourage Alpha & Préservation des cheveux blancs / barbes** :
+     - Détourage intelligent par inondation (Flood-Fill) depuis les bords extérieurs : les cheveux blancs de Soren, la barbe blanche du Professeur, les yeux et la fourrure blanche sont 100 % préservés sans devenir transparents.
+     - Élimination des débordements de pixels de semelles entre les rangées.
+  3. **Double format disponible** :
+     - **Standard Essentials `128×192 px`** (cases de `32×48 px`, s'intègre parfaitement avec tous les PNJ et dresseurs existants).
+     - **HD `192×256 px`** (cases de `48×64 px`, pour un rendu 1:1 sans réduction).
+- **Comment tester en jeu / dans RPG Maker XP** :
+  - Dans RPG Maker XP, créer ou éditer un Événement -> double-cliquer sur la case graphique -> sélectionner `valerius_walk.png`, `soldat_noxus_walk.png`, `prof_meleze_walk.png`, `soren_walk.png` ou `hero_walk.png`.
+- **Comment désactiver en cas de bug** :
+  - Supprimer les 10 fichiers `*_walk*.png` de `Graphics/Characters/`.
+
+---
+
 ### `[AGY-024]` — 2026-10-13 — Audit Complet & Suppression de Tous les Murs Invisibles du Village (`Data/Map022.rxdata`, `Data/Tilesets.rxdata`)
 - **Auteur** : `Antigravity`
 - **Catégorie** : Collisions & Priorités RPG Maker XP (`Data/Map022.rxdata`, `Data/Tilesets.rxdata`)
