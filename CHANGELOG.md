@@ -16,13 +16,17 @@ En cas de bug plus tard, ce journal permet d'identifier immédiatement **quel fi
 
 ## 📅 Historique des Ajouts & Modifications
 
-### `[AGY-034]` — 2026-10-16 — Standardisation Complète des Sprites de Dos Combat Gen 5 (Cadrage Proche, Ancrage Bas Y=159 & Vrai Dos 180° de Runolithe)
+### `[AGY-034]` — 2026-10-16 — Standardisation Complète des Sprites de Dos Combat Gen 5 (Gros Plan Buste/Taille, Coupe Basse à Mi-Corps comme Camalyx & Vrai Dos 180° de Runolithe)
 - **Auteur** : `Antigravity`
 - **Catégorie** : Graphismes / Sprites Combat de Dos (`Graphics/Pokemon/Back/` & `Back shiny/`)
-- **Problème résolu** :
-  - Dans la Gen 5 DS et sur le modèle de référence **Camalyx**, les sprites de dos de Pokémon sont vus en plan rapproché (buste / taille), avec la base coupée net et ancrée au ras du bas de l'écran (`Y = 159`). Plusieurs de nos anciens sprites flottaient trop haut ou étaient trop petits.
-  - De plus, le dos de **Runolithe** n'était qu'un miroir de sa face.
+- **Problème résolu & Exigence Canonique Gen 5** :
+  - Sur **Camalyx** et les sprites officiels Gen 5 DS (Dracaufeu, Lucario, Typhlosion, Polagriffe, Ectoplasma), le Pokémon n'est **jamais montré en entier de dos**. Il est cadré en **gros plan rapproché (buste / taille / épaules)** et **coupé net à mi-corps** au ras du bas de l'écran (`Y = 159`) pour donner une sensation d'immersion immédiate face à l'adversaire.
+  - De plus, Runolithe avait encore son visage tourné vers l'avant.
 - **Modifications appliquées** :
+  - **Runolithe (`[RUNOLITHE]`)** : Remplacement complet par son **vrai dos à 180°** sans visage (nuque, flammes spectrales ascendantes dirigées vers l'arène, dos du cercle de mégalithes et gantelets vus de derrière), en gros plan buste coupé en bas.
+  - **Recadrage en Gros Plan & Coupe Basse à Mi-Corps de TOUS les Pokémon (18 au total)** :
+    - Découpage et zoom avant immersif (les pattes arrière et le bas du corps sont coupés pour ne laisser voir que le dos/épaules imposant).
+    - `ZIGGS`, `KINDRAME`, `AURELIASTRE`, `VORAGATH`, `SYLVERN`, `ROCPHITE`, `XENOSAI`, `OMBREVEX`, `FIDDLEFFROI`, `GELOUPIOT`, `LYCANGLAS`, `FENRIMAS`, `TYRAKOUP`, `THORAKLAK`, `VOLIBJORN`, `VEILLIRIS`, `RUNOLITHE`, `RAGNARUNE`.
   - **Runolithe (`[RUNOLITHE]`)** : Remplacement par une **vraie vue de dos à 180°** (nuque, flammes spectrales ascendantes dirigées vers l'arène, dos du cercle de mégalithes et gantelets vus de derrière sans aucun œil ou visage visible), parfaitement ancré au sol en `Y = 159`.
   - **Harmonisation de tous les Pokémon personnalisés (18 au total)** :
     - Recadrage dynamique, grossissement et ancrage net en `Y = 159` (100 % des sprites touchent désormais la bordure basse de combat comme les Pokémon officiels).
