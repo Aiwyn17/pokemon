@@ -2,13 +2,13 @@
 #Audio/
 #Graphics/
 Plugins/
-#Plugins/
 Screenshots/
 
-# Ignore compiled PBS cache files (.dat), but track RPG Maker XP maps/database (.rxdata) and Scripts
-Data/*.dat
+# Data folder, but not Data/Scripts folder or messages_core.dat
+Data/*
+!Data/Scripts.rxdata
+!Data/Scripts/
 !Data/messages_core.dat
-Data/PluginScripts.rxdata
 
 # Files in the main project folder
 errorlog.txt
