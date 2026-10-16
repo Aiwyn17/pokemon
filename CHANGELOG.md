@@ -16,6 +16,26 @@ En cas de bug plus tard, ce journal permet d'identifier immédiatement **quel fi
 
 ## 📅 Historique des Ajouts & Modifications
 
+### `[AGY-034]` — 2026-10-16 — Standardisation Complète des Sprites de Dos Combat Gen 5 (Cadrage Proche, Ancrage Bas Y=159 & Vrai Dos 180° de Runolithe)
+- **Auteur** : `Antigravity`
+- **Catégorie** : Graphismes / Sprites Combat de Dos (`Graphics/Pokemon/Back/` & `Back shiny/`)
+- **Problème résolu** :
+  - Dans la Gen 5 DS et sur le modèle de référence **Camalyx**, les sprites de dos de Pokémon sont vus en plan rapproché (buste / taille), avec la base coupée net et ancrée au ras du bas de l'écran (`Y = 159`). Plusieurs de nos anciens sprites flottaient trop haut ou étaient trop petits.
+  - De plus, le dos de **Runolithe** n'était qu'un miroir de sa face.
+- **Modifications appliquées** :
+  - **Runolithe (`[RUNOLITHE]`)** : Remplacement par une **vraie vue de dos à 180°** (nuque, flammes spectrales ascendantes dirigées vers l'arène, dos du cercle de mégalithes et gantelets vus de derrière sans aucun œil ou visage visible), parfaitement ancré au sol en `Y = 159`.
+  - **Harmonisation de tous les Pokémon personnalisés (18 au total)** :
+    - Recadrage dynamique, grossissement et ancrage net en `Y = 159` (100 % des sprites touchent désormais la bordure basse de combat comme les Pokémon officiels).
+    - `ZIGGS`, `KINDRAME`, `AURELIASTRE`, `VORAGATH`, `SYLVERN`, `ROCPHITE`, `XENOSAI`, `OMBREVEX`, `FIDDLEFFROI`, `GELOUPIOT`, `LYCANGLAS`, `FENRIMAS`, `TYRAKOUP`, `THORAKLAK`, `VOLIBJORN`, `VEILLIRIS`, `RUNOLITHE`, `RAGNARUNE`.
+- **Aperçu visuel de validation** :
+  - `comparatif_cadrage_backs.png` (Dossier d'artefacts).
+- **Comment tester en jeu** :
+  - Lancer un combat en Debug (`F9`) : observer la perspective immersive et imposante des Pokémon vus de dos au premier plan.
+- **Comment désactiver en cas de bug** :
+  - `git revert HEAD`
+
+---
+
 ### `[AGY-033]` — 2026-10-16 — Refonte Visuelle Complète des Évolutions de Veilliris (Direction A : Gardien Spectral Runique)
 - **Auteur** : `Antigravity`
 - **Catégorie** : Sprites Pokémon Combat 5G (`Graphics/Pokemon/`)
