@@ -1,0 +1,5 @@
+Name         = Turbo Speedup
+Version      = 1.0
+Essentials   = 21.1
+Requires     = v21.1 Hotfixes
+Credits      = Mashirosakura, Golisopod User, D0vid, Manurocker95, http404error

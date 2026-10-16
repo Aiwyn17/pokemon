@@ -23121,7 +23121,7 @@ Name = Camalyx
 Types = ICE,ELECTRIC
 BaseStats = 50,62,45,70,53,75
 GenderRatio = Female50Percent
-GrowthRate = MediumFast
+GrowthRate = Medium
 BaseExp = 71
 EVs = SPEED,1
 CatchRate = 190
@@ -23135,8 +23135,8 @@ Height = 0.4
 Weight = 8.5
 Color = Blue
 Shape = Quadruped
-Category = Camera
-Pokedex = Un petit lynx espiegle dont les oreilles touffues se terminent par des microphones. Ses yeux fonctionnent comme des lentilles d'appareil photo et clignent en faisant un bruit de declencheur. Il s'en sert pour memoriser les mouvements de ses adversaires et copier leurs attaques.
+Category = Caméra
+Pokedex = Un petit lynx espiègle dont les oreilles touffues se terminent par des microphones. Ses yeux fonctionnent comme des lentilles d'appareil photo et clignent en faisant un bruit de déclencheur. Il s'en sert pour mémoriser les mouvements de ses adversaires et copier leurs attaques.
 Generation = 9
 #-------------------------------
 [ZIGGS]
@@ -23144,7 +23144,7 @@ Name = Ziggs
 Types = FIRE,STEEL
 BaseStats = 60,85,60,115,70,95
 GenderRatio = Female50Percent
-GrowthRate = MediumFast
+GrowthRate = Medium
 BaseExp = 150
 EVs = SPECIAL_ATTACK,2
 CatchRate = 120
@@ -23159,7 +23159,7 @@ Weight = 12.0
 Color = Brown
 Shape = Bipedal
 Category = Hexplosif
-Pokedex = Un petit Pokemon rongeur hyperactif dote d'une passion obsessionnelle pour les explosions. Il fabrique lui-meme des bombes minerales et saute dans tous les sens en ricanant avant de les propulser.
+Pokedex = Un petit Pokémon rongeur hyperactif doté d'une passion obsessionnelle pour les explosions. Il fabrique lui-même des bombes minérales et saute dans tous les sens en ricanant avant de les propulser.
 Generation = 9
 #-------------------------------
 [KINDRAME]
@@ -23250,8 +23250,8 @@ Height = 2.1
 Weight = 82.0
 Color = Green
 Shape = Bipedal
-Category = AÃ®nÃ© Sylvestre
-Pokedex = Un esprit sylvestre bienveillant qui veille sur la faune et la flore des forÃªts anciennes. Une marguerite dorÃ©e pleine de vitalitÃ© s'Ã©panouit au sommet de ses bois.
+Category = Aîné Sylvestre
+Pokedex = Un esprit sylvestre bienveillant qui veille sur la faune et la flore des forêts anciennes. Une marguerite dorée pleine de vitalité s'épanouit au sommet de ses bois.
 Generation = 9
 #-------------------------------
 [ROCPHITE]
@@ -23274,7 +23274,7 @@ Weight = 480.0
 Color = Brown
 Shape = Bipedal
 Category = Monolithe
-Pokedex = NÃ© du cÅ“ur d'un monolithe ancestral, son corps de basalte et de granit absorbe les chocs sismiques avant de pulvÃ©riser ses ennemis d'un impact tellurique inarrÃªtable.
+Pokedex = Né du cœur d'un monolithe ancestral, son corps de basalte et de granit absorbe les chocs sismiques avant de pulvériser ses ennemis d'un impact tellurique inarrêtable.
 Generation = 9
 #-------------------------------
 [XENOSAI]
@@ -23296,6 +23296,52 @@ Height = 2.4
 Weight = 210.0
 Color = Purple
 Shape = Bipedal
-Category = Traqueuse NÃ©ant
-Pokedex = PrÃ©datrice souterraine venue du NÃ©ant, elle dÃ©tecte la moindre vibration dans le sable avant de surgir des profondeurs toutes griffes dehors.
+Category = Traqueuse Néant
+Pokedex = Prédatrice souterraine venue du Néant, elle détecte la moindre vibration dans le sable avant de surgir des profondeurs toutes griffes dehors.
+Generation = 9
+#-------------------------------
+[OMBREVEX]
+Name = Ombrevex
+Types = DARK,GHOST
+BaseStats = 75,65,80,95,130,105
+GenderRatio = Female50Percent
+GrowthRate = Medium
+BaseExp = 248
+EVs = SPECIAL_ATTACK,3
+CatchRate = 45
+Happiness = 35
+Abilities = SHADOWTAG,CURSEDBODY
+HiddenAbilities = PRANKSTER
+Moves = 1,ASTONISH,1,GROWL,6,SHADOWSNEAK,12,SNARL,18,HEX,24,NIGHTSHADE,30,DARKPULSE,36,SHADOWBALL,42,NASTYPLOT,48,PHANTOMFORCE,54,DESTINYBOND,60,ASTRALBARRAGE
+EggGroups = Field,Amorphous
+HatchSteps = 5120
+Height = 0.8
+Weight = 14.5
+Color = Purple
+Shape = Quadruped
+Category = Ombre Blasée
+Pokedex = Ce petit Pokémon mélancolique déteste l'enthousiasme. Son ombre vivante s'étire derrière lui pour lacérer tous ceux qui osent troubler sa solitude.
+Generation = 9
+#-------------------------------
+[FIDDLEFFROI]
+Name = Fiddleffroi
+Types = GHOST,DARK
+BaseStats = 80,105,75,95,125,90
+GenderRatio = Genderless
+GrowthRate = Slow
+BaseExp = 265
+EVs = SPECIAL_ATTACK,3
+CatchRate = 30
+Happiness = 0
+Abilities = INTIMIDATE,CURSEDBODY
+HiddenAbilities = DARKAURA
+Moves = 1,ASTONISH,1,PECK,6,SPITE,12,FEINTATTACK,18,CONFUSERAY,24,HEX,30,SUCKERPUNCH,36,GIGADRAIN,42,SHADOWBALL,48,DARKPULSE,54,NASTYPLOT,60,PHANTOMFORCE,66,HURRICANE
+EggGroups = Amorphous,Mineral
+HatchSteps = 7680
+Height = 1.9
+Weight = 32.0
+Color = Brown
+Shape = Bipedal
+Category = Épouvantail
+Pokedex = Immobile au milieu des champs la nuit, il attire les voyageurs égarés avec la lueur de sa cage thoracique avant de déclencher une nuée de corbeaux spectraux.
 Generation = 9
