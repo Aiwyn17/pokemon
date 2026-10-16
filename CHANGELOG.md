@@ -16,6 +16,24 @@ En cas de bug plus tard, ce journal permet d'identifier immédiatement **quel fi
 
 ## 📅 Historique des Ajouts & Modifications
 
+### `[AGY-039]` — 2026-10-16 — Nettoyage Intégral du Halo et Cadrage au Sol de Veilliris de Dos
+- **Auteur** : `Antigravity`
+- **Catégorie** : Graphismes / Sprites Combat de Dos (`Graphics/Pokemon/Back/` & `Back shiny/`)
+- **Problème résolu & Exigence Canonique Gen 5** :
+  - **Suppression du voile/halo flou et des impuretés** : Élimination complète de l'aura grisâtre opaque qui entourait la stèle, des résidus sur le flanc gauche et des bruits de pixels autour de la traînée spectrale pour une netteté pixel-art 100% pure sur fond transparent.
+  - **Cadrage de combat Gen 5 au sol (Coupe Moyenne Équilibrée)** : Le sprite n'est plus flottant au milieu du cadre. La base de la stèle est coupée naturellement et posée sur la ligne d'assise du combat (`Y = 159`), harmonisée avec les autres dos officiels et custom (Camalyx, Runolithe, Sylvern).
+  - **Déclinaison Shiny synchronisée** (`Back shiny/VEILLIRIS.png`) : Même traitement appliqué avec élimination du voile sombre et découpe nette de la base au sol.
+- **Fichiers modifiés** :
+  - `Graphics/Pokemon/Back/VEILLIRIS.png`
+  - `Graphics/Pokemon/Back shiny/VEILLIRIS.png`
+  - `CHANGELOG.md`
+- **Comment tester en jeu** :
+  - Lancer un combat avec Veilliris en tête d'équipe pour admirer son sprite de dos net, sans halo et posé au premier plan.
+- **Comment désactiver en cas de bug** :
+  - `git revert HEAD`
+
+---
+
 ### `[AGY-038]` — 2026-10-16 — Intégration du Vrai Dos de Combat de Sylvern (Vue 180° / Légère Orientation 3/4 Droite et Nettoyage de Feuillage)
 - **Auteur** : `Antigravity`
 - **Catégorie** : Graphismes / Sprites Combat de Dos (`Graphics/Pokemon/Back/` & `Back shiny/`)
