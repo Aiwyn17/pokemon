@@ -227,8 +227,15 @@ class Battle::Move
   def pbModifyDamage(damageMult, user, target);         return damageMult; end
 
   def pbGetAttackStats(user, target)
-    return user.spatk, user.stages[:SPECIAL_ATTACK] + Battle::Battler::STAT_STAGE_MAXIMUM if specialMove?
-    return user.attack, user.stages[:ATTACK] + Battle::Battler::STAT_STAGE_MAXIMUM
+    if specialMove?
+      spatk = user.spatk
+      spatk = ((spatk + 120) * 1.35).floor if user.hasActiveItem?(:RABADON)
+      return spatk, user.stages[:SPECIAL_ATTACK] + Battle::Battler::STAT_STAGE_MAXIMUM
+    end
+
+    attack = user.attack
+    attack += 80 if user.hasActiveItem?(:INFINITYEDGE)
+    return attack, user.stages[:ATTACK] + Battle::Battler::STAT_STAGE_MAXIMUM
   end
 
   def pbGetDefenseStats(user, target)

@@ -6563,3 +6563,19 @@ Pocket = 8
 Price = 0
 Flags = KeyItem
 Description = A faded sea chart that shows the way to a certain island.
+#-------------------------------
+[RABADON]
+Name = Rabadon's Deathcap
+NamePlural = Rabadon's Deathcaps
+Pocket = 1
+Price = 3600
+Flags = Fling_30
+Description = A magical hat that massively increases the holder's AP (+120 AP) and amplifies their total AP by 35%.
+#-------------------------------
+[INFINITYEDGE]
+Name = Infinity Edge
+NamePlural = Infinity Edges
+Pocket = 1
+Price = 3400
+Flags = Fling_30
+Description = A legendary sword that grants the holder massive AD (+80 AD).
