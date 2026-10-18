@@ -2032,3 +2032,17 @@ Battle::ItemEffects::AfterMoveUseFromUser.add(:GOREDRINKER,
     battle.pbDisplay(_INTL("{1} restored HP using its {2}!", user.pbThis, user.itemName)) if hpGain > 0
   }
 )
+
+Battle::ItemEffects::AfterMoveUseFromUser.add(:VAMPIRICSCEPTER,
+  proc { |item, user, targets, move, numHits, battle|
+    next if !user.canHeal? || !move.physicalMove?
+    totalDamage = 0
+    targets.each { |b| totalDamage += b.damageState.totalHPLost }
+    next if totalDamage <= 0
+    hpGain = (totalDamage * 0.05).floor
+    user.pbRecoverHP(hpGain)
+    battle.pbDisplay(_INTL("{1} restored HP using its {2}!", user.pbThis, user.itemName)) if hpGain > 0
+  }
+)
+
+Battle::ItemEffects::SpeedCalc.add(:ZEAL, proc { |i, b, m| m * 1.1 })

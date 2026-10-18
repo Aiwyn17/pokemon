@@ -70,7 +70,8 @@ class Battle::Battler
 
     if hasActiveItem?(:GUARDIANANGEL)
       @battle.pbDisplayBrief(_INTL("{1} is revived by its Guardian Angel!", pbThis))
-      pbRecoverHP(@totalhp / 2, true, false)
+      self.hp = (@totalhp / 2).floor
+      @battle.scene.pbHPChanged(self, 0, true)
       pbRemoveItem
       return
     end

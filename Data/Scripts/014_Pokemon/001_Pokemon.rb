@@ -563,6 +563,7 @@ class Pokemon
   def item=(value)
     return if value && !GameData::Item.exists?(value)
     @item = (value) ? GameData::Item.get(value).id : value
+    calc_stats
   end
 
   # Returns whether this Pokémon is holding an item. If an item id is passed,
@@ -1131,6 +1132,9 @@ class Pokemon
     @totalhp += 90 if self.item == :FROSTFIREGAUNTLET
     @totalhp += 90 if self.item == :TURBOCHEMTANK
     @totalhp += 50 if self.item == :MOONSTONEKRENOWER
+    @totalhp += 25 if self.item == :RUBYCRYSTAL
+    @totalhp += 60 if self.item == :GIANTSBELT
+    @totalhp += 30 if self.item == :PHAGE
     hp_difference = @totalhp - old_totalhp
     self.hp = [@hp + hp_difference, 1].max if @hp > 0 || hp_difference > 0
     @attack  = stats[:ATTACK]

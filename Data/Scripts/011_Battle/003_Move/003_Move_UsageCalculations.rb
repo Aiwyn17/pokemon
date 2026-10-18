@@ -240,6 +240,10 @@ class Battle::Move
       spatk += 90 if user.hasActiveItem?(:HEXTECHROCKETBELT)
       spatk += 80 if user.hasActiveItem?(:RIFTMAKER)
       spatk += 40 if user.hasActiveItem?(:MOONSTONEKRENOWER)
+      spatk += 8 if user.hasActiveItem?(:AMPLIFYINGTOME)
+      spatk += 16 if user.hasActiveItem?(:BLASTINGWAND)
+      spatk += 25 if user.hasActiveItem?(:NEEDLESSLYLARGEROD)
+      spatk += 10 if user.hasActiveItem?(:SHEEN)
       return spatk, user.stages[:SPECIAL_ATTACK] + Battle::Battler::STAT_STAGE_MAXIMUM
     end
 
@@ -260,6 +264,11 @@ class Battle::Move
     attack += 40 if user.hasActiveItem?(:DIVINESUNDERER)
     attack += 55 if user.hasActiveItem?(:ECLIPSE)
     attack += 60 if user.hasActiveItem?(:PROWLERSCLAW)
+    attack += 5 if user.hasActiveItem?(:LONGSWORD)
+    attack += 12 if user.hasActiveItem?(:PICKAXE)
+    attack += 20 if user.hasActiveItem?(:BFSWORD)
+    attack += 8 if user.hasActiveItem?(:VAMPIRICSCEPTER)
+    attack += 8 if user.hasActiveItem?(:PHAGE)
     return attack, user.stages[:ATTACK] + Battle::Battler::STAT_STAGE_MAXIMUM
   end
 
@@ -269,6 +278,8 @@ class Battle::Move
       spdef = (spdef * 0.6).floor if user.hasActiveItem?(:VOIDSTAFF)
       spdef += 50 if target.hasActiveItem?(:TURBOCHEMTANK)
       spdef += 30 if target.hasActiveItem?(:LOCKETOFTHEIRONSOLARI)
+      spdef += 10 if target.hasActiveItem?(:NULLMAGICMANTLE)
+      spdef += 22 if target.hasActiveItem?(:NEGATRONCLOAK)
       return spdef, target.stages[:SPECIAL_DEFENSE] + Battle::Battler::STAT_STAGE_MAXIMUM
     end
 
@@ -279,6 +290,8 @@ class Battle::Move
     defense += 60 if target.hasActiveItem?(:SUNFIREAEGIS)
     defense += 50 if target.hasActiveItem?(:FROSTFIREGAUNTLET)
     defense += 30 if target.hasActiveItem?(:LOCKETOFTHEIRONSOLARI)
+    defense += 8 if target.hasActiveItem?(:CLOTHARMOR)
+    defense += 18 if target.hasActiveItem?(:CHAINVEST)
     defense = (defense * 0.65).floor if user.hasActiveItem?(:LORDDOMINIKSREGARDS)
     defense = (defense * 0.80).floor if user.hasActiveItem?(:DIVINESUNDERER)
     defense = (defense * 0.85).floor if user.hasActiveItem?(:ECLIPSE)
@@ -485,6 +498,7 @@ class Battle::Move
       multipliers[:final_damage_multiplier] *= 1.25 if !specialMove? && user.hasActiveItem?(:INFINITYEDGE)
       multipliers[:final_damage_multiplier] *= 1.25 if !specialMove? && user.hasActiveItem?(:PHANTOMDANCER)
       multipliers[:final_damage_multiplier] *= 1.25 if !specialMove? && user.hasActiveItem?(:RAPIDFIRECANNON)
+      multipliers[:final_damage_multiplier] *= 1.1 if !specialMove? && user.hasActiveItem?(:ZEAL)
     end
     # Random variance
     if !self.is_a?(Battle::Move::Confusion)

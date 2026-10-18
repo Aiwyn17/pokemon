@@ -6827,3 +6827,131 @@ Pocket = 1
 Price = 2500
 Flags = Fling_30
 Description = A healing stone granting +40 AP, +200 HP, and boosts healing done.
+#-------------------------------
+[LONGSWORD]
+Name = Long Sword
+NamePlural = Long Swords
+Pocket = 1
+Price = 350
+Flags = Fling_10
+Description = A basic sword granting a small boost to AD (+5 AD).
+#-------------------------------
+[PICKAXE]
+Name = Pickaxe
+NamePlural = Pickaxes
+Pocket = 1
+Price = 875
+Flags = Fling_10
+Description = A sturdy mining tool. Grants a moderate boost to AD (+12 AD).
+#-------------------------------
+[BFSWORD]
+Name = B.F. Sword
+NamePlural = B.F. Swords
+Pocket = 1
+Price = 1300
+Flags = Fling_10
+Description = An extremely heavy sword. Grants a massive boost to AD (+20 AD).
+#-------------------------------
+[AMPLIFYINGTOME]
+Name = Amplifying Tome
+NamePlural = Amplifying Tomes
+Pocket = 1
+Price = 435
+Flags = Fling_10
+Description = A beginner's magic book. Grants a small boost to AP (+8 AP).
+#-------------------------------
+[BLASTINGWAND]
+Name = Blasting Wand
+NamePlural = Blasting Wands
+Pocket = 1
+Price = 850
+Flags = Fling_10
+Description = A magical rod. Grants a moderate boost to AP (+16 AP).
+#-------------------------------
+[NEEDLESSLYLARGEROD]
+Name = Needlessly Large Rod
+NamePlural = Needlessly Large Rods
+Pocket = 1
+Price = 1250
+Flags = Fling_10
+Description = An enormous magical staff. Grants a massive boost to AP (+25 AP).
+#-------------------------------
+[CLOTHARMOR]
+Name = Cloth Armor
+NamePlural = Cloth Armors
+Pocket = 1
+Price = 300
+Flags = Fling_10
+Description = A basic tunic granting a small boost to Armure (+8 Armure).
+#-------------------------------
+[CHAINVEST]
+Name = Chain Vest
+NamePlural = Chain Vests
+Pocket = 1
+Price = 800
+Flags = Fling_10
+Description = Heavy chainmail granting a moderate boost to Armure (+18 Armure).
+#-------------------------------
+[NULLMAGICMANTLE]
+Name = Null-Magic Mantle
+NamePlural = Null-Magic Mantles
+Pocket = 1
+Price = 450
+Flags = Fling_10
+Description = A protective cape granting a small boost to Res. Magique (+10 RM).
+#-------------------------------
+[NEGATRONCLOAK]
+Name = Negatron Cloak
+NamePlural = Negatron Cloaks
+Pocket = 1
+Price = 900
+Flags = Fling_10
+Description = A heavy magic-resistant cloak granting a moderate boost to Res. Magique (+22 RM).
+#-------------------------------
+[RUBYCRYSTAL]
+Name = Ruby Crystal
+NamePlural = Ruby Crystals
+Pocket = 1
+Price = 400
+Flags = Fling_10
+Description = A glowing red gem that increases the holder's health (+25 HP).
+#-------------------------------
+[GIANTSBELT]
+Name = Giant's Belt
+NamePlural = Giant's Belts
+Pocket = 1
+Price = 900
+Flags = Fling_10
+Description = A massive belt that greatly increases the holder's health (+60 HP).
+#-------------------------------
+[VAMPIRICSCEPTER]
+Name = Vampiric Scepter
+NamePlural = Vampiric Scepters
+Pocket = 1
+Price = 900
+Flags = Fling_10
+Description = Grants +8 AD and heals the holder for 5% of physical damage dealt.
+#-------------------------------
+[PHAGE]
+Name = Phage
+NamePlural = Phages
+Pocket = 1
+Price = 1100
+Flags = Fling_10
+Description = A brutal hammer granting +8 AD and +30 HP.
+#-------------------------------
+[SHEEN]
+Name = Sheen
+NamePlural = Sheens
+Pocket = 1
+Price = 700
+Flags = Fling_10
+Description = A glowing sword granting +10 AP.
+#-------------------------------
+[ZEAL]
+Name = Zeal
+NamePlural = Zeals
+Pocket = 1
+Price = 1050
+Flags = Fling_10
+Description = Crossed swords granting +10% MS and +10% Critical Strike Damage.
