@@ -231,6 +231,15 @@ class Battle::Move
       spatk = user.spatk
       spatk = ((spatk + 40) * 1.15).floor if user.hasActiveItem?(:RABADON)
       spatk += 30 if user.hasActiveItem?(:TRINITYFORCE)
+      spatk += 50 if user.hasActiveItem?(:ZHONYASHOURGLASS)
+      spatk += 80 if user.hasActiveItem?(:LUDENSTEMPEST)
+      spatk += 65 if user.hasActiveItem?(:VOIDSTAFF)
+      spatk += 80 if user.hasActiveItem?(:LIANDRYSANGUISH)
+      spatk += 80 if user.hasActiveItem?(:EVERFROST)
+      spatk += 90 if user.hasActiveItem?(:NIGHTHARVESTER)
+      spatk += 90 if user.hasActiveItem?(:HEXTECHROCKETBELT)
+      spatk += 80 if user.hasActiveItem?(:RIFTMAKER)
+      spatk += 40 if user.hasActiveItem?(:MOONSTONEKRENOWER)
       return spatk, user.stages[:SPECIAL_ATTACK] + Battle::Battler::STAT_STAGE_MAXIMUM
     end
 
@@ -238,18 +247,41 @@ class Battle::Move
     attack += 30 if user.hasActiveItem?(:INFINITYEDGE)
     attack += 30 if user.hasActiveItem?(:TRINITYFORCE)
     attack += 40 if user.hasActiveItem?(:GUARDIANANGEL)
+    attack += 55 if user.hasActiveItem?(:BLOODTHIRSTER)
+    attack += 60 if user.hasActiveItem?(:DUSKBLADE)
+    attack += 30 if user.hasActiveItem?(:LORDDOMINIKSREGARDS)
+    attack += 40 if user.hasActiveItem?(:BLACKCLEAVER)
+    attack += 20 if user.hasActiveItem?(:PHANTOMDANCER)
+    attack += 50 if user.hasActiveItem?(:STERAKSGAGE)
+    attack += 40 if user.hasActiveItem?(:STATIKKSHIV)
+    attack += 60 if user.hasActiveItem?(:KRAKENSLAYER)
+    attack += 55 if user.hasActiveItem?(:GOREDRINKER)
+    attack += 50 if user.hasActiveItem?(:STRIDEBREAKER)
+    attack += 40 if user.hasActiveItem?(:DIVINESUNDERER)
+    attack += 55 if user.hasActiveItem?(:ECLIPSE)
+    attack += 60 if user.hasActiveItem?(:PROWLERSCLAW)
     return attack, user.stages[:ATTACK] + Battle::Battler::STAT_STAGE_MAXIMUM
   end
 
   def pbGetDefenseStats(user, target)
     if specialMove?
       spdef = target.spdef
+      spdef = (spdef * 0.6).floor if user.hasActiveItem?(:VOIDSTAFF)
+      spdef += 50 if target.hasActiveItem?(:TURBOCHEMTANK)
+      spdef += 30 if target.hasActiveItem?(:LOCKETOFTHEIRONSOLARI)
       return spdef, target.stages[:SPECIAL_DEFENSE] + Battle::Battler::STAT_STAGE_MAXIMUM
     end
 
     defense = target.defense
     defense += 80 if target.hasActiveItem?(:THORNMAIL)
     defense += 40 if target.hasActiveItem?(:GUARDIANANGEL)
+    defense += 50 if target.hasActiveItem?(:ZHONYASHOURGLASS)
+    defense += 60 if target.hasActiveItem?(:SUNFIREAEGIS)
+    defense += 50 if target.hasActiveItem?(:FROSTFIREGAUNTLET)
+    defense += 30 if target.hasActiveItem?(:LOCKETOFTHEIRONSOLARI)
+    defense = (defense * 0.65).floor if user.hasActiveItem?(:LORDDOMINIKSREGARDS)
+    defense = (defense * 0.80).floor if user.hasActiveItem?(:DIVINESUNDERER)
+    defense = (defense * 0.85).floor if user.hasActiveItem?(:ECLIPSE)
     return defense, target.stages[:DEFENSE] + Battle::Battler::STAT_STAGE_MAXIMUM
   end
 
@@ -451,6 +483,8 @@ class Battle::Move
         multipliers[:final_damage_multiplier] *= 2
       end
       multipliers[:final_damage_multiplier] *= 1.25 if !specialMove? && user.hasActiveItem?(:INFINITYEDGE)
+      multipliers[:final_damage_multiplier] *= 1.25 if !specialMove? && user.hasActiveItem?(:PHANTOMDANCER)
+      multipliers[:final_damage_multiplier] *= 1.25 if !specialMove? && user.hasActiveItem?(:RAPIDFIRECANNON)
     end
     # Random variance
     if !self.is_a?(Battle::Move::Confusion)

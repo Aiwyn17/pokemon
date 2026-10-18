@@ -1962,3 +1962,73 @@ Battle::ItemEffects::SpeedCalc.add(:TRINITYFORCE,
     next mult * 1.3
   }
 )
+
+Battle::ItemEffects::DamageCalcFromTarget.add(:VOIDSTAFF,
+  proc { |item, user, target, move, mults, power, type|
+    # Void staff bypasses 40% of target MR (Not direct reduction here, handled in Stat calculation ideally)
+  }
+)
+
+Battle::ItemEffects::EndOfRoundHealing.add(:WARMOGSARMOR,
+  proc { |item, battler, battle|
+    next if !battler.canHeal?
+    battle.pbCommonAnimation("UseItem", battler)
+    battler.pbRecoverHP(battler.totalhp / 20)
+    battle.pbDisplay(_INTL("{1}'s {2} regenerated its HP!", battler.pbThis, battler.itemName))
+  }
+)
+
+Battle::ItemEffects::SpeedCalc.add(:LUDENSTEMPEST,
+  proc { |item, battler, mult|
+    next mult * 1.2
+  }
+)
+
+Battle::ItemEffects::SpeedCalc.add(:PHANTOMDANCER,
+  proc { |item, battler, mult|
+    next mult * 1.3
+  }
+)
+
+
+Battle::ItemEffects::SpeedCalc.add(:RAPIDFIRECANNON, proc { |i, b, m| m * 1.3 })
+Battle::ItemEffects::SpeedCalc.add(:STATIKKSHIV, proc { |i, b, m| m * 1.3 })
+Battle::ItemEffects::SpeedCalc.add(:KRAKENSLAYER, proc { |i, b, m| m * 1.2 })
+Battle::ItemEffects::SpeedCalc.add(:STRIDEBREAKER, proc { |i, b, m| m * 1.2 })
+Battle::ItemEffects::SpeedCalc.add(:TURBOCHEMTANK, proc { |i, b, m| m * 1.2 })
+
+Battle::ItemEffects::AfterMoveUseFromUser.add(:BLOODTHIRSTER,
+  proc { |item, user, targets, move, numHits, battle|
+    next if !user.canHeal? || !move.physicalMove?
+    totalDamage = 0
+    targets.each { |b| totalDamage += b.damageState.totalHPLost }
+    next if totalDamage <= 0
+    hpGain = (totalDamage * 0.18).floor
+    user.pbRecoverHP(hpGain)
+    battle.pbDisplay(_INTL("{1} restored HP using its {2}!", user.pbThis, user.itemName)) if hpGain > 0
+  }
+)
+
+Battle::ItemEffects::AfterMoveUseFromUser.add(:RIFTMAKER,
+  proc { |item, user, targets, move, numHits, battle|
+    next if !user.canHeal? || !move.specialMove?
+    totalDamage = 0
+    targets.each { |b| totalDamage += b.damageState.totalHPLost }
+    next if totalDamage <= 0
+    hpGain = (totalDamage * 0.15).floor
+    user.pbRecoverHP(hpGain)
+    battle.pbDisplay(_INTL("{1} restored HP using its {2}!", user.pbThis, user.itemName)) if hpGain > 0
+  }
+)
+
+Battle::ItemEffects::AfterMoveUseFromUser.add(:GOREDRINKER,
+  proc { |item, user, targets, move, numHits, battle|
+    next if !user.canHeal? || !move.physicalMove?
+    totalDamage = 0
+    targets.each { |b| totalDamage += b.damageState.totalHPLost }
+    next if totalDamage <= 0
+    hpGain = (totalDamage * 0.20).floor
+    user.pbRecoverHP(hpGain)
+    battle.pbDisplay(_INTL("{1} restored HP using its {2}!", user.pbThis, user.itemName)) if hpGain > 0
+  }
+)

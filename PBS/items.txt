@@ -6603,3 +6603,227 @@ Pocket = 1
 Price = 3200
 Flags = Fling_30
 Description = Grants +40 AD and +40 Armure. It breaks to revive a fainted holder with half HP.
+#-------------------------------
+[BLOODTHIRSTER]
+Name = Bloodthirster
+NamePlural = Bloodthirsters
+Pocket = 1
+Price = 3400
+Flags = Fling_30
+Description = A vampiric blade. Grants +55 AD and heals the user for 18% of the physical damage dealt.
+#-------------------------------
+[WARMOGSARMOR]
+Name = Warmog's Armor
+NamePlural = Warmog's Armors
+Pocket = 1
+Price = 3000
+Flags = Fling_30
+Description = A living armor. Grants massive HP (+150 HP). If not damaged recently, heals 5% max HP per turn.
+#-------------------------------
+[ZHONYASHOURGLASS]
+Name = Zhonya's Hourglass
+NamePlural = Zhonya's Hourglasses
+Pocket = 1
+Price = 3000
+Flags = Fling_30
+Description = A magical hourglass. Grants +50 AP and +50 Armure.
+#-------------------------------
+[LUDENSTEMPEST]
+Name = Luden's Tempest
+NamePlural = Luden's Tempests
+Pocket = 1
+Price = 3200
+Flags = Fling_30
+Description = A volatile staff granting +80 AP and +20 MS.
+#-------------------------------
+[DUSKBLADE]
+Name = Duskblade of Draktharr
+NamePlural = Duskblades
+Pocket = 1
+Price = 3100
+Flags = Fling_30
+Description = An assassin's weapon granting +60 AD and a burst of damage.
+#-------------------------------
+[VOIDSTAFF]
+Name = Void Staff
+NamePlural = Void Staffs
+Pocket = 1
+Price = 2800
+Flags = Fling_30
+Description = A mystical staff. Grants +65 AP and ignores 40% of the target's Res. Magique.
+#-------------------------------
+[LORDDOMINIKSREGARDS]
+Name = Lord Dominik's Regards
+NamePlural = Lord Dominiks
+Pocket = 1
+Price = 3000
+Flags = Fling_30
+Description = An armor-piercing bow. Grants +30 AD and ignores 35% of the target's Armure.
+#-------------------------------
+[BLACKCLEAVER]
+Name = Black Cleaver
+NamePlural = Black Cleavers
+Pocket = 1
+Price = 3100
+Flags = Fling_30
+Description = A heavy axe. Grants +40 AD and reduces target's Armure on hit.
+#-------------------------------
+[PHANTOMDANCER]
+Name = Phantom Dancer
+NamePlural = Phantom Dancers
+Pocket = 1
+Price = 2600
+Flags = Fling_30
+Description = Dual spectral blades granting +20 AD, +30% MS, and +25% Critical Strike Damage.
+#-------------------------------
+[STERAKSGAGE]
+Name = Sterak's Gage
+NamePlural = Sterak's Gages
+Pocket = 1
+Price = 3100
+Flags = Fling_30
+Description = A gauntlet granting +50 AD and massive base HP.
+#-------------------------------
+[RAPIDFIRECANNON]
+Name = Rapid Firecannon
+NamePlural = Rapid Firecannons
+Pocket = 1
+Price = 2500
+Flags = Fling_30
+Description = A long-range weapon granting +30% MS and +25% Critical Strike Damage.
+#-------------------------------
+[STATIKKSHIV]
+Name = Statikk Shiv
+NamePlural = Statikk Shivs
+Pocket = 1
+Price = 2800
+Flags = Fling_30
+Description = An electrified blade granting +40 AD and +30% MS.
+#-------------------------------
+[KRAKENSLAYER]
+Name = Kraken Slayer
+NamePlural = Kraken Slayers
+Pocket = 1
+Price = 3400
+Flags = Fling_30
+Description = A true damage harpoon granting +60 AD and +20% MS.
+#-------------------------------
+[GOREDRINKER]
+Name = Goredrinker
+NamePlural = Goredrinkers
+Pocket = 1
+Price = 3300
+Flags = Fling_30
+Description = A brutal whip granting +55 AD, +400 HP, and massive healing on hit.
+#-------------------------------
+[STRIDEBREAKER]
+Name = Stridebreaker
+NamePlural = Stridebreakers
+Pocket = 1
+Price = 3300
+Flags = Fling_30
+Description = A heavy halberd granting +50 AD, +20% MS, and +300 HP.
+#-------------------------------
+[DIVINESUNDERER]
+Name = Divine Sunderer
+NamePlural = Divine Sunderers
+Pocket = 1
+Price = 3300
+Flags = Fling_30
+Description = A divine axe granting +40 AD, +300 HP, and ignores 20% Armure.
+#-------------------------------
+[ECLIPSE]
+Name = Eclipse
+NamePlural = Eclipses
+Pocket = 1
+Price = 3100
+Flags = Fling_30
+Description = A shadowed blade granting +55 AD and ignores 15% Armure.
+#-------------------------------
+[PROWLERSCLAW]
+Name = Prowler's Claw
+NamePlural = Prowler's Claws
+Pocket = 1
+Price = 3100
+Flags = Fling_30
+Description = A lethality claw granting +60 AD.
+#-------------------------------
+[LIANDRYSANGUISH]
+Name = Liandry's Anguish
+NamePlural = Liandry's Anguishes
+Pocket = 1
+Price = 3200
+Flags = Fling_30
+Description = A cursed mask granting +80 AP and burning targets.
+#-------------------------------
+[EVERFROST]
+Name = Everfrost
+NamePlural = Everfrosts
+Pocket = 1
+Price = 3200
+Flags = Fling_30
+Description = A freezing relic granting +80 AP and +250 HP.
+#-------------------------------
+[NIGHTHARVESTER]
+Name = Night Harvester
+NamePlural = Night Harvesters
+Pocket = 1
+Price = 3200
+Flags = Fling_30
+Description = A reaper's tool granting +90 AP and +300 HP.
+#-------------------------------
+[HEXTECHROCKETBELT]
+Name = Hextech Rocketbelt
+NamePlural = Hextech Rocketbelts
+Pocket = 1
+Price = 3200
+Flags = Fling_30
+Description = A dashing belt granting +90 AP and +250 HP.
+#-------------------------------
+[RIFTMAKER]
+Name = Riftmaker
+NamePlural = Riftmakers
+Pocket = 1
+Price = 3200
+Flags = Fling_30
+Description = A corrupting codex granting +80 AP, +300 HP, and heals on magic damage.
+#-------------------------------
+[SUNFIREAEGIS]
+Name = Sunfire Aegis
+NamePlural = Sunfire Aegises
+Pocket = 1
+Price = 3200
+Flags = Fling_30
+Description = A burning armor granting +400 HP and +60 Armure.
+#-------------------------------
+[FROSTFIREGAUNTLET]
+Name = Frostfire Gauntlet
+NamePlural = Frostfire Gauntlets
+Pocket = 1
+Price = 2800
+Flags = Fling_30
+Description = A chilling glove granting +350 HP and +50 Armure.
+#-------------------------------
+[TURBOCHEMTANK]
+Name = Turbo Chemtank
+NamePlural = Turbo Chemtanks
+Pocket = 1
+Price = 2800
+Flags = Fling_30
+Description = A chem-powered suit granting +350 HP, +50 Res. Magique, and +20% MS.
+#-------------------------------
+[LOCKETOFTHEIRONSOLARI]
+Name = Locket of the Iron Solari
+NamePlural = Lockets
+Pocket = 1
+Price = 2500
+Flags = Fling_30
+Description = A protective amulet granting +30 Armure and +30 Res. Magique.
+#-------------------------------
+[MOONSTONEKRENOWER]
+Name = Moonstone Renewer
+NamePlural = Moonstones
+Pocket = 1
+Price = 2500
+Flags = Fling_30
+Description = A healing stone granting +40 AP, +200 HP, and boosts healing done.
