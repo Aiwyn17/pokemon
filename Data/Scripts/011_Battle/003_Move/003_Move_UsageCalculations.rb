@@ -229,18 +229,28 @@ class Battle::Move
   def pbGetAttackStats(user, target)
     if specialMove?
       spatk = user.spatk
-      spatk = ((spatk + 120) * 1.35).floor if user.hasActiveItem?(:RABADON)
+      spatk = ((spatk + 40) * 1.15).floor if user.hasActiveItem?(:RABADON)
+      spatk += 30 if user.hasActiveItem?(:TRINITYFORCE)
       return spatk, user.stages[:SPECIAL_ATTACK] + Battle::Battler::STAT_STAGE_MAXIMUM
     end
 
     attack = user.attack
-    attack += 80 if user.hasActiveItem?(:INFINITYEDGE)
+    attack += 30 if user.hasActiveItem?(:INFINITYEDGE)
+    attack += 30 if user.hasActiveItem?(:TRINITYFORCE)
+    attack += 40 if user.hasActiveItem?(:GUARDIANANGEL)
     return attack, user.stages[:ATTACK] + Battle::Battler::STAT_STAGE_MAXIMUM
   end
 
   def pbGetDefenseStats(user, target)
-    return target.spdef, target.stages[:SPECIAL_DEFENSE] + Battle::Battler::STAT_STAGE_MAXIMUM if specialMove?
-    return target.defense, target.stages[:DEFENSE] + Battle::Battler::STAT_STAGE_MAXIMUM
+    if specialMove?
+      spdef = target.spdef
+      return spdef, target.stages[:SPECIAL_DEFENSE] + Battle::Battler::STAT_STAGE_MAXIMUM
+    end
+
+    defense = target.defense
+    defense += 80 if target.hasActiveItem?(:THORNMAIL)
+    defense += 40 if target.hasActiveItem?(:GUARDIANANGEL)
+    return defense, target.stages[:DEFENSE] + Battle::Battler::STAT_STAGE_MAXIMUM
   end
 
   def pbCalcDamage(user, target, numTargets = 1)
@@ -440,6 +450,7 @@ class Battle::Move
       else
         multipliers[:final_damage_multiplier] *= 2
       end
+      multipliers[:final_damage_multiplier] *= 1.25 if !specialMove? && user.hasActiveItem?(:INFINITYEDGE)
     end
     # Random variance
     if !self.is_a?(Battle::Move::Confusion)

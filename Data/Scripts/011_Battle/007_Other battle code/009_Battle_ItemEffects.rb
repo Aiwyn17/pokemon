@@ -1946,3 +1946,19 @@ Battle::ItemEffects::CertainEscapeFromBattle.add(:SMOKEBALL,
     next true
   }
 )
+
+Battle::ItemEffects::OnBeingHit.add(:THORNMAIL,
+  proc { |item, user, target, move, battle|
+    next if !move.physicalMove?
+    next if !user.takesIndirectDamage?
+    battle.scene.pbDamageAnimation(user)
+    user.pbReduceHP(user.totalhp / 8, false)
+    battle.pbDisplay(_INTL("{1} was hurt by the {2}!", user.pbThis, target.itemName))
+  }
+)
+
+Battle::ItemEffects::SpeedCalc.add(:TRINITYFORCE,
+  proc { |item, battler, mult|
+    next mult * 1.3
+  }
+)

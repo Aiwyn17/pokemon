@@ -67,6 +67,14 @@ class Battle::Battler
       return
     end
     return if @fainted   # Has already fainted properly
+
+    if hasActiveItem?(:GUARDIANANGEL)
+      @battle.pbDisplayBrief(_INTL("{1} is revived by its Guardian Angel!", pbThis))
+      pbRecoverHP(@totalhp / 2, true, false)
+      pbRemoveItem
+      return
+    end
+
     @battle.pbDisplayBrief(_INTL("{1} fainted!", pbThis)) if showMessage
     PBDebug.log("[Pokémon fainted] #{pbThis} (#{@index})") if !showMessage
     @battle.scene.pbFaintBattler(self)

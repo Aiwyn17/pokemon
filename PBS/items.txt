@@ -6570,7 +6570,7 @@ NamePlural = Rabadon's Deathcaps
 Pocket = 1
 Price = 3600
 Flags = Fling_30
-Description = A magical hat that massively increases the holder's AP (+120 AP) and amplifies their total AP by 35%.
+Description = A magical hat that massively increases the holder's AP (+40 AP) and amplifies their total AP by 15%.
 #-------------------------------
 [INFINITYEDGE]
 Name = Infinity Edge
@@ -6578,4 +6578,28 @@ NamePlural = Infinity Edges
 Pocket = 1
 Price = 3400
 Flags = Fling_30
-Description = A legendary sword that grants the holder massive AD (+80 AD).
+Description = A legendary sword that grants the holder massive AD (+30 AD) and increases critical strike damage by 25%.
+#-------------------------------
+[THORNMAIL]
+Name = Thornmail
+NamePlural = Thornmails
+Pocket = 1
+Price = 3000
+Flags = Fling_30
+Description = A spiked armor that grants massive Armure (+80) and damages attackers who hit the holder with physical attacks.
+#-------------------------------
+[TRINITYFORCE]
+Name = Trinity Force
+NamePlural = Trinity Forces
+Pocket = 1
+Price = 3333
+Flags = Fling_30
+Description = A mythical weapon granting +30 AD, +30 AP, and +30% MS.
+#-------------------------------
+[GUARDIANANGEL]
+Name = Guardian Angel
+NamePlural = Guardian Angels
+Pocket = 1
+Price = 3200
+Flags = Fling_30
+Description = Grants +40 AD and +40 Armure. It breaks to revive a fainted holder with half HP.
