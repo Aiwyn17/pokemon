@@ -16,6 +16,36 @@ En cas de bug plus tard, ce journal permet d'identifier immédiatement **quel fi
 
 ## 📅 Historique des Ajouts & Modifications
 
+### `[AGY-094]` — 2026-10-23 — Intégration d'Arcky's Poké Market v1.7.0 (Guide Officiel)
+- **Auteur** : `Antigravity`
+- **Catégorie** : Boutiques, Économie & Plugins (`Plugins/Arcky's Poke Market/`, `Graphics/UI/Mart/`)
+- **Demande Utilisateur** :
+  - *« https://docs.arcky-tech.be/poke-market pareil »*
+  - Archive fournie : `media_1792785205993_6d1dd883.zip` (*Arcky's Poké Market v1.7.0*).
+- **Conformité Stricte aux Directives Officielles (Arcky-Tech Docs)** :
+  1. **Dépendance Prérequise Validée** :
+     - Utilise *Arcky's Utilities v1.1.0* (déjà installé lors de l'étape précédente, `Requires = Arcky's Utilities, 1.1.0` parfaitement honoré).
+  2. **Structure des Répertoires Respectée** :
+     - Plugin complet extrait dans `Plugins/Arcky's Poke Market/`.
+     - Intégration des graphismes d'étagères pour Pokémon Essentials v21.1 dans [`Graphics/UI/Mart/`](file:///c:/Users/Mon%20POc/3D%20Objects/Pokemon%20Essentials%20v21.1%202023-07-30/Graphics/UI/Mart/) (`bg_shelf.png`, `cursor_shelf.png`).
+  3. **Fonctionnalités Clés Activées** :
+     - **Transitions Fluides d'Argent** : Animation fluide du compteur d'or / monnaie lors des achats et ventes.
+     - **Achats en Rayon (Shelf Shopping)** : Possibilité de faire ses courses directement sur les étagères des boutiques via `pbShelfMart`.
+     - **Vendeurs & Marchands Spécialisés** : Dialogues vivants, personnalités de marchands, gestion des dettes/factures, remises et surtaxes.
+     - **Multi-Devises** : Support natif de l'Argent standard ($), des Jetons de Casino, des Points de Combat (BP) ou d'objets spécifiques comme monnaie d'échange.
+     - **Vente de Pokémon en Boutique** : Vendeurs clandestins ou marchands de créatures avec personnalisation complète des stats et prix.
+- **Fichiers créés / modifiés** :
+  - `Plugins/Arcky's Poke Market/` (suite complète v1.7.0)
+  - `Graphics/UI/Mart/bg_shelf.png`
+  - `Graphics/UI/Mart/cursor_shelf.png`
+  - `CHANGELOG.md`
+- **Comment tester en jeu** :
+  - Interagir avec un comptoir de Boutique Pokémon standard ou un événement appelant `pbPokemonMart(:normalStore)` ou `pbShelfMart`.
+- **Comment désactiver en cas de bug** :
+  - `git revert HEAD`
+
+---
+
 ### `[AGY-093]` — 2026-10-23 — Intégration d'Arcky's Region Map v3.3.0 & Arcky's Utilities v1.1.0 (Guide Officiel)
 - **Auteur** : `Antigravity`
 - **Catégorie** : Carte Régionale, Interface & Plugins (`Plugins/Arcky's Region Map/`, `Plugins/Arcky's Utilities/`, `Graphics/`, Racine)
@@ -98,6 +128,36 @@ En cas de bug plus tard, ce journal permet d'identifier immédiatement **quel fi
 ---
 
 ## 📅 Historique des Ajouts & Modifications
+
+### `[AGY-094]` — 2026-10-23 — Intégration d'Arcky's Poké Market v1.7.0 (Guide Officiel)
+- **Auteur** : `Antigravity`
+- **Catégorie** : Boutiques, Économie & Plugins (`Plugins/Arcky's Poke Market/`, `Graphics/UI/Mart/`)
+- **Demande Utilisateur** :
+  - *« https://docs.arcky-tech.be/poke-market pareil »*
+  - Archive fournie : `media_1792785205993_6d1dd883.zip` (*Arcky's Poké Market v1.7.0*).
+- **Conformité Stricte aux Directives Officielles (Arcky-Tech Docs)** :
+  1. **Dépendance Prérequise Validée** :
+     - Utilise *Arcky's Utilities v1.1.0* (déjà installé lors de l'étape précédente, `Requires = Arcky's Utilities, 1.1.0` parfaitement honoré).
+  2. **Structure des Répertoires Respectée** :
+     - Plugin complet extrait dans `Plugins/Arcky's Poke Market/`.
+     - Intégration des graphismes d'étagères pour Pokémon Essentials v21.1 dans [`Graphics/UI/Mart/`](file:///c:/Users/Mon%20POc/3D%20Objects/Pokemon%20Essentials%20v21.1%202023-07-30/Graphics/UI/Mart/) (`bg_shelf.png`, `cursor_shelf.png`).
+  3. **Fonctionnalités Clés Activées** :
+     - **Transitions Fluides d'Argent** : Animation fluide du compteur d'or / monnaie lors des achats et ventes.
+     - **Achats en Rayon (Shelf Shopping)** : Possibilité de faire ses courses directement sur les étagères des boutiques via `pbShelfMart`.
+     - **Vendeurs & Marchands Spécialisés** : Dialogues vivants, personnalités de marchands, gestion des dettes/factures, remises et surtaxes.
+     - **Multi-Devises** : Support natif de l'Argent standard ($), des Jetons de Casino, des Points de Combat (BP) ou d'objets spécifiques comme monnaie d'échange.
+     - **Vente de Pokémon en Boutique** : Vendeurs clandestins ou marchands de créatures avec personnalisation complète des stats et prix.
+- **Fichiers créés / modifiés** :
+  - `Plugins/Arcky's Poke Market/` (suite complète v1.7.0)
+  - `Graphics/UI/Mart/bg_shelf.png`
+  - `Graphics/UI/Mart/cursor_shelf.png`
+  - `CHANGELOG.md`
+- **Comment tester en jeu** :
+  - Interagir avec un comptoir de Boutique Pokémon standard ou un événement appelant `pbPokemonMart(:normalStore)` ou `pbShelfMart`.
+- **Comment désactiver en cas de bug** :
+  - `git revert HEAD`
+
+---
 
 ### `[AGY-093]` — 2026-10-23 — Intégration d'Arcky's Region Map v3.3.0 & Arcky's Utilities v1.1.0 (Guide Officiel)
 - **Auteur** : `Antigravity`
