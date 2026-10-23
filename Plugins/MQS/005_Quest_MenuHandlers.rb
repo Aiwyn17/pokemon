@@ -37,11 +37,22 @@ def pbAutoInitFreljordQuests
     if stage <= 2 && $player && $player.party && $player.party.length > 0
       advanceQuestToStage(:Quest1, 3)
     end
+    # Étape 3 : Arrivée à Havre-Givré (Map 76) -> Compléter la quête 1 et démarrer la quête 2
+    if $game_map && $game_map.map_id == 76
+      completeQuest(:Quest1)
+      activateQuest(:Quest2, colorQuest("blue"), true) if !getCurrentStage(:Quest2)
+    end
   end
 end
 
 EventHandlers.add(:on_enter_map, :freljord_auto_start_quest,
   proc { |_map_id|
+    pbAutoInitFreljordQuests rescue nil
+  }
+)
+
+EventHandlers.add(:on_step_taken, :freljord_step_quest_sync,
+  proc {
     pbAutoInitFreljordQuests rescue nil
   }
 )

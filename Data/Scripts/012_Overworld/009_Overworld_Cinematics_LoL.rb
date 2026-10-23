@@ -1057,4 +1057,9 @@ def pbCinematiqueDirigeableNoxus(explicit_egg_event_id = nil, utiliser_ma_carte 
   end
   pbSEPlay("Exclamation", 85, 100) rescue nil
   pbUpdateSceneForCinematic(25)
+
+  # [AGY-102] Activation de la Premiere Quete Principale de Freljord
+  if defined?(activateQuest)
+    activateQuest(:Quest1, colorQuest("blue"), true) rescue nil
+  end
 end

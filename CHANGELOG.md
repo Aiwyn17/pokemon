@@ -17,6 +17,32 @@ En cas de bug plus tard, ce journal permet d'identifier immédiatement **quel fi
 ## 📅 Historique des Ajouts & Modifications
 
 
+### `[AGY-102]` — 2026-10-23 — Intégration Native & Transparente des Quêtes dans le Déroulement du Prologue (Cinématique -> Chambre -> Maman -> Labo -> Havre-Givré)
+- **Auteur** : `Antigravity`
+- **Catégorie** : Scénarisation & Quêtes Overworld (`Data/Scripts/012_Overworld/009_Overworld_Cinematics_LoL.rb`, `Plugins/MQS/005_Quest_MenuHandlers.rb`)
+- **Demande Utilisateur** : 
+  - *« fait le necessairepour que ce soit le mieux implementer pour mon jeu »* (suite à la question sur l'événement RPG Maker XP d'intro).
+- **Implémentation Réalisée** :
+  1. **Déclenchement Automatique Intégré à la Cinématique (`009_Overworld_Cinematics_LoL.rb`)** :
+     - `activateQuest(:Quest1, colorQuest("blue"), true)` a été branché directement à la fin de `pbCinematiqueDirigeableNoxus`.
+     - Résultat : dès que l'écran s'éclaire et que le point d'exclamation s'affiche sur la tête du joueur dans sa chambre, la quête d'histoire principale est déjà activée.
+     - Aucune manipulation manuelle n'est requise dans l'événement RPG Maker XP : l'intro normale comme le « Quick start intro » déclenchent la quête de manière native et indestructible.
+  2. **Cycle de Vie Automatique de la Quête (Zéro bug d'étape)** :
+     - Étape 1 (Chambre) : *"Descendez voir Maman au rez-de-chaussée pour préparer vos affaires."*
+     - Étape 2 (Après dialogue Maman) : Détecte l'obtention des Chaussures de Course et passe à *"Rejoignez le Laboratoire de Freljord pour choisir votre premier Pokémon."*
+     - Étape 3 (Après obtention du Starter) : Détecte la présence du Pokémon dans l'équipe et passe à *"Traversez la Route 1 enneigée et battez Krag le Gardien des Portes."*
+     - Étape 4 (Arrivée à Havre-Givré Map 76) : Valide et complète automatiquement la Quête 1, puis active la Quête 2 (*« La Halte de Havre-Givré »*).
+- **Fichiers modifiés** :
+  - `Data/Scripts/012_Overworld/009_Overworld_Cinematics_LoL.rb`
+  - `Plugins/MQS/005_Quest_MenuHandlers.rb`
+  - `CHANGELOG.md`
+- **Comment tester en jeu** :
+  - Lancer une nouvelle partie : dès le réveil dans la chambre, ouvrir le carnet de quêtes -> la quête d'histoire principale est présente et claire.
+  - Parler à Maman, prendre son starter, traverser la Route 1 -> les étapes se mettent à jour automatiquement.
+- **Comment désactiver en cas de bug** :
+  - `git revert HEAD`
+
+
 ### `[AGY-101]` — 2026-10-23 — Démarrage Automatique des Quêtes de Freljord & Fin de l'Écran Vide au Réveil
 - **Auteur** : `Antigravity`
 - **Catégorie** : Correctif Quêtes MQS & Progression (`Plugins/MQS/003_Quest_UI.rb`, `Plugins/MQS/004_Quest_Data.rb`, `Plugins/MQS/005_Quest_MenuHandlers.rb`)
