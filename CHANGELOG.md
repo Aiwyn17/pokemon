@@ -17,6 +17,47 @@ En cas de bug plus tard, ce journal permet d'identifier immédiatement **quel fi
 ## 📅 Historique des Ajouts & Modifications
 
 
+### `[AGY-106]` — 2026-10-24 — Traduction Intégrale en Français du Modern Quest System (MQS)
+- **Auteur** : `Antigravity`
+- **Catégorie** : Localisation & Traduction UI (`Plugins/MQS/003_Quest_UI.rb`, `Plugins/MQS/002_Quest_Main.rb`)
+- **Demande Utilisateur** : 
+  - *« tu sais traduire ce plugin en vraiment par exemple location qui deviens lieu task qui devient taches etc »*.
+- **Traductions et Améliorations Appliquées** :
+  1. **Page de Détails de Quête (Page 1)** :
+     - `Overview:` ➔ `Description :`
+     - `Task:` ➔ `Tâche :`
+     - `Location:` ➔ `Lieu :`
+  2. **Page d'Informations Secondaires (Page 2)** :
+     - `Stage X/Y` ➔ `Étape X/Y`
+     - `Quest received from:` ➔ `Commanditaire :`
+     - `Quest discovered in/on:` ➔ `Lieu de découverte :`
+     - `Quest start/completion/failure time:` ➔ `Débutée le :` / `Terminée le :` / `Échouée le :`
+     - Date & Heure anglaises (ex: `October 24 2026 00:08`) ➔ Format français canonique `24/10/2026 à 00:08`
+     - `Reward:` ➔ `Récompense :`
+  3. **Menu Principal des Quêtes (Navigation & Onglets)** :
+     - Onglets : `Active tasks` / `Completed tasks` / `Failed tasks` ➔ `Quêtes en cours`, `Quêtes terminées`, `Quêtes échouées`
+     - Commandes :
+       - `ARROWS: Navigate` ➔ `FLÈCHES : Naviguer`
+       - `A/S: Jump Down/Up` ➔ `A / S : Défilement rapide`
+       - `New Activity:` ➔ `Nouveau :`
+  4. **Notifications & Sons (Popups In-Game)** :
+     - `New quest discovered!` ➔ `Nouvelle quête découverte !`
+     - `Quest completed!` ➔ `Quête terminée !`
+     - `Quest failed!` ➔ `Quête échouée !`
+     - `New task added!` ➔ `Nouvelle tâche ajoutée !`
+     - `Task completed!` ➔ `Tâche accomplie !`
+     - `Check your quest log for more details!` ➔ `Consultez votre journal de quêtes pour plus de détails !`
+- **Fichiers modifiés** :
+  - `Plugins/MQS/003_Quest_UI.rb`
+  - `Plugins/MQS/002_Quest_Main.rb`
+  - `CHANGELOG.md`
+- **Comment tester en jeu** :
+  - Ouvrir le menu Pause (Touche X / Échap), choisir « Quêtes ».
+  - Tous les onglets, descriptions, boutons de commande, dates et détails s'affichent 100% en français.
+- **Comment désactiver en cas de bug** :
+  - `git revert HEAD`
+
+
 ### `[AGY-105]` — 2026-10-23 — Calcul Dynamique de Hauteur UI Quêtes (Résolution Définitive du Chevauchement Overview / Task)
 - **Auteur** : `Antigravity`
 - **Catégorie** : Correctif UI & Moteur Graphique Quêtes (`Plugins/MQS/003_Quest_UI.rb`, `Plugins/MQS/004_Quest_Data.rb`)

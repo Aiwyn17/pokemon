@@ -88,10 +88,10 @@ class QuestList_Scene
       $PokemonGlobal.quests.active_quests,
       $PokemonGlobal.quests.completed_quests
     ]
-    @quests_text = ["Active", "Completed"]
+    @quests_text = ["Quêtes en cours", "Quêtes terminées"]
     if SHOW_FAILED_QUESTS
       @quests.push($PokemonGlobal.quests.failed_quests)
-      @quests_text.push("Failed")
+      @quests_text.push("Quêtes échouées")
     end
 	###
 	if SORT_QUESTS
@@ -117,14 +117,14 @@ class QuestList_Scene
     @sprites["overlay_control"] = BitmapSprite.new(Graphics.width,Graphics.height,@viewport)
     pbSetSystemFont(@sprites["overlay_control"].bitmap)
     pbDrawTextPositions(@sprites["overlay1"].bitmap,[
-      [_INTL("{1} tasks", @quests_text[@current_quest]),6,6,0,Color.new(248,248,248),Color.new(0,0,0),true]
+      [_INTL("{1}", @quests_text[@current_quest]),6,6,0,Color.new(248,248,248),Color.new(0,0,0),true]
     ])
     drawFormattedTextEx(@sprites["overlay_control"].bitmap,38,320,
-      436,"<c2=#{colorQuest("red")}>ARROWS:</c2> Navigate",@base,@shadow)
+      436,"<c2=#{colorQuest('red')}>FLÈCHES :</c2> Naviguer",@base,@shadow)
     drawFormattedTextEx(@sprites["overlay_control"].bitmap,38,352,
-      436,"<c2=#{colorQuest("red")}>A/S:</c2> Jump Down/Up",@base,@shadow)
+      436,"<c2=#{colorQuest('red')}>A / S :</c2> Défilement rapide",@base,@shadow)
     drawFormattedTextEx(@sprites["overlay_control"].bitmap,326,320,
-      436,"<c2=#{colorQuest("red")}>New Activity:</c2>",@base,@shadow)
+      436,"<c2=#{colorQuest('red')}>Nouveau :</c2>",@base,@shadow)
     pbDrawImagePositions(@sprites["overlay_control"].bitmap,[
       [sprintf("Graphics/UI/QuestUI/new"),464,314]
     ])
@@ -171,7 +171,7 @@ class QuestList_Scene
     @sprites["itemlist"].quests = @quests[@current_quest]
     @sprites["pageIcon"].x = @sprites["page_icon1"].x + 32*@current_quest
     pbDrawTextPositions(@sprites["overlay1"].bitmap,[
-      [_INTL("{1} tasks", @quests_text[@current_quest]),6,6,0,Color.new(248,248,248),Color.new(0,0,0),true]
+      [_INTL("{1}", @quests_text[@current_quest]),6,6,0,Color.new(248,248,248),Color.new(0,0,0),true]
     ])
   end
   
@@ -237,7 +237,7 @@ class QuestList_Scene
       ["#{questName}",6,6,0,Color.new(248,248,248),Color.new(0,0,0),true]
     ])
     # Quest description
-    questDesc = "<c2=#{colorQuest('blue')}>Overview:</c2> #{$quest_data.getQuestDescription(quest.id)}"
+    questDesc = "<c2=#{colorQuest('blue')}>Description :</c2> #{$quest_data.getQuestDescription(quest.id)}"
     
     # Calcul dynamique de la hauteur de l'Overview avec lineheight = 26
     chars = getFormattedText(@sprites["overlay3"].bitmap, 38, 52, 436, -1, shadowc3tag(@base, @shadow) + questDesc, 26)
@@ -255,7 +255,7 @@ class QuestList_Scene
     # Stage description
     questStageDesc = $quest_data.getStageDescription(quest.id,quest.stage)
     drawFormattedTextEx(@sprites["overlay3"].bitmap, 38, task_y,
-      436, "<c2=#{colorQuest('orange')}>Task:</c2> #{questStageDesc}", @base, @shadow, 26)
+      436, "<c2=#{colorQuest('orange')}>Tâche :</c2> #{questStageDesc}", @base, @shadow, 26)
 
     # Stage location (dans l'encadre du bas, a Y = 328)
     questStageLocation = $quest_data.getStageLocation(quest.id,quest.stage)
@@ -263,7 +263,7 @@ class QuestList_Scene
       questStageLocation = "???"
     end
     drawFormattedTextEx(@sprites["overlay3"].bitmap, 38, 328,
-      436, "<c2=#{colorQuest('purple')}>Location:</c2> #{questStageLocation}", @base, @shadow, 26)
+      436, "<c2=#{colorQuest('purple')}>Lieu :</c2> #{questStageLocation}", @base, @shadow, 26)
   end
 
   def drawOtherInfo(quest)
@@ -281,13 +281,13 @@ class QuestList_Scene
     # Vary text according to map name
     loc = originalMap.include?("Route") ? "on" : "in"
     # Format time
-    time = quest.time.strftime("%B %d %Y %H:%M")
+    time = quest.time.strftime("%d/%m/%Y à %H:%M")
     if getActiveQuests.include?(quest.id)
-      time_text = "start"
+      time_text = "Débutée le"
     elsif getCompletedQuests.include?(quest.id)
-      time_text = "completion"
+      time_text = "Terminée le"
     else
-      time_text = "failure"
+      time_text = "Échouée le"
     end
     # Quest reward
     questReward = $quest_data.getQuestReward(quest.id)
@@ -296,7 +296,7 @@ class QuestList_Scene
       questReward = "???"
     end
     textpos = [
-      [sprintf("Stage %d/%d",quest.stage,questLength),38,50,0,@base,@shadow],
+      [sprintf("Étape %d/%d",quest.stage,questLength),38,50,0,@base,@shadow],
       ["#{questGiver}",38,122,0,@base,@shadow],
       ["#{originalMap}",38,194,0,@base,@shadow],
       ["#{time}",38,266,0,@base,@shadow]
@@ -307,13 +307,13 @@ class QuestList_Scene
 #     436,"<c2=#{colorQuest("purple")}>Stage:</c2> #{label}",@base,@shadow)
 ###
     drawFormattedTextEx(@sprites["overlay3"].bitmap,38,92,
-      436,"<c2=#{colorQuest("cyan")}>Quest received from:</c2>",@base,@shadow)
+      436,"<c2=#{colorQuest('cyan')}>Commanditaire :</c2>",@base,@shadow)
     drawFormattedTextEx(@sprites["overlay3"].bitmap,38,164,
-      436,"<c2=#{colorQuest("magenta")}>Quest discovered #{loc}:</c2>",@base,@shadow)
+      436,"<c2=#{colorQuest('magenta')}>Lieu de découverte :</c2>",@base,@shadow)
     drawFormattedTextEx(@sprites["overlay3"].bitmap,38,236,
-      436,"<c2=#{colorQuest("green")}>Quest #{time_text} time:</c2>",@base,@shadow)
+      436,"<c2=#{colorQuest('green')}>#{time_text} :</c2>",@base,@shadow)
     drawFormattedTextEx(@sprites["overlay3"].bitmap,38,Graphics.height-64,
-      436,"<c2=#{colorQuest("red")}>Reward:</c2> #{questReward}",@base,@shadow)
+      436,"<c2=#{colorQuest('red')}>Récompense :</c2> #{questReward}",@base,@shadow)
     pbDrawTextPositions(@sprites["overlay3"].bitmap,textpos)
   end
 

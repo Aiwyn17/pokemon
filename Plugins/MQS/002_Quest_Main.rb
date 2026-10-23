@@ -59,7 +59,7 @@ class Player_Quests
     end
     @active_quests.push(Quest.new(quest, color, story))
     if !silent
-      pbMessage(_INTL("\se[{1}]<ac><c2=#{colorQuest("red")}>New quest discovered!</c2>\nCheck your quest log for more details!</ac>", QUEST_JINGLE))
+      pbMessage(_INTL("\se[{1}]<ac><c2=#{colorQuest('red')}>Nouvelle quête découverte !</c2>\nConsultez votre journal de quêtes pour plus de détails !</ac>", QUEST_JINGLE))
     end
   end
   
@@ -80,7 +80,7 @@ class Player_Quests
         @failed_quests.push(temp_quest)
         @active_quests.delete_at(i)
         if !silent
-          pbMessage(_INTL("\se[{1}]<ac><c2=#{colorQuest("red")}>Quest failed!</c2>\nYour quest log has been updated!</ac>", QUEST_FAIL))
+          pbMessage(_INTL("\se[{1}]<ac><c2=#{colorQuest('red')}>Quête échouée !</c2>\nVotre journal de quêtes a été mis à jour !</ac>", QUEST_FAIL))
         end
         return
       end
@@ -104,7 +104,7 @@ class Player_Quests
         @completed_quests.push(temp_quest)
         @active_quests.delete_at(i)
         if !silent
-          pbMessage(_INTL("\se[{1}]<ac><c2=#{colorQuest("red")}>Quest completed!</c2>\nYour quest log has been updated!</ac>", QUEST_JINGLE))
+          pbMessage(_INTL("\se[{1}]<ac><c2=#{colorQuest('red')}>Quête terminée !</c2>\nVotre journal de quêtes a été mis à jour !</ac>", QUEST_JINGLE))
         end
         return
       end
@@ -122,7 +122,7 @@ class Player_Quests
         @active_quests[i].color = color if color != nil
         @active_quests[i].new = true
         if !silent
-          pbMessage(_INTL("\se[{1}]<ac><c2=#{colorQuest("red")}>New task added!</c2>\nYour quest log has been updated!</ac>", QUEST_JINGLE))
+          pbMessage(_INTL("\se[{1}]<ac><c2=#{colorQuest('red')}>Nouvelle tâche ajoutée !</c2>\nVotre journal de quêtes a été mis à jour !</ac>", QUEST_JINGLE))
         end
         return
       end
@@ -292,5 +292,5 @@ def getCurrentStage(quest)
 end
 
 def taskCompleteJingle
-  pbMessage(_INTL("\\se[{1}]<ac><c2=#{colorQuest("red")}>Task completed!</c2>\nYour quest log has been updated!</ac>",QUEST_JINGLE))
+  pbMessage(_INTL("\\se[{1}]<ac><c2=#{colorQuest('red')}>Tâche accomplie !</c2>\nVotre journal de quêtes a été mis à jour !</ac>",QUEST_JINGLE))
 end
