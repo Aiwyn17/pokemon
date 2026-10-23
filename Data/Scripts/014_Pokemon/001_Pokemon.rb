@@ -1126,7 +1126,10 @@ class Pokemon
     @speed   = stats[:SPEED]
 
     # League of Legends Item Stat Modifiers
-    case self.item
+    held_item_id = self.item_id || (@item.respond_to?(:id) ? @item.id : @item)
+    held_item_id = held_item_id.id if held_item_id.respond_to?(:id)
+    held_item_id = held_item_id.to_sym if held_item_id.is_a?(String)
+    case held_item_id
     # Mythic & Legendary Items
     when :WARMOGSARMOR
       @totalhp += 150

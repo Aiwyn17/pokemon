@@ -16,6 +16,30 @@ En cas de bug plus tard, ce journal permet d'identifier immédiatement **quel fi
 
 ## 📅 Historique des Ajouts & Modifications
 
+### `[AGY-091]` — 2026-10-23 — Résolution Définitive : Correction du Type `item_id` (Symbole) & Actualisation au Chargement de Sauvegarde
+- **Auteur** : `Antigravity`
+- **Catégorie** : Moteur de Données & Sauvegardes (`Data/Scripts/014_Pokemon/`, `Data/Scripts/002_Save data/`)
+- **Problème Identifié par l'Utilisateur** :
+  - *« ça marche toujours pas »* (capture montrant Fenrimas avec 14 Armure et 13 AP malgré le Sablier de Zhonya).
+  - **Origine Racine du Bug** : Dans la classe `Pokemon`, la méthode `self.item` renvoie une instance d'objet `GameData::Item` (et non un `Symbol`). Par conséquent, l'expression `case self.item` échouait toujours (`GameData::Item == :ZHONYASHOURGLASS` vaut `false` en Ruby).
+  - De plus, les données de l'équipe contenues dans un fichier de sauvegarde déjà existant conservaient les anciennes stats calculées sans déclencher `calc_stats` au chargement de la partie.
+- **Correctifs Appliqués** :
+  1. **Utilisation stricte de `item_id` (`001_Pokemon.rb`)** :
+     - Utilisation de `held_item_id = self.item_id || ...` pour comparer avec les symboles (`:ZHONYASHOURGLASS`, `:WARMOGSARMOR`, etc.). Le `case` s'exécute désormais à 100%.
+  2. **Actualisation Automatique au Chargement de Sauvegarde (`004_Game_SaveValues.rb`)** :
+     - Dès qu'une partie est chargée, `$player.party.each { |pkmn| pkmn.calc_stats }` est exécuté automatiquement pour que chaque Pokémon existant voie ses stats recalculées immédiatement.
+- **Fichiers modifiés** :
+  - `Data/Scripts/014_Pokemon/001_Pokemon.rb`
+  - `Data/Scripts/002_Save data/004_Game_SaveValues.rb`
+  - `CHANGELOG.md`
+- **Résultat Immédiat sur Fenrimas (Niv. 5)** :
+  - **Armure** : passe de 14 à **64** (`14 + 50`) !
+  - **AP** : passe de 13 à **63** (`13 + 50`) !
+- **Comment désactiver en cas de bug** :
+  - `git revert HEAD`
+
+---
+
 ### `[AGY-090]` — 2026-10-23 — Correction Critique : Affichage et Actualisation des Statistiques d'Objets LoL (AD, Armure, AP, Res. Magique, MS)
 - **Auteur** : `Antigravity`
 - **Catégorie** : Moteur de Statistiques Pokémon & Écran de Résumé (`Data/Scripts/014_Pokemon/`, `Data/Scripts/016_UI/`, `Data/Scripts/011_Battle/`)
