@@ -1,4 +1,4 @@
-﻿# 📋 CHANGELOG.md — Journal de Traçabilité du Projet (Antigravity & Jules AI)
+# 📋 CHANGELOG.md — Journal de Traçabilité du Projet (Antigravity & Jules AI)
 
 Ce fichier garde une **trace exacte et chronologique de chaque ajout ou modification** effectuée sur le jeu (que ce soit en local avec **Antigravity** ou sur GitHub avec **Jules AI**).
 En cas de bug plus tard, ce journal permet d'identifier immédiatement **quel fichier** et **quel commit Git** est responsable, et comment le tester ou l'annuler.
@@ -16,6 +16,42 @@ En cas de bug plus tard, ce journal permet d'identifier immédiatement **quel fi
 
 ## 📅 Historique des Ajouts & Modifications
 
+
+### `[AGY-096]` — 2026-10-23 — Intégration de Modern Quest System + UI v1.1.0 (Eevee Expo #709)
+- **Auteur** : `Antigravity`
+- **Catégorie** : Journal de Quêtes, Interface & Plugins (`Plugins/MQS/`, `Graphics/UI/QuestUI/`)
+- **Demande Utilisateur** : 
+  - *« https://eeveeexpo.com/resources/709/ fais ca aussi »*
+  - Archive fournie : `media_1792787076344_371077ac.zip` (*Modern Quest System + UI v1.1.0* par ThatWelshOne_, mej71, derFischae, Marin pour Pokémon Essentials v21.1).
+- **Contenu Intégré & Optimisations** :
+  1. **Installation Complète** :
+     - Plugin déployé dans `Plugins/MQS/` (`meta.txt`, `001_Quest_Config.rb`, `002_Quest_Main.rb`, `003_Quest_UI.rb`, `004_Quest_Data.rb`).
+     - Tous les 7 assets graphiques d'interface déployés dans `Graphics/UI/QuestUI/` (fonds d'écran parchemin/ardoise, onglets d'état, badges NEW, icônes de navigation).
+  2. **Intégration Menu Pause & Sécurisation Moteur (`005_Quest_MenuHandlers.rb`)** :
+     - Ajout automatique de l'entrée « Quêtes » dans le Menu Pause (`MenuHandlers.add(:pause_menu, :quests)`), accessible directement en jeu via Échap ou touche X.
+     - Sécurisation nil-safety de la carte d'origine (`originalMap = quest.location || "???"`) pour prévenir les crashes lors de l'affichage des détails si une quête est activée hors map.
+     - Gestion paresseuse des sauvegardes : `$PokemonGlobal.quests` s'initialise automatiquement sans corrompre ni exiger de réinitialiser les fichiers de sauvegarde existants.
+  3. **Synergie Immédiate avec Arcky's Region Map v3.3.0** :
+     - Déverrouille instantanément le mode **Quest Map** (`ModeNames[:quest] = "Quest Map"`) sur la carte régionale pour visualiser géographiquement les quêtes actives et leurs objectifs.
+  4. **Quête Principale de l'Acte 1 Pré-Configurée (`QuestFreljord1`)** :
+     - Intégration de la quête narrative : *L'Éveil du Freljord* (Sanctuaire des Glaces -> Havre-Givre -> Caverne sacrée de l'Épreuve) avec gestion d'étapes dynamiques.
+- **Fichiers créés / modifiés** :
+  - `Plugins/MQS/meta.txt`
+  - `Plugins/MQS/001_Quest_Config.rb`
+  - `Plugins/MQS/002_Quest_Main.rb`
+  - `Plugins/MQS/003_Quest_UI.rb`
+  - `Plugins/MQS/004_Quest_Data.rb`
+  - `Plugins/MQS/005_Quest_MenuHandlers.rb`
+  - `Graphics/UI/QuestUI/*` (7 fichiers PNG)
+  - `CHANGELOG.md`
+- **Comment tester en jeu** :
+  - Ouvrir le Menu Pause (Échap / X) et sélectionner l'option « Quêtes ».
+  - Ou appeler en script/événement : `activateQuest(:QuestFreljord1, colorQuest("blue"), true)`.
+  - Ouvrir la Carte Régionale (Poké-Matos ou Sac) et appuyer sur Action/Shift pour basculer en mode Quest Map.
+- **Comment désactiver en cas de bug** :
+  - `git revert HEAD`
+
+---
 
 ### `[AGY-095]` — 2026-10-23 — Intégration de DiegoWT's Starter Selection v1.5.0
 - **Auteur** : `Antigravity`
