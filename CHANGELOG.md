@@ -17,6 +17,34 @@ En cas de bug plus tard, ce journal permet d'identifier immédiatement **quel fi
 ## 📅 Historique des Ajouts & Modifications
 
 
+### `[AGY-105]` — 2026-10-23 — Calcul Dynamique de Hauteur UI Quêtes (Résolution Définitive du Chevauchement Overview / Task)
+- **Auteur** : `Antigravity`
+- **Catégorie** : Correctif UI & Moteur Graphique Quêtes (`Plugins/MQS/003_Quest_UI.rb`, `Plugins/MQS/004_Quest_Data.rb`)
+- **Demande Utilisateur** : 
+  - *« c encore buggé »* (avec capture d'écran montrant les deux dernières lignes de l'Overview chevauchées par le titre `Task:`).
+- **Cause identifiée** :
+  - Dans l'écran de détails (`drawQuestDesc`), `Overview:` et `Task:` cohabitent dans le panneau supérieur ($Y = 48$ à $Y = 296$).
+  - `Task:` était fixé arbitrairement à $Y = 175$. Lorsque le texte de description globale (`Overview:`) faisait 5 à 6 lignes avec un interligne par défaut de 32 px, il descendait jusqu'à $Y \approx 210$, ce qui provoquait une collision directe avec le titre `Task:` à $Y = 175$.
+- **Correctif appliqué** :
+  1. **Calcul dynamique de la hauteur du texte avec `getFormattedText`** :
+     - Utilisation d'un interligne compact et lisible de 26 px (`lineheight = 26`).
+     - Parcours des caractères rendus pour extraire le pixel bas réel (`end_overview_y = [ch[2] + ch[4]].max`).
+     - Positionnement automatique de `Task:` à `[end_overview_y + 16, 140].max`. Ainsi, quelle que soit la longueur de l'Overview (courte ou longue), `Task:` commence toujours strictement en dessous avec une marge aérée de 16 px.
+  2. **Harmonisation de la description de la Quête 1 dans `004_Quest_Data.rb`** :
+     - Remplacement de la description redondante par : *« Vous vous réveillez à Bourg-Givré, le village de départ de Freljord. Votre périple commence ici : préparez vos affaires et partez vers le Nord ! »*.
+  3. **Purge du cache de scripts de plugins** :
+     - Suppression de `Data/PluginScripts.rxdata` pour forcer la recompilation immédiate par Pokémon Essentials au prochain lancement.
+- **Fichiers modifiés** :
+  - `Plugins/MQS/003_Quest_UI.rb`
+  - `Plugins/MQS/004_Quest_Data.rb`
+  - `CHANGELOG.md`
+- **Comment tester en jeu** :
+  - Lancer le jeu, ouvrir le menu Quêtes, sélectionner la Quête 1 (*« Le Serment de Freljord »*) et consulter ses détails.
+  - L'Overview se lit intégralement, et l'intitulé `Task:` s'affiche proprement en dessous sans aucun chevauchement.
+- **Comment désactiver en cas de bug** :
+  - `git revert HEAD`
+
+
 ### `[AGY-104]` — 2026-10-23 — Correctif Chevauchement de Texte dans l'Interface de Détails de Quête (MQS `drawQuestDesc`)
 - **Auteur** : `Antigravity`
 - **Catégorie** : Correctif Graphique UI & Ergonomie Quêtes (`Plugins/MQS/003_Quest_UI.rb`)

@@ -237,21 +237,33 @@ class QuestList_Scene
       ["#{questName}",6,6,0,Color.new(248,248,248),Color.new(0,0,0),true]
     ])
     # Quest description
-    questDesc = "<c2=#{colorQuest("blue")}>Overview:</c2> #{$quest_data.getQuestDescription(quest.id)}"
-    drawFormattedTextEx(@sprites["overlay3"].bitmap,38,52,
-      436,questDesc,@base,@shadow)
+    questDesc = "<c2=#{colorQuest('blue')}>Overview:</c2> #{$quest_data.getQuestDescription(quest.id)}"
+    
+    # Calcul dynamique de la hauteur de l'Overview avec lineheight = 26
+    chars = getFormattedText(@sprites["overlay3"].bitmap, 38, 52, 436, -1, shadowc3tag(@base, @shadow) + questDesc, 26)
+    drawFormattedChars(@sprites["overlay3"].bitmap, chars)
+    
+    end_overview_y = 52
+    chars.each do |ch|
+      bottom = ch[2] + ch[4]
+      end_overview_y = bottom if bottom > end_overview_y
+    end
+    
+    # Task : positionne dynamiquement sous l'Overview avec un espace propre !
+    task_y = [end_overview_y + 16, 140].max
+    
     # Stage description
     questStageDesc = $quest_data.getStageDescription(quest.id,quest.stage)
-    # Stage location
+    drawFormattedTextEx(@sprites["overlay3"].bitmap, 38, task_y,
+      436, "<c2=#{colorQuest('orange')}>Task:</c2> #{questStageDesc}", @base, @shadow, 26)
+
+    # Stage location (dans l'encadre du bas, a Y = 328)
     questStageLocation = $quest_data.getStageLocation(quest.id,quest.stage)
-    # If 'nil' or missing, set to '???'
     if questStageLocation=="nil" || questStageLocation==""
       questStageLocation = "???"
     end
-    drawFormattedTextEx(@sprites["overlay3"].bitmap,38,175,
-      436,"<c2=#{colorQuest("orange")}>Task:</c2> #{questStageDesc}",@base,@shadow)
-    drawFormattedTextEx(@sprites["overlay3"].bitmap,38,328,
-      436,"<c2=#{colorQuest("purple")}>Location:</c2> #{questStageLocation}",@base,@shadow)
+    drawFormattedTextEx(@sprites["overlay3"].bitmap, 38, 328,
+      436, "<c2=#{colorQuest('purple')}>Location:</c2> #{questStageLocation}", @base, @shadow, 26)
   end
 
   def drawOtherInfo(quest)

@@ -19,7 +19,7 @@ module QuestModule
     :Location2 => "Laboratoire de Freljord",
     :Location3 => "Route 1",
     :Location4 => "Havre-Givré",
-    :QuestDescription => "Vous vous réveillez à Bourg-Givré, le village de départ de Freljord. Descendez voir Maman pour vous équiper, puis rejoignez le Laboratoire pour choisir votre premier compagnon Pokémon !",
+    :QuestDescription => "Vous vous réveillez à Bourg-Givré, le village de départ de Freljord. Votre périple commence ici : préparez vos affaires et partez vers le Nord !",
     :RewardString => "Chaussures de Course, Pokégéar & Kit de Survie"
   }
   Quest_Prologue = Quest1
