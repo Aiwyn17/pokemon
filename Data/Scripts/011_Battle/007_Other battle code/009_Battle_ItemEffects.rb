@@ -1,4 +1,4 @@
-#===============================================================================
+﻿#===============================================================================
 #
 #===============================================================================
 module Battle::ItemEffects
@@ -1957,18 +1957,6 @@ Battle::ItemEffects::OnBeingHit.add(:THORNMAIL,
   }
 )
 
-Battle::ItemEffects::SpeedCalc.add(:TRINITYFORCE,
-  proc { |item, battler, mult|
-    next mult * 1.3
-  }
-)
-
-Battle::ItemEffects::DamageCalcFromTarget.add(:VOIDSTAFF,
-  proc { |item, user, target, move, mults, power, type|
-    # Void staff bypasses 40% of target MR (Not direct reduction here, handled in Stat calculation ideally)
-  }
-)
-
 Battle::ItemEffects::EndOfRoundHealing.add(:WARMOGSARMOR,
   proc { |item, battler, battle|
     next if !battler.canHeal?
@@ -1977,25 +1965,6 @@ Battle::ItemEffects::EndOfRoundHealing.add(:WARMOGSARMOR,
     battle.pbDisplay(_INTL("{1}'s {2} regenerated its HP!", battler.pbThis, battler.itemName))
   }
 )
-
-Battle::ItemEffects::SpeedCalc.add(:LUDENSTEMPEST,
-  proc { |item, battler, mult|
-    next mult * 1.2
-  }
-)
-
-Battle::ItemEffects::SpeedCalc.add(:PHANTOMDANCER,
-  proc { |item, battler, mult|
-    next mult * 1.3
-  }
-)
-
-
-Battle::ItemEffects::SpeedCalc.add(:RAPIDFIRECANNON, proc { |i, b, m| m * 1.3 })
-Battle::ItemEffects::SpeedCalc.add(:STATIKKSHIV, proc { |i, b, m| m * 1.3 })
-Battle::ItemEffects::SpeedCalc.add(:KRAKENSLAYER, proc { |i, b, m| m * 1.2 })
-Battle::ItemEffects::SpeedCalc.add(:STRIDEBREAKER, proc { |i, b, m| m * 1.2 })
-Battle::ItemEffects::SpeedCalc.add(:TURBOCHEMTANK, proc { |i, b, m| m * 1.2 })
 
 Battle::ItemEffects::AfterMoveUseFromUser.add(:BLOODTHIRSTER,
   proc { |item, user, targets, move, numHits, battle|
@@ -2044,5 +2013,3 @@ Battle::ItemEffects::AfterMoveUseFromUser.add(:VAMPIRICSCEPTER,
     battle.pbDisplay(_INTL("{1} restored HP using its {2}!", user.pbThis, user.itemName)) if hpGain > 0
   }
 )
-
-Battle::ItemEffects::SpeedCalc.add(:ZEAL, proc { |i, b, m| m * 1.1 })

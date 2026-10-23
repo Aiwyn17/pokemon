@@ -1,4 +1,4 @@
-#===============================================================================
+﻿#===============================================================================
 #
 #===============================================================================
 class MoveSelectionSprite < Sprite
@@ -119,6 +119,7 @@ class PokemonSummary_Scene
     @viewport.z = 99999
     @party      = party
     @partyindex = partyindex
+    @party.each { |pkmn| pkmn&.calc_stats } if @party
     @pokemon    = @party[@partyindex]
     @inbattle   = inbattle
     @page = 1
@@ -186,6 +187,7 @@ class PokemonSummary_Scene
     @viewport.z = 99999
     @party      = party
     @partyindex = partyindex
+    @party.each { |pkmn| pkmn&.calc_stats } if @party
     @pokemon    = @party[@partyindex]
     @page = 4
     @typebitmap = AnimatedBitmap.new(_INTL("Graphics/UI/types"))
@@ -638,6 +640,7 @@ class PokemonSummary_Scene
   end
 
   def drawPageThree
+    @pokemon.calc_stats if @pokemon
     overlay = @sprites["overlay"].bitmap
     base   = Color.new(248, 248, 248)
     shadow = Color.new(104, 104, 104)

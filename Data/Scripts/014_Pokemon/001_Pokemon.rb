@@ -1,4 +1,4 @@
-#===============================================================================
+﻿#===============================================================================
 # Instances of this class are individual Pokémon.
 # The player's party Pokémon are stored in the array $player.party.
 #===============================================================================
@@ -1119,29 +1119,141 @@ class Pokemon
     end
     old_totalhp = @totalhp
     @totalhp = stats[:HP]
-    @totalhp += 150 if self.item == :WARMOGSARMOR
-    @totalhp += 100 if self.item == :STERAKSGAGE
-    @totalhp += 100 if self.item == :GOREDRINKER
-    @totalhp += 80 if self.item == :STRIDEBREAKER
-    @totalhp += 80 if self.item == :DIVINESUNDERER
-    @totalhp += 60 if self.item == :EVERFROST
-    @totalhp += 80 if self.item == :NIGHTHARVESTER
-    @totalhp += 60 if self.item == :HEXTECHROCKETBELT
-    @totalhp += 80 if self.item == :RIFTMAKER
-    @totalhp += 100 if self.item == :SUNFIREAEGIS
-    @totalhp += 90 if self.item == :FROSTFIREGAUNTLET
-    @totalhp += 90 if self.item == :TURBOCHEMTANK
-    @totalhp += 50 if self.item == :MOONSTONEKRENOWER
-    @totalhp += 25 if self.item == :RUBYCRYSTAL
-    @totalhp += 60 if self.item == :GIANTSBELT
-    @totalhp += 30 if self.item == :PHAGE
-    hp_difference = @totalhp - old_totalhp
-    self.hp = [@hp + hp_difference, 1].max if @hp > 0 || hp_difference > 0
     @attack  = stats[:ATTACK]
     @defense = stats[:DEFENSE]
     @spatk   = stats[:SPECIAL_ATTACK]
     @spdef   = stats[:SPECIAL_DEFENSE]
     @speed   = stats[:SPEED]
+
+    # League of Legends Item Stat Modifiers
+    case self.item
+    # Mythic & Legendary Items
+    when :WARMOGSARMOR
+      @totalhp += 150
+    when :STERAKSGAGE
+      @totalhp += 100
+      @attack  += 50
+    when :GOREDRINKER
+      @totalhp += 100
+      @attack  += 55
+    when :STRIDEBREAKER
+      @totalhp += 80
+      @attack  += 50
+      @speed    = (@speed * 1.2).floor
+    when :DIVINESUNDERER
+      @totalhp += 80
+      @attack  += 40
+    when :EVERFROST
+      @totalhp += 60
+      @spatk   += 80
+    when :NIGHTHARVESTER
+      @totalhp += 80
+      @spatk   += 90
+    when :HEXTECHROCKETBELT
+      @totalhp += 60
+      @spatk   += 90
+    when :RIFTMAKER
+      @totalhp += 80
+      @spatk   += 80
+    when :SUNFIREAEGIS
+      @totalhp += 100
+      @defense += 60
+    when :FROSTFIREGAUNTLET
+      @totalhp += 90
+      @defense += 50
+    when :TURBOCHEMTANK
+      @totalhp += 90
+      @spdef   += 50
+      @speed    = (@speed * 1.2).floor
+    when :MOONSTONEKRENOWER
+      @totalhp += 50
+      @spatk   += 40
+    when :RABADON
+      @spatk = ((@spatk + 40) * 1.15).floor
+    when :INFINITYEDGE
+      @attack += 30
+    when :THORNMAIL
+      @defense += 80
+    when :TRINITYFORCE
+      @attack += 30
+      @spatk  += 30
+      @speed   = (@speed * 1.3).floor
+    when :GUARDIANANGEL
+      @attack  += 40
+      @defense += 40
+    when :BLOODTHIRSTER
+      @attack += 55
+    when :ZHONYASHOURGLASS
+      @defense += 50
+      @spatk   += 50
+    when :LUDENSTEMPEST
+      @spatk += 80
+      @speed  = (@speed * 1.2).floor
+    when :DUSKBLADE
+      @attack += 60
+    when :VOIDSTAFF
+      @spatk += 65
+    when :LORDDOMINIKSREGARDS
+      @attack += 30
+    when :BLACKCLEAVER
+      @attack += 40
+    when :PHANTOMDANCER
+      @attack += 20
+      @speed   = (@speed * 1.3).floor
+    when :RAPIDFIRECANNON
+      @speed = (@speed * 1.3).floor
+    when :STATIKKSHIV
+      @attack += 40
+      @speed   = (@speed * 1.3).floor
+    when :KRAKENSLAYER
+      @attack += 60
+      @speed   = (@speed * 1.2).floor
+    when :ECLIPSE
+      @attack += 55
+    when :PROWLERSCLAW
+      @attack += 60
+    when :LIANDRYSANGUISH
+      @spatk += 80
+    when :LOCKETOFTHEIRONSOLARI
+      @defense += 30
+      @spdef   += 30
+    # Basic / Component Items
+    when :LONGSWORD
+      @attack += 5
+    when :PICKAXE
+      @attack += 12
+    when :BFSWORD
+      @attack += 20
+    when :AMPLIFYINGTOME
+      @spatk += 8
+    when :BLASTINGWAND
+      @spatk += 16
+    when :NEEDLESSLYLARGEROD
+      @spatk += 25
+    when :CLOTHARMOR
+      @defense += 8
+    when :CHAINVEST
+      @defense += 18
+    when :NULLMAGICMANTLE
+      @spdef += 10
+    when :NEGATRONCLOAK
+      @spdef += 22
+    when :RUBYCRYSTAL
+      @totalhp += 25
+    when :GIANTSBELT
+      @totalhp += 60
+    when :VAMPIRICSCEPTER
+      @attack += 8
+    when :PHAGE
+      @totalhp += 30
+      @attack  += 8
+    when :SHEEN
+      @spatk += 10
+    when :ZEAL
+      @speed = (@speed * 1.1).floor
+    end
+    hp_difference = @totalhp - old_totalhp
+    self.hp = [@hp + hp_difference, 1].max if @hp > 0 || hp_difference > 0
   end
 
   #=============================================================================

@@ -16,6 +16,39 @@ En cas de bug plus tard, ce journal permet d'identifier immédiatement **quel fi
 
 ## 📅 Historique des Ajouts & Modifications
 
+### `[AGY-090]` — 2026-10-23 — Correction Critique : Affichage et Actualisation des Statistiques d'Objets LoL (AD, Armure, AP, Res. Magique, MS)
+- **Auteur** : `Antigravity`
+- **Catégorie** : Moteur de Statistiques Pokémon & Écran de Résumé (`Data/Scripts/014_Pokemon/`, `Data/Scripts/016_UI/`, `Data/Scripts/011_Battle/`)
+- **Problème Identifié par l'Utilisateur** :
+  - *« par exemple là j'ai ajouté Zhonya mais les stats de mon pokémon n'ont pas changé »*.
+  - Dans le code d'origine de Jules AI, les bonus de statistiques (ex: Zhonya +50 AP, +50 Armure) étaient codés uniquement à l'intérieur du calcul de dégâts en combat (`003_Move_UsageCalculations.rb`). L'objet `Pokemon` (`001_Pokemon.rb`) ne modifiait que les PV (`@totalhp`), laissant `@attack`, `@defense`, `@spatk`, `@spdef` et `@speed` à leurs valeurs de base dans l'écran de résumé (SKILLS) !
+- **Solutions & Correctifs Appliqués** :
+  1. **Attribution Réelle des Stats dans `Pokemon#calc_stats` (`001_Pokemon.rb`)** :
+     - Intégration complète des 49 objets LoL dans `calc_stats`.
+     - Lorsque Zhonya est équipé, `stats[:DEFENSE] + 50` et `stats[:SPECIAL_ATTACK] + 50` sont directement injectés dans `@defense` et `@spatk`.
+     - Tous les objets LoL (AD, AP, Armure, Res. Magique, MS) augmentent immédiatement les attributs du Pokémon.
+     - Dès que l'objet est retiré ou changé, `calc_stats` rétablit instantanément les statistiques naturelles du Pokémon sans résidu.
+  2. **Actualisation Automatique dans l'Écran de Résumé (`006_UI_Summary.rb`)** :
+     - `calc_stats` est automatiquement déclenché à l'ouverture de l'écran de résumé (`pbStartScene`) et lors de l'affichage de l'onglet Statistiques (`drawPageThree`).
+     - Geloupiot (Niv. 5) passant de 9 Armure / 11 AP à **59 Armure / 61 AP** avec le Sablier de Zhonya !
+  3. **Suppression du Double-Calcul en Combat (`003_Move_UsageCalculations.rb` & `009_Battle_ItemEffects.rb`)** :
+     - Comme `Battle::Battler` hérite nativement des statistiques de `Pokemon`, les additions plates redondantes dans `pbGetAttackStats` et `pbGetDefenseStats` ont été épurées afin de ne pas doubler les bonus en combat.
+     - Les effets dynamiques (pénétration d'Armure de Dominik/Sunderer/Eclipse et pénétration magique du Bâton du vide) sont préservés lors de l'attaque d'une cible.
+- **Fichiers modifiés** :
+  - `Data/Scripts/014_Pokemon/001_Pokemon.rb`
+  - `Data/Scripts/016_UI/006_UI_Summary.rb`
+  - `Data/Scripts/011_Battle/003_Move/003_Move_UsageCalculations.rb`
+  - `Data/Scripts/011_Battle/007_Other battle code/009_Battle_ItemEffects.rb`
+  - `CHANGELOG.md`
+- **Comment tester en jeu** :
+  - Relancer le jeu (ou appuyer sur F12 pour recharger les scripts).
+  - Ouvrir le menu Pokémon -> Résumé -> Page Compétences/Stats.
+  - Observer les statistiques bondir avec le Sablier de Zhonya (+50 AP, +50 Armure), Rabadon, ou tout autre objet LoL !
+- **Comment désactiver en cas de bug** :
+  - `git revert HEAD`
+
+---
+
 ### `[AGY-089]` — 2026-10-23 — Intégration Sécurisée des 49 Objets League of Legends & des Nouvelles Mécaniques de Combat (Travaux de Jules AI)
 - **Auteur** : `Antigravity` (portage et sécurisation des travaux de `Jules AI` sur GitHub)
 - **Catégorie** : Objets PBS, Moteur de Combat Ruby & Système de Statistiques LoL (`PBS/items.txt`, `Data/Scripts/`)
