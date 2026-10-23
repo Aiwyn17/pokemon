@@ -1,4 +1,4 @@
-# 📋 CHANGELOG.md — Journal de Traçabilité du Projet (Antigravity & Jules AI)
+﻿# 📋 CHANGELOG.md — Journal de Traçabilité du Projet (Antigravity & Jules AI)
 
 Ce fichier garde une **trace exacte et chronologique de chaque ajout ou modification** effectuée sur le jeu (que ce soit en local avec **Antigravity** ou sur GitHub avec **Jules AI**).
 En cas de bug plus tard, ce journal permet d'identifier immédiatement **quel fichier** et **quel commit Git** est responsable, et comment le tester ou l'annuler.
@@ -15,6 +15,40 @@ En cas de bug plus tard, ce journal permet d'identifier immédiatement **quel fi
 ---
 
 ## 📅 Historique des Ajouts & Modifications
+
+
+### `[AGY-095]` — 2026-10-23 — Intégration de DiegoWT's Starter Selection v1.5.0
+- **Auteur** : `Antigravity`
+- **Catégorie** : Sélection de Starter, Interface & Plugins (`Plugins/DiegoWT's Starter Selection/`, `Graphics/UI/DiegoWT's Starter Selection/`, `Graphics/Windowskins/`)
+- **Demande Utilisateur** : 
+  - *« ca mtn »* avec l'archive `media_1792786173942_2bc9f2aa.zip` (*DiegoWT's Starter Selection v1.5.0* pour Essentials v21.1).
+- **Contenu Intégré & Optimisations** :
+  1. **Installation Complète** :
+     - Plugin déployé dans `Plugins/DiegoWT's Starter Selection/` (`meta.txt`, `Script.rb`, `Settings.rb`).
+     - Tous les 17 assets graphiques d'interface déployés dans `Graphics/UI/DiegoWT's Starter Selection/` (Poké Balls animées, socles, surbrillances, curseurs, fenêtres BW/HGSS, dégradés de double type).
+     - Skin sans bordure installé dans `Graphics/Windowskins/nil skin.png`.
+  2. **Compatibilité & Correctifs Appliqués** :
+     - Correction du bug natif des vérifications Shiny pour le starter 2 et starter 3 (`STARTER2SHINY` et `STARTER3SHINY`).
+     - Sécurisation de la méthode `pbTypeColor` avec `return typeColor` direct et fallback dynamique pour les types personnalisés.
+     - Ajout de la fonction raccourcie d'événement `pbFreljordStarterSelection` appelant directement les 3 starters personnalisés de l'Acte 1 (`:GELOUPIOT`, `:TYRAKOUP`, `:VEILLIRIS`).
+  3. **Fonctionnalités Clés** :
+     - Sélection interactive et animée des starters avec zoom, ombres portées et secousse de Poké Balls.
+     - Support des doubles types avec double dégradé lumineux personnalisé.
+     - Cris authentiques lors du choix (`STARTERCRY = true`).
+     - Attribution automatique du Pokémon choisi au joueur avec IVs, forme, objet et brillance configurables dans `Settings.rb`.
+- **Fichiers créés / modifiés** :
+  - `Plugins/DiegoWT's Starter Selection/meta.txt`
+  - `Plugins/DiegoWT's Starter Selection/Script.rb`
+  - `Plugins/DiegoWT's Starter Selection/Settings.rb`
+  - `Graphics/UI/DiegoWT's Starter Selection/*` (17 fichiers PNG)
+  - `Graphics/Windowskins/nil skin.png`
+  - `CHANGELOG.md`
+- **Comment tester en jeu** :
+  - Dans un événement RPG Maker XP (ou en console Debug) : appeler `pbFreljordStarterSelection` ou `DiegoWTsStarterSelection.new(:GELOUPIOT, :TYRAKOUP, :VEILLIRIS)`.
+- **Comment désactiver en cas de bug** :
+  - `git revert HEAD`
+
+---
 
 ### `[AGY-094]` — 2026-10-23 — Intégration d'Arcky's Poké Market v1.7.0 (Guide Officiel)
 - **Auteur** : `Antigravity`
@@ -125,74 +159,8 @@ En cas de bug plus tard, ce journal permet d'identifier immédiatement **quel fi
 - **Comment désactiver en cas de bug** :
   - `git revert HEAD`
 
----
-
-## 📅 Historique des Ajouts & Modifications
-
-### `[AGY-094]` — 2026-10-23 — Intégration d'Arcky's Poké Market v1.7.0 (Guide Officiel)
-- **Auteur** : `Antigravity`
-- **Catégorie** : Boutiques, Économie & Plugins (`Plugins/Arcky's Poke Market/`, `Graphics/UI/Mart/`)
-- **Demande Utilisateur** :
-  - *« https://docs.arcky-tech.be/poke-market pareil »*
-  - Archive fournie : `media_1792785205993_6d1dd883.zip` (*Arcky's Poké Market v1.7.0*).
-- **Conformité Stricte aux Directives Officielles (Arcky-Tech Docs)** :
-  1. **Dépendance Prérequise Validée** :
-     - Utilise *Arcky's Utilities v1.1.0* (déjà installé lors de l'étape précédente, `Requires = Arcky's Utilities, 1.1.0` parfaitement honoré).
-  2. **Structure des Répertoires Respectée** :
-     - Plugin complet extrait dans `Plugins/Arcky's Poke Market/`.
-     - Intégration des graphismes d'étagères pour Pokémon Essentials v21.1 dans [`Graphics/UI/Mart/`](file:///c:/Users/Mon%20POc/3D%20Objects/Pokemon%20Essentials%20v21.1%202023-07-30/Graphics/UI/Mart/) (`bg_shelf.png`, `cursor_shelf.png`).
-  3. **Fonctionnalités Clés Activées** :
-     - **Transitions Fluides d'Argent** : Animation fluide du compteur d'or / monnaie lors des achats et ventes.
-     - **Achats en Rayon (Shelf Shopping)** : Possibilité de faire ses courses directement sur les étagères des boutiques via `pbShelfMart`.
-     - **Vendeurs & Marchands Spécialisés** : Dialogues vivants, personnalités de marchands, gestion des dettes/factures, remises et surtaxes.
-     - **Multi-Devises** : Support natif de l'Argent standard ($), des Jetons de Casino, des Points de Combat (BP) ou d'objets spécifiques comme monnaie d'échange.
-     - **Vente de Pokémon en Boutique** : Vendeurs clandestins ou marchands de créatures avec personnalisation complète des stats et prix.
-- **Fichiers créés / modifiés** :
-  - `Plugins/Arcky's Poke Market/` (suite complète v1.7.0)
-  - `Graphics/UI/Mart/bg_shelf.png`
-  - `Graphics/UI/Mart/cursor_shelf.png`
-  - `CHANGELOG.md`
-- **Comment tester en jeu** :
-  - Interagir avec un comptoir de Boutique Pokémon standard ou un événement appelant `pbPokemonMart(:normalStore)` ou `pbShelfMart`.
-- **Comment désactiver en cas de bug** :
-  - `git revert HEAD`
 
 ---
-
-### `[AGY-093]` — 2026-10-23 — Intégration d'Arcky's Region Map v3.3.0 & Arcky's Utilities v1.1.0 (Guide Officiel)
-- **Auteur** : `Antigravity`
-- **Catégorie** : Carte Régionale, Interface & Plugins (`Plugins/Arcky's Region Map/`, `Plugins/Arcky's Utilities/`, `Graphics/`, Racine)
-- **Demande Utilisateur** :
-  - *« https://docs.arcky-tech.be/region-map tu sais me rajouter ca selon les regles du site web ou il y a tout expliquer »*
-  - Archives fournies : `media_1792784452117_f09a9f3e.zip` (*Arcky's Utilities v1.1.0*) et `media_1792784456989_790e4181.zip` (*Arcky's Region Map v3.3.0*).
-- **Conformité Stricte aux Directives Officielles (Arcky-Tech Docs)** :
-  1. **Dépendance Prérequise Installée** :
-     - Installation d'*Arcky's Utilities v1.1.0* dans `Plugins/Arcky's Utilities/` (`Requires = Arcky's Utilities, 1.0.9` satisfait).
-  2. **Structure des Répertoires Respectée** :
-     - Plugin principal extrait dans `Plugins/Arcky's Region Map/`.
-     - Intégration complète des ressources graphiques dans `Graphics/UI/Town Map/` (7 thèmes d'interface au choix, boîtes d'aperçu de lieux, météo, quêtes, baies, surbrillances de routes, icônes de vol et de dresseurs).
-     - Déploiement des surcouches Pokédex dans `Graphics/UI/Pokedex/` et des icônes cardinales dans `Graphics/Icons/`.
-     - Mise en place de `townmapgen v21.1.html` à la racine du projet pour la génération assistée des coordonnées PBS.
-  3. **Configuration & Support des Lieux de Freljord** :
-     - Ajout de l'entrée de lieu `HavreGivre` dans [`001_RegionMap_LocationInfo.rb`](file:///c:/Users/Mon%20POc/3D%20Objects/Pokemon%20Essentials%20v21.1%202023-07-30/Plugins/Arcky's%20Region%20Map/000_Settings_and_Setup/001_RegionMap_LocationInfo.rb) pour le village fortifié de l'Acte 1.
-     - Prise en charge du zoom carte (`Ctrl` / touches de saut), du changement de région, de la recherche rapide et de la compatibilité souris (`Input::MOUSELEFT`, `Input::MOUSERIGHT`).
-- **Fichiers créés / modifiés** :
-  - `Plugins/Arcky's Utilities/` (suite complète v1.1.0)
-  - `Plugins/Arcky's Region Map/` (suite complète v3.3.0)
-  - `Graphics/UI/Town Map/` (thèmes, icônes et surbrillances)
-  - `Graphics/UI/Pokedex/`
-  - `Graphics/Icons/`
-  - `townmapgen v21.1.html`
-  - `CHANGELOG.md`
-- **Comment tester en jeu** :
-  - Ouvrir la Carte Régionale (depuis le Poké-Matos / Sac / Événement PNJ).
-  - Observer la nouvelle interface HD dynamique avec zoom, navigation fluide, aperçu météo et descriptions de lieux.
-- **Comment désactiver en cas de bug** :
-  - `git revert HEAD`
-
----
-
-## 📅 Historique des Ajouts & Modifications
 
 ### `[AGY-091]` — 2026-10-23 — Résolution Définitive : Correction du Type `item_id` (Symbole) & Actualisation au Chargement de Sauvegarde
 - **Auteur** : `Antigravity`
