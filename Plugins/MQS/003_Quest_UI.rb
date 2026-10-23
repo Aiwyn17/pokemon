@@ -329,6 +329,7 @@ end
 
 # Utility method for calling UI
 def pbViewQuests
+  pbAutoInitFreljordQuests rescue nil
   scene = QuestList_Scene.new
   screen = QuestList_Screen.new(scene)
   screen.pbStartScreen

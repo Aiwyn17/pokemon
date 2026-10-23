@@ -11,15 +11,19 @@ module QuestModule
     :ID => "1",
     :Name => "Le Serment de Freljord",
     :QuestGiver => "Professeur de Freljord",
-    :Stage1 => "Choisissez votre premier compagnon au Laboratoire.",
-    :Stage2 => "Traversez la Route 1 et battez Krag le Gardien des Portes.",
-    :Stage3 => "Atteignez le refuge de Havre-Givré, village intermédiaire de montagne.",
-    :Location1 => "Village de Départ",
-    :Location2 => "Route 1",
-    :Location3 => "Havre-Givré",
-    :QuestDescription => "Choisissez votre starter au laboratoire du Village de Départ et commencez votre traversée des terres gelées vers le Nord.",
-    :RewardString => "Sort d'Invocateur & Kit de Survie"
+    :Stage1 => "Descendez voir Maman au rez-de-chaussée pour préparer vos affaires.",
+    :Stage2 => "Rejoignez le Laboratoire de Freljord pour choisir votre premier Pokémon.",
+    :Stage3 => "Traversez la Route 1 enneigée et battez Krag le Gardien des Portes.",
+    :Stage4 => "Atteignez le refuge de Havre-Givré, village intermédiaire de la montagne.",
+    :Location1 => "Maison du Joueur",
+    :Location2 => "Laboratoire de Freljord",
+    :Location3 => "Route 1",
+    :Location4 => "Havre-Givré",
+    :QuestDescription => "Vous vous réveillez à Bourg-Givré, le village de départ de Freljord. Descendez voir Maman pour vous équiper, puis rejoignez le Laboratoire pour choisir votre premier compagnon Pokémon !",
+    :RewardString => "Chaussures de Course, Pokégéar & Kit de Survie"
   }
+  Quest_Prologue = Quest1
+  QuestFreljord1 = Quest1
   
   # Quête 2 - Havre-Givré (Village Intermédiaire)
   Quest2 = {
@@ -35,6 +39,8 @@ module QuestModule
     :QuestDescription => "Faites étape à Havre-Givré avant de gravir les hauts sommets : reposez votre équipe, découvrez la Forge d'artisanat et le Marché boréal.",
     :RewardString => "Accès à la Passe des Cimes"
   }
+  Quest_Route1 = Quest2
+  Quest_Refuge = Quest2
   
   # Quête 3 - Grande Ville de Freljord (La Grande Épreuve)
   Quest3 = {
@@ -50,6 +56,8 @@ module QuestModule
     :QuestDescription => "Rendez-vous dans la Grande Ville de Freljord pour vous présenter au Sanctuaire et passer l'Épreuve tellurique ancestrale.",
     :RewardString => "Bénédiction Tellurique & Gloire d'Anivia"
   }
+  Quest_Epreuve = Quest3
+  Quest_CrashNoxus = Quest3
   
   # Here's an example of not defining the quest giver and reward text
   Quest4 = {

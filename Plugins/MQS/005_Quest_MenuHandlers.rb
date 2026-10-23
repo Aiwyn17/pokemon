@@ -16,6 +16,37 @@ class QuestList_Scene
 end
 
 #===============================================================================
+# Auto-initialisation et Synchronisation de la Quête de Départ
+#===============================================================================
+def pbAutoInitFreljordQuests
+  return if !$PokemonGlobal || !$PokemonGlobal.quests
+  # Si aucune quête n'a encore été activée, démarrer automatiquement la Quête 1
+  if !hasAnyQuests?
+    activateQuest(:Quest1, colorQuest("blue"), true)
+  end
+
+  # Synchronisation dynamique selon la progression du joueur
+  if getCurrentStage(:Quest1)
+    stage = getCurrentStage(:Quest1)
+    # Étape 1 : Maman dans la maison -> Si le joueur a déjà parlé à Maman, passer à l'étape 2 (Labo)
+    if stage == 1 && $player && $player.has_running_shoes
+      advanceQuestToStage(:Quest1, 2)
+    end
+    stage = getCurrentStage(:Quest1)
+    # Étape 2 : Laboratoire -> Si le joueur a déjà son starter, passer à l'étape 3 (Route 1)
+    if stage <= 2 && $player && $player.party && $player.party.length > 0
+      advanceQuestToStage(:Quest1, 3)
+    end
+  end
+end
+
+EventHandlers.add(:on_enter_map, :freljord_auto_start_quest,
+  proc { |_map_id|
+    pbAutoInitFreljordQuests rescue nil
+  }
+)
+
+#===============================================================================
 # Intégration au Menu Pause (Échap / Touche X)
 #===============================================================================
 MenuHandlers.add(:pause_menu, :quests, {
@@ -24,6 +55,7 @@ MenuHandlers.add(:pause_menu, :quests, {
   "condition" => proc { next (defined?(ALWAYS_SHOW_QUEST_MENU) && ALWAYS_SHOW_QUEST_MENU) || hasAnyQuests? },
   "effect"    => proc { |menu|
     pbPlayDecisionSE
+    pbAutoInitFreljordQuests rescue nil
     pbFadeOutIn do
       pbViewQuests
       menu.pbRefresh
@@ -38,95 +70,14 @@ MenuHandlers.add(:pause_menu, :quests, {
 module QuestModule
 
   # ---------------------------------------------------------------------------
-  # 1. Quête Principale — Prologue : L'Éveil du Freljord
+  # Quêtes Principales Canoniques de Freljord (Acte 1)
   # ---------------------------------------------------------------------------
-  Quest_Prologue = {
-    :ID => "1",
-    :Name => "L'Éveil du Freljord",
-    :QuestGiver => "Anivia",
-    :Stage1 => "Choisissez votre premier compagnon auprès du Sanctuaire des Glaces.",
-    :Stage2 => "Assistez aux manigances du Dirigeable noxien et protégez l'Œuf d'Anivia.",
-    :Stage3 => "Descendez le col de montagne et frayez-vous un chemin vers la Route 1.",
-    :Location1 => "Sanctuaire des Glaces",
-    :Location2 => "Sommet d'Anivia",
-    :Location3 => "Sentier Boréal",
-    :QuestDescription => "Les cieux de Freljord s'assombrissent. Un navire volant noxien menace l'antique Sanctuaire. Choisissez votre premier Pokémon et faites vos premiers pas.",
-    :RewardString => "Bénédiction d'Anivia & Sac d'Aventurier"
-  }
-  # Rétro-compatibilité
-  QuestFreljord1 = Quest_Prologue
-
-  # ---------------------------------------------------------------------------
-  # 2. Quête Principale — Route 1 : La Traversée du Blizzard
-  # ---------------------------------------------------------------------------
-  Quest_Route1 = {
-    :ID => "2",
-    :Name => "La Traversée du Blizzard",
-    :QuestGiver => "Garde de Freljord",
-    :Stage1 => "Traversez les hautes herbes enneigées de la Route 1.",
-    :Stage2 => "Battez les soldats éclaireurs noxiens en déroute près du campement.",
-    :Stage3 => "Atteignez les portes fortifiées du village de Havre-Givre.",
-    :Location1 => "Route 1 de Freljord",
-    :Location2 => "Campement Boréal",
-    :Location3 => "Havre-Givre",
-    :QuestDescription => "La tempête souffle fort sur la passe de la montagne. Frayez-vous un chemin à travers la faune hostile et les éclaireurs noxiens jusqu'au refuge.",
-    :RewardString => "5 Poké Balls & 3 Potions"
-  }
-
-  # ---------------------------------------------------------------------------
-  # 3. Quête Principale — Havre-Givre : Le Dernier Rempart
-  # ---------------------------------------------------------------------------
-  Quest_Refuge = {
-    :ID => "3",
-    :Name => "Le Dernier Rempart",
-    :QuestGiver => "Aubergiste du Refuge",
-    :Stage1 => "Réchauffez votre équipe de Pokémon près de l'âtre du Refuge.",
-    :Stage2 => "Ravitaillez-vous en remèdes et vivres au Poste de Traite.",
-    :Stage3 => "Consultez l'Éclaireur de la Griffe au sujet de la Caverne sacrée.",
-    :Location1 => "Refuge de Havre-Givre",
-    :Location2 => "Poste de Traite",
-    :Location3 => "Pont Nord de Havre-Givre",
-    :QuestDescription => "Havre-Givre est le dernier village avant les hauteurs interdites. Préparez minutieusement votre équipe avant d'affronter les cavernes runiques.",
-    :RewardString => "Passe de Montagne & 3 Guérisons"
-  }
-
-  # ---------------------------------------------------------------------------
-  # 4. Quête Principale — Caverne sacrée : L'Épreuve des Quatre Démi-Dieux
-  # ---------------------------------------------------------------------------
-  Quest_Epreuve = {
-    :ID => "4",
-    :Name => "L'Épreuve des Quatre Démi-Dieux",
-    :QuestGiver => "Stèle Runique des Veilleurs",
-    :Stage1 => "Éveillez la Rune du Tonnerre auprès de la Statue de Volibear.",
-    :Stage2 => "Éveillez la Rune de la Chasse auprès de la Statue du Loup des Neiges.",
-    :Stage3 => "Éveillez la Rune de la Forge auprès de la Statue d'Ornn.",
-    :Stage4 => "Éveillez la Rune de Glace Pure auprès de la Statue d'Anivia.",
-    :Stage5 => "Traversez le Pont de Glace et triomphez du Gardien Ancestral.",
-    :Location1 => "Caverne de l'Épreuve - Est",
-    :Location2 => "Caverne de l'Épreuve - Sud",
-    :Location3 => "Caverne de l'Épreuve - Ouest",
-    :Location4 => "Caverne de l'Épreuve - Nord",
-    :Location5 => "Grande Rotonde de Glace",
-    :QuestDescription => "La Caverne ancestrale met à l'épreuve quiconque ose s'aventurer vers les Cimes. Harmonisez les quatre statues runiques pour révéler le chemin sacré.",
-    :RewardString => "Cristal de Vraie Glace & Accès aux Cimes"
-  }
-
-  # ---------------------------------------------------------------------------
-  # 5. Quête Principale — Crash du Dirigeable : Le Siège de l'Épave
-  # ---------------------------------------------------------------------------
-  Quest_CrashNoxus = {
-    :ID => "5",
-    :Name => "Le Siège de l'Épave",
-    :QuestGiver => "Ashe",
-    :Stage1 => "Localisez la carcasse fumante du Dirigeable noxien dans les crevasses.",
-    :Stage2 => "Infiltrez les décombres et déjouez la garde de l'infanterie noxienne.",
-    :Stage3 => "Affrontez le Commandant Kael en duel de dresseur et reprenez l'Œuf d'Anivia.",
-    :Location1 => "Crevasse du Crash",
-    :Location2 => "Épave du Dirigeable",
-    :Location3 => "Pont Supérieur du Dirigeable",
-    :QuestDescription => "Abattu par le blizzard et la foudre, le navire noxien s'est crashé. Les soldats rescapés tentent de fortifier leur position avec l'Œuf volé. Il faut frapper vite !",
-    :RewardString => "Œuf d'Anivia & Armure Noxienne"
-  }
+  Quest_Prologue   = Quest1
+  QuestFreljord1   = Quest1
+  Quest_Route1     = Quest2
+  Quest_Refuge     = Quest2
+  Quest_Epreuve    = Quest3
+  Quest_CrashNoxus = Quest3
 
   # ---------------------------------------------------------------------------
   # 6. Quête Secondaire : Un Poro dans la Tourmente

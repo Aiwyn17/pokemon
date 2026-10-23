@@ -17,6 +17,38 @@ En cas de bug plus tard, ce journal permet d'identifier immédiatement **quel fi
 ## 📅 Historique des Ajouts & Modifications
 
 
+### `[AGY-101]` — 2026-10-23 — Démarrage Automatique des Quêtes de Freljord & Fin de l'Écran Vide au Réveil
+- **Auteur** : `Antigravity`
+- **Catégorie** : Correctif Quêtes MQS & Progression (`Plugins/MQS/003_Quest_UI.rb`, `Plugins/MQS/004_Quest_Data.rb`, `Plugins/MQS/005_Quest_MenuHandlers.rb`)
+- **Demande Utilisateur** : 
+  - *« tout est vide dans les quetes quand jarrive au debut dans la maison dans ma chambre »* (avec capture d'écran de l'interface des tâches actives vide).
+- **Cause identifiée** :
+  - Par défaut dans Pokémon Essentials et MQS, les quêtes restent inactives tant qu'un script n'appelle pas explicitement `activateQuest`. Quand le joueur commence une nouvelle partie dans sa chambre et ouvre le menu Quêtes, l'interface affichait donc un encart vide (« Active tasks » sans aucune quête).
+- **Correctifs & Améliorations apportés** :
+  1. **Système d'Auto-Initialisation `pbAutoInitFreljordQuests`** :
+     - Vérifie si le joueur possède des quêtes. Si le carnet est vide (`!hasAnyQuests?`), il active automatiquement la Quête Principale 1 (`:Quest1` : *« Le Serment de Freljord »*) avec la couleur bleue et le statut de quête d'histoire `story: true`.
+  2. **Triple Déclenchement de Sécurité (Garantie de non-vacuité)** :
+     - Déclencheur 1 : Dès l'apparition sur la carte (`EventHandlers.add(:on_enter_map, :freljord_auto_start_quest)`), actif dès l'apparition dans la chambre du joueur.
+     - Déclencheur 2 : Dès le clic sur « Quêtes » dans le Menu Pause (`MenuHandlers.add(:pause_menu, :quests)`).
+     - Déclencheur 3 : À l'entrée directe dans l'interface `pbViewQuests` dans `003_Quest_UI.rb`.
+  3. **Synchronisation Dynamique en Temps Réel** :
+     - Étape 1 : Dans la chambre -> *"Descendez voir Maman au rez-de-chaussée pour préparer vos affaires."* (Lieu : Maison du Joueur).
+     - Étape 2 : Dès la discussion avec Maman (déblocage des Chaussures de Course) -> Passe automatiquement à l'Étape 2 : *"Rejoignez le Laboratoire de Freljord pour choisir votre premier Pokémon."* (Lieu : Laboratoire de Freljord).
+     - Étape 3 : Dès l'obtention du Starter boréal (équipe non vide) -> Passe automatiquement à l'Étape 3 : *"Traversez la Route 1 enneigée et battez Krag le Gardien des Portes."* (Lieu : Route 1).
+  4. **Harmonisation des Identifiants & Alias MQS** :
+     - Les constantes `Quest_Prologue`, `QuestFreljord1`, `Quest_Route1`, etc. ont été alignées pour pointer vers `Quest1`, `Quest2`, `Quest3`.
+- **Fichiers modifiés** :
+  - `Plugins/MQS/003_Quest_UI.rb`
+  - `Plugins/MQS/004_Quest_Data.rb`
+  - `Plugins/MQS/005_Quest_MenuHandlers.rb`
+  - `CHANGELOG.md`
+- **Comment tester en jeu** :
+  - Démarrer une nouvelle partie ou charger la sauvegarde : ouvrir le menu Quêtes dès la chambre.
+  - La quête *« Le Serment de Freljord »* apparaît immédiatement avec son marqueur bleu, indiquant de descendre voir Maman puis d'aller au labo.
+- **Comment désactiver en cas de bug** :
+  - `git revert HEAD`
+
+
 ### `[AGY-100]` — 2026-10-23 — Structuration de la Progression de Freljord (Village 1 -> Havre-Givré Intermédiaire -> Grande Ville) & Intégration des Quêtes / Forge
 - **Auteur** : `Antigravity`
 - **Catégorie** : Progression Scénarisée, Quêtes MQS & Overworld (`Plugins/MQS/004_Quest_Data.rb`, `Data/Scripts/012_Overworld/011_Overworld_HavreGivre_Freljord.rb`, `PBS/map_metadata.txt`)
