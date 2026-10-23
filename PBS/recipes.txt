@@ -1,0 +1,41 @@
+#-------------------------------
+[BerryJuice]
+Item = BERRYJUICE
+Yield = 1
+Ingredients = Berry,1
+Flags = Cooking
+
+#-------------------------------
+[BreakMaxRevive]
+Item = REVIVE
+Yield = 5
+Ingredients = MAXREVIVE,1
+Flags = Crafting
+
+#-------------------------------
+[BFSword]
+Item = BFSWORD
+Yield = 1
+Ingredients = LONGSWORD,2
+Flags = Forge,Weapons
+
+#-------------------------------
+[InfinityEdge]
+Item = INFINITYEDGE
+Yield = 1
+Ingredients = BFSWORD,1,PICKAXE,1
+Flags = Forge,Weapons
+
+#-------------------------------
+[ChainVest]
+Item = CHAINVEST
+Yield = 1
+Ingredients = CLOTHARMOR,2
+Flags = Forge,Armor
+
+#-------------------------------
+[Thornmail]
+Item = THORNMAIL
+Yield = 1
+Ingredients = CHAINVEST,1,RUBYCRYSTAL,1
+Flags = Forge,Armor

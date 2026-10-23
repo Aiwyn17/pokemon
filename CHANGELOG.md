@@ -17,6 +17,49 @@ En cas de bug plus tard, ce journal permet d'identifier immédiatement **quel fi
 ## 📅 Historique des Ajouts & Modifications
 
 
+### `[AGY-098]` — 2026-10-23 — Intégration d'Item Crafting UI Plus v3.0.0 & Système de Forge d'Objets LoL
+- **Auteur** : `Antigravity`
+- **Catégorie** : Artisanat d'Objets, Forge & Plugins (`Plugins/Item Crafting UI Plus/`, `PBS/recipes.txt`, `Graphics/UI/Crafting/`)
+- **Demande Utilisateur** : 
+  - *« installe le plugin pour le moment »* (suite à la validation du besoin de combiner des composants LoL, ex: 2 épées = 1 B.F. Glaive).
+  - Archive fournie : `media_1792788028181_5fbc5b7a.zip` (*Item Crafting UI Plus v3.0.0* par ThatWelshOne_ et Vendily pour Pokémon Essentials v21.1).
+- **Contenu Intégré & Optimisations** :
+  1. **Déploiement Complet de la Version v21 (Essentials v21.1)** :
+     - Plugin déployé dans `Plugins/Item Crafting UI Plus/` (`meta.txt`, `001_UI_ItemCrafting.rb`, `002_Recipe.rb`, `003_CompilerChanges.rb`, `004_PokemonGlobal_UserFunctions.rb`).
+     - Assets graphiques déployés dans `Graphics/UI/Crafting/` (`base.png`, `bg.png`) et `Graphics/Items/Category/` (`berry.png`).
+     - Base de données créée dans `PBS/recipes.txt` avec formatage strict Essentials.
+  2. **Système de Recettes et Arbre de Craft LoL Pré-Configuré** :
+     - Recette du **B.F. Glaive** (`[BFSword]`) : 2x `LONGSWORD` -> 1x `BFSWORD` (`+20 AD`).
+     - Recette de la **Lame d'Infini** (`[InfinityEdge]`) : 1x `BFSWORD` + 1x `PICKAXE` -> 1x `INFINITYEDGE` (`+30 AD`, `+25% Crit`).
+     - Recette de la **Cotte de Mailles** (`[ChainVest]`) : 2x `CLOTHARMOR` -> 1x `CHAINVEST` (`+15 Armure`).
+     - Recette de la **Cotte Épineuse** (`[Thornmail]`) : 1x `CHAINVEST` + 1x `RUBYCRYSTAL` -> 1x `THORNMAIL` (`+35 Armure`, `+300 PV`).
+     - Recettes classiques incluses : Jus de Baie (`BerryJuice`) et fragmentation de Rappel Max (`BreakMaxRevive`).
+  3. **Correctifs & Fonctions Raccourcies (`003`, `004`)** :
+     - Correction du bug `data_hash[:id]` dans `validate_compiled_recipe` pour éviter les `NameError`.
+     - Sécurisation contre le splat nil dans le compilateur si des fichiers de recettes manquent.
+     - Prise en charge des symboles et chaînes dans `pbUnlockRecipe`, `pbLockRecipe` et `pbKnowsRecipe?`.
+     - Ajout de la fonction pratique `pbOpenForge(flag)` pour ouvrir directement l'interface de craft devant une enclume ou auprès d'un PNJ forgeron.
+- **Fichiers créés / modifiés** :
+  - `Plugins/Item Crafting UI Plus/meta.txt`
+  - `Plugins/Item Crafting UI Plus/001_UI_ItemCrafting.rb`
+  - `Plugins/Item Crafting UI Plus/002_Recipe.rb`
+  - `Plugins/Item Crafting UI Plus/003_CompilerChanges.rb`
+  - `Plugins/Item Crafting UI Plus/004_PokemonGlobal_UserFunctions.rb`
+  - `Graphics/UI/Crafting/base.png`
+  - `Graphics/UI/Crafting/bg.png`
+  - `Graphics/Items/Category/berry.png`
+  - `PBS/recipes.txt`
+  - `CHANGELOG.md`
+- **Comment tester en jeu** :
+  - Dans un événement RPG Maker ou en console Debug :
+    - Apprendre la recette : `pbUnlockRecipe(:BFSword)`
+    - Ouvrir la forge : `pbOpenForge` ou `pbItemCrafter(pbGetRecipes)`
+  - Acheter 2 Épées Longues et forger le B.F. Glaive dans l'interface animée.
+- **Comment désactiver en cas de bug** :
+  - `git revert HEAD`
+
+---
+
 ### `[AGY-097]` — 2026-10-23 — Déploiement des Quêtes Scénarisées de Freljord (Acte 1) & Quêtes Secondaires LoL
 - **Auteur** : `Antigravity`
 - **Catégorie** : Quêtes Scénarisées & Intégration Événements (`Plugins/MQS/005_Quest_MenuHandlers.rb`)
