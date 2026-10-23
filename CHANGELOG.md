@@ -16,6 +16,56 @@ En cas de bug plus tard, ce journal permet d'identifier immédiatement **quel fi
 
 ## 📅 Historique des Ajouts & Modifications
 
+### `[AGY-092]` — 2026-10-23 — Intégration du Deluxe Battle Kit (DBK v1.3.1) & Sorts d'Invocateur LoL (Option 4 : Combats Dresseurs/Boss & IA Tactique)
+- **Auteur** : `Antigravity`
+- **Catégorie** : Combat, Moteur & Plugins (`Plugins/[DBK_000] Deluxe Battle Kit/`, `Plugins/[LoL_000] Summoner Spells/`, `Audio/`, `Graphics/`)
+- **Demande Utilisateur** :
+  - *« jaimerai bien utilise le deluxe kit battle qui est tres populaire tu sais lapadter pour mon jeu et lutiliser »*
+  - Validation de l'**Option 4** : Sorts d'Invocateur réservés aux combats de dresseurs et boss (désactivés contre les petits Pokémon sauvages), avec sorts équipés pour les Boss/Dresseurs adverses et une **IA ennemie intelligente et tactique**.
+- **Réalisations & Adaptations Moteur** :
+  1. **Intégration du Deluxe Battle Kit v1.3.1 (`[DBK_000] Deluxe Battle Kit`)** :
+     - Déploiement complet de la suite DBK par Lucidious89 : HUD et barres de combat retravaillées, animations d'action, musique dynamique de PV faibles (`Battle low HP.ogg`), effets sonores (`DX Action.ogg`), boutons d'action du Fight Menu.
+     - Ajustement de compatibilité dans `meta.txt` (`Requires = v21.1 Hotfixes,1.0.7`).
+  2. **Préservation Critique de la Formule de Dégâts League of Legends** :
+     - DBK réécrivait par défaut le calcul des dégâts avec la formule classique Pokémon (`... / defense`).
+     - Patch immédiat de `[002] Damage Calc Refactor.rb` pour le joueur et pour l'IA :
+       - Application stricte de la formule d'Armure LoL : `damage = (raw_damage * (100.0 / (100.0 + defense))).floor`.
+       - Maintien des pénétrations d'armure / RM (`Bâton du Vide`, `Salutations de Dominik`, etc.).
+       - Prise en compte des bonus de dégâts critiques LoL (Lame d'Infini, Danseur Fantôme, Canon Ultrarapide, Zèle).
+  3. **Système de Sorts d'Invocateur LoL (`Plugins/[LoL_000] Summoner Spells/`)** :
+     - **Condition d'activation stricte (Option 4)** : Uniquement en duel de Dresseurs ou Boss (`@battle.trainerBattle?`). Inactif contre les Pokémon sauvages des herbes.
+     - **Les 5 Sorts Iconiques LoL** :
+       - ⚡ **Saut Éclair (Flash)** : Esquive garantie du prochain coup fatal direct adverse ce tour.
+       - 🔥 **Embrasement (Ignite)** : Enflamme la cible pendant 4 tours, infligeant 1/8 PV bruts à chaque fin de tour et applique Hémorragie (-50% aux soins reçus).
+       - 💚 **Soin (Heal)** : Restaure 35 % des PV max, dissipe la confusion et augmente la Vitesse d'un niveau pendant 1 tour.
+       - 🛡️ **Barrière (Barrier)** : Génère un bouclier absorbant les dégâts jusqu'à 40 % des PV max pendant 2 tours.
+       - 🌀 **Fatigue (Exhaust)** : Réduit de 35 % les dégâts infligés et de 30 % la Vitesse de la cible pendant 2 tours.
+     - **Intelligence Artificielle Tactique Ennemie (`004_Summoner_Spells_AI.rb`)** :
+       - **Ignite Kill-Secure** : L'IA claque Embrasement si le Pokémon du joueur passe sous les 35 % de PV pour achever le kill et bloquer les soins.
+       - **Flash Reflex** : L'IA claque Saut Éclair si son propre Pokémon est en situation critique (PV <= 25 %) pour esquiver le coup de grâce.
+       - **Heal & Barrier Clutch** : L'IA protège son Pokémon avec Barrière ou le soigne avec Soin en cas de danger de mort.
+       - **Exhaust Threat-Neutralization** : L'IA neutralise le Pokémon du joueur avec Fatigue s'il accumule des buffs offensifs (+2 Attaque/SpAtk).
+     - **Interface Utilisateur Épurée** :
+       - En combat de dresseur, la commande « Fuite » (inutile en duel) ouvre directement le menu des Sorts d'Invocateur avec affichage des états `[PRÊT]` / `[UTILISÉ]` et confirmation. Accessible également via la touche Action / Shift.
+- **Fichiers créés / modifiés** :
+  - `Plugins/[DBK_000] Deluxe Battle Kit/` (suite complète adaptée)
+  - `Plugins/[LoL_000] Summoner Spells/meta.txt`
+  - `Plugins/[LoL_000] Summoner Spells/001_Summoner_Spells_Core.rb`
+  - `Plugins/[LoL_000] Summoner Spells/002_Summoner_Spells_BattleHooks.rb`
+  - `Plugins/[LoL_000] Summoner Spells/003_Summoner_Spells_UI.rb`
+  - `Plugins/[LoL_000] Summoner Spells/004_Summoner_Spells_AI.rb`
+  - `CHANGELOG.md`
+- **Comment tester en jeu** :
+  - Lancer un combat contre un dresseur (ex: Kael ou PNJ de test).
+  - Sélectionner la 4e option du menu (ou appuyer sur Shift/Action) pour ouvrir le menu des Sorts d'Invocateur.
+  - Observer l'IA ennemie utiliser ses propres sorts tactiquement selon l'état des PV.
+- **Comment désactiver en cas de bug** :
+  - `git revert HEAD`
+
+---
+
+## 📅 Historique des Ajouts & Modifications
+
 ### `[AGY-091]` — 2026-10-23 — Résolution Définitive : Correction du Type `item_id` (Symbole) & Actualisation au Chargement de Sauvegarde
 - **Auteur** : `Antigravity`
 - **Catégorie** : Moteur de Données & Sauvegardes (`Data/Scripts/014_Pokemon/`, `Data/Scripts/002_Save data/`)
