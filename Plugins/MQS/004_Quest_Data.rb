@@ -6,56 +6,49 @@ module QuestModule
   
   }
   
-  # Here's the simplest example of a single-stage quest with everything specified
+  # Quête 1 - Village 1 (Village de Départ)
   Quest1 = {
     :ID => "1",
-    :Name => "Introductions",
-    :QuestGiver => "Little Boy",
-    :Stage1 => "Look for clues.",
-    :Location1 => "Lappet Town",
-    :QuestDescription => "Some wild Pokémon stole a little boy's favourite toy. Find those troublemakers and help him get it back.",
-    :RewardString => "Something shiny!"
+    :Name => "Le Serment de Freljord",
+    :QuestGiver => "Professeur de Freljord",
+    :Stage1 => "Choisissez votre premier compagnon au Laboratoire.",
+    :Stage2 => "Traversez la Route 1 et battez Krag le Gardien des Portes.",
+    :Stage3 => "Atteignez le refuge de Havre-Givré, village intermédiaire de montagne.",
+    :Location1 => "Village de Départ",
+    :Location2 => "Route 1",
+    :Location3 => "Havre-Givré",
+    :QuestDescription => "Choisissez votre starter au laboratoire du Village de Départ et commencez votre traversée des terres gelées vers le Nord.",
+    :RewardString => "Sort d'Invocateur & Kit de Survie"
   }
   
-  # Here's an extension of the above that includes multiple stages
+  # Quête 2 - Havre-Givré (Village Intermédiaire)
   Quest2 = {
     :ID => "2",
-    :Name => "Introductions",
-    :QuestGiver => "Little Boy",
-    :Stage1 => "Look for clues.",
-    :Stage2 => "Follow the trail.",
-    :Stage3 => "Catch the troublemakers!",
-    :Location1 => "Lappet Town",
-    :Location2 => "Viridian Forest",
-    :Location3 => "Route 3",
-	:StageLabel1 => "1",
-	:StageLabel2 => "2",
-    :QuestDescription => "Some wild Pokémon stole a little boy's favourite toy. Find those troublemakers and help him get it back.",
-    :RewardString => "Something shiny!"
+    :Name => "La Halte de Havre-Givré",
+    :QuestGiver => "Éclaireur Boréal",
+    :Stage1 => "Réchauffez votre équipe près de l'âtre au Refuge de montagne.",
+    :Stage2 => "Découvrez les étals du Marché et forgez un objet à l'Enclume LoL.",
+    :Stage3 => "Consultez l'Éclaireur au pont Nord pour ouvrir la voie vers la Grande Ville.",
+    :Location1 => "Havre-Givré",
+    :Location2 => "Havre-Givré",
+    :Location3 => "Havre-Givré",
+    :QuestDescription => "Faites étape à Havre-Givré avant de gravir les hauts sommets : reposez votre équipe, découvrez la Forge d'artisanat et le Marché boréal.",
+    :RewardString => "Accès à la Passe des Cimes"
   }
   
-  # Here's an example of a quest with lots of stages that also doesn't have a stage location defined for every stage
+  # Quête 3 - Grande Ville de Freljord (La Grande Épreuve)
   Quest3 = {
     :ID => "3",
-    :Name => "Last-minute chores",
-    :QuestGiver => "Grandma",
-    :Stage1 => "A",
-    :Stage2 => "B",
-    :Stage3 => "C",
-    :Stage4 => "D",
-    :Stage5 => "E",
-    :Stage6 => "F",
-    :Stage7 => "G",
-    :Stage8 => "H",
-    :Stage9 => "I",
-    :Stage10 => "J",
-    :Stage11 => "K",
-    :Stage12 => "L",
-    :Location1 => "nil",
-    :Location2 => "nil",
-    :Location3 => "Dewford Town",
-    :QuestDescription => "Isn't the alphabet longer than this?",
-    :RewardString => "Chicken soup!"
+    :Name => "La Grande Épreuve des Cimes",
+    :QuestGiver => "Matriarche de Freljord",
+    :Stage1 => "Traversez la passe de montagne et pénétrez dans la Grande Ville.",
+    :Stage2 => "Présentez-vous devant les Gardiens du Sanctuaire de l'Épreuve.",
+    :Stage3 => "Triomphez du Gardien d'Épreuve (Master AI).",
+    :Location1 => "Passe de Montagne",
+    :Location2 => "Grande Ville de Freljord",
+    :Location3 => "Sanctuaire de l'Épreuve",
+    :QuestDescription => "Rendez-vous dans la Grande Ville de Freljord pour vous présenter au Sanctuaire et passer l'Épreuve tellurique ancestrale.",
+    :RewardString => "Bénédiction Tellurique & Gloire d'Anivia"
   }
   
   # Here's an example of not defining the quest giver and reward text

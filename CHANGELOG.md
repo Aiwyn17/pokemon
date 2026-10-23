@@ -17,6 +17,40 @@ En cas de bug plus tard, ce journal permet d'identifier immédiatement **quel fi
 ## 📅 Historique des Ajouts & Modifications
 
 
+### `[AGY-100]` — 2026-10-23 — Structuration de la Progression de Freljord (Village 1 -> Havre-Givré Intermédiaire -> Grande Ville) & Intégration des Quêtes / Forge
+- **Auteur** : `Antigravity`
+- **Catégorie** : Progression Scénarisée, Quêtes MQS & Overworld (`Plugins/MQS/004_Quest_Data.rb`, `Data/Scripts/012_Overworld/011_Overworld_HavreGivre_Freljord.rb`, `PBS/map_metadata.txt`)
+- **Demande Utilisateur** : 
+  - *« juste pour bien te recap village 1 c le village de depart havre givré cest un village intermediaire et ensuite on creera la grande ville ou se passera lepreuve tu peux faire ca pour le moment »*
+- **Contenu Intégré & Optimisations** :
+  1. **Harmonisation de la Progression de l'Acte 1 (Freljord)** :
+     - **Village 1 (Map 022 - Bourg-Givré)** : Village de départ officiel (Maison du joueur `Map033`, Laboratoire `Map042` avec les Starters boréaux Geloupiot, Tyrakoup, Veilliris, cinématique de départ de Soren et départ vers la Route 1).
+     - **Route 1 (Map 048)** : Route enneigée intermédiaire, buissons de hautes herbes boréales et barrage du gardien Krag.
+     - **Havre-Givré (Map 076)** : Établi officiellement comme **Village Intermédiaire** de montagne et carrefour logistique avant les hautes cimes.
+     - **La Grande Ville** : Établie comme la future grande destination où se déroulera la Grande Épreuve tellurique.
+  2. **Chaîne de Quêtes Principales dans `MQS` (`Plugins/MQS/004_Quest_Data.rb`)** :
+     - **Quête 1 — « Le Serment de Freljord »** : Départ du Village 1, choix du Starter au Labo, traversée de la Route 1 et arrivée à Havre-Givré.
+     - **Quête 2 — « La Halte de Havre-Givré »** : Repos au refuge près du feu, découverte du Marché boréal et forge d'un équipement LoL à l'enclume.
+     - **Quête 3 — « La Grande Épreuve des Cimes »** : Traversée vers la Grande Ville et préparation à l'épreuve sacrée.
+  3. **Vie & Systèmes de Havre-Givré (`011_Overworld_HavreGivre_Freljord.rb`)** :
+     - `pbMarketHavreGivre` : Vente de ravitaillement boréal et de composants d'artisanat LoL (`LONGSWORD`, `CLOTHARMOR`, `RUBYCRYSTAL`).
+     - `pbForgeHavreGivre` : Accès direct à l'enclume d'artisanat LoL (`pbOpenForge`) avec déblocage des recettes de B.F. Glaive et Cotte de Mailles.
+     - `pbScoutHavreGivre` : Dialogue annonçant la route vers la Grande Ville de Freljord pour la Grande Épreuve.
+     - `pbOnEnterHavreGivre` & `pbHealAtHavreGivreRefuge` : Validation fluide des étapes de quêtes.
+  4. **Métadonnées de Cartes (`PBS/map_metadata.txt`)** :
+     - Définition complète des sections `[022]` (Village de Départ), `[033]` (Maison du joueur) et `[042]` (Laboratoire) avec météo boréale (`Weather = Snow,15`).
+- **Fichiers modifiés** :
+  - `Plugins/MQS/004_Quest_Data.rb`
+  - `Data/Scripts/012_Overworld/011_Overworld_HavreGivre_Freljord.rb`
+  - `PBS/map_metadata.txt`
+  - `CHANGELOG.md`
+- **Comment tester en jeu** :
+  - Lancer le jeu : ouvrir le menu Quêtes (Touche Q ou menu Pause) pour consulter la quête principale.
+  - À Havre-Givré : parler à l'aubergiste pour se soigner, au marchand pour acheter des composants LoL, au forgeron pour combiner des épées en B.F. Glaive, et à l'éclaireur au pont Nord.
+- **Comment désactiver en cas de bug** :
+  - `git revert HEAD`
+
+
 ### `[AGY-099]` — 2026-10-23 — Intégration d'Advanced AI System v2.0 (v2.7.2) pour Pokémon Essentials v21.1 & Compatibilité DBK
 - **Auteur** : `Antigravity`
 - **Catégorie** : IA de Combat Stratégique, Méta-Mécaniques & Plugins (`Plugins/[AAI] Advanced AI System/`)

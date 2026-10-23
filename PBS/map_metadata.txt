@@ -1,4 +1,4 @@
-﻿# See the documentation on the wiki to learn how to edit this file.
+# See the documentation on the wiki to learn how to edit this file.
 #-------------------------------
 [001]   # Intro
 Name = Intro
@@ -235,6 +235,14 @@ BattleBack = rocky
 MapSize = 2,11
 Environment = Rock
 #-------------------------------
+[048]   # Route 1 Freljord
+Name = Route 1
+Outdoor = true
+ShowArea = true
+Weather = Snow,30
+BattleBack = field
+Environment = Rock
+#-------------------------------
 [049]   # Rock Cave 1F
 Name = Route 7
 Bicycle = true
@@ -396,3 +404,63 @@ Name = Tiall Region
 Outdoor = true
 MapPosition = 1,13,16
 BattleBack = city
+#-------------------------------
+[076]   # Village de Transition Freljord (Havre-Givre)
+Name = Havre-Givre
+Outdoor = true
+ShowArea = true
+Weather = Snow,25
+MapPosition = 0,13,9
+BattleBack = field
+Environment = None
+
+
+
+
+#-------------------------------
+[078]   # Caverne de l'Epreuve - Salle des Statues
+Name = Salle des Statues
+Outdoor = false
+ShowArea = true
+BattleBack = cave1
+Environment = Cave
+#-------------------------------
+[079]   # Caverne de l'Epreuve - Labyrinthe de Verglas
+Name = Labyrinthe de Verglas
+Outdoor = false
+ShowArea = true
+BattleBack = cave1
+Environment = Cave
+#-------------------------------
+[080]   # Caverne de l'Epreuve - Abime Hurlant
+Name = Abime Hurlant
+Outdoor = false
+ShowArea = true
+Weather = Snow,15
+BattleBack = cave1
+Environment = Cave
+#-------------------------------
+[081]   # Caverne de l'Epreuve - Cratere du Crash
+Name = Cratere du Crash
+Outdoor = false
+ShowArea = true
+BattleBack = cave1
+Environment = Cave
+
+#-------------------------------
+[022]   # Village de Depart (Bourg-Givre)
+Name = Village de Depart
+Outdoor = true
+ShowArea = true
+Weather = Snow,15
+BattleBack = field
+Environment = None
+#-------------------------------
+[033]   # Maison du Joueur (Village de Depart)
+Name = Maison de \PN
+HealingSpot = 22,6,10
+MapPosition = 0,13,11
+#-------------------------------
+[042]   # Laboratoire du Professeur (Village de Depart)
+Name = Laboratoire de Freljord
+MapPosition = 0,13,11
