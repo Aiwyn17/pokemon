@@ -16,6 +16,39 @@ En cas de bug plus tard, ce journal permet d'identifier immédiatement **quel fi
 
 ## 📅 Historique des Ajouts & Modifications
 
+### `[AGY-093]` — 2026-10-23 — Intégration d'Arcky's Region Map v3.3.0 & Arcky's Utilities v1.1.0 (Guide Officiel)
+- **Auteur** : `Antigravity`
+- **Catégorie** : Carte Régionale, Interface & Plugins (`Plugins/Arcky's Region Map/`, `Plugins/Arcky's Utilities/`, `Graphics/`, Racine)
+- **Demande Utilisateur** :
+  - *« https://docs.arcky-tech.be/region-map tu sais me rajouter ca selon les regles du site web ou il y a tout expliquer »*
+  - Archives fournies : `media_1792784452117_f09a9f3e.zip` (*Arcky's Utilities v1.1.0*) et `media_1792784456989_790e4181.zip` (*Arcky's Region Map v3.3.0*).
+- **Conformité Stricte aux Directives Officielles (Arcky-Tech Docs)** :
+  1. **Dépendance Prérequise Installée** :
+     - Installation d'*Arcky's Utilities v1.1.0* dans `Plugins/Arcky's Utilities/` (`Requires = Arcky's Utilities, 1.0.9` satisfait).
+  2. **Structure des Répertoires Respectée** :
+     - Plugin principal extrait dans `Plugins/Arcky's Region Map/`.
+     - Intégration complète des ressources graphiques dans `Graphics/UI/Town Map/` (7 thèmes d'interface au choix, boîtes d'aperçu de lieux, météo, quêtes, baies, surbrillances de routes, icônes de vol et de dresseurs).
+     - Déploiement des surcouches Pokédex dans `Graphics/UI/Pokedex/` et des icônes cardinales dans `Graphics/Icons/`.
+     - Mise en place de `townmapgen v21.1.html` à la racine du projet pour la génération assistée des coordonnées PBS.
+  3. **Configuration & Support des Lieux de Freljord** :
+     - Ajout de l'entrée de lieu `HavreGivre` dans [`001_RegionMap_LocationInfo.rb`](file:///c:/Users/Mon%20POc/3D%20Objects/Pokemon%20Essentials%20v21.1%202023-07-30/Plugins/Arcky's%20Region%20Map/000_Settings_and_Setup/001_RegionMap_LocationInfo.rb) pour le village fortifié de l'Acte 1.
+     - Prise en charge du zoom carte (`Ctrl` / touches de saut), du changement de région, de la recherche rapide et de la compatibilité souris (`Input::MOUSELEFT`, `Input::MOUSERIGHT`).
+- **Fichiers créés / modifiés** :
+  - `Plugins/Arcky's Utilities/` (suite complète v1.1.0)
+  - `Plugins/Arcky's Region Map/` (suite complète v3.3.0)
+  - `Graphics/UI/Town Map/` (thèmes, icônes et surbrillances)
+  - `Graphics/UI/Pokedex/`
+  - `Graphics/Icons/`
+  - `townmapgen v21.1.html`
+  - `CHANGELOG.md`
+- **Comment tester en jeu** :
+  - Ouvrir la Carte Régionale (depuis le Poké-Matos / Sac / Événement PNJ).
+  - Observer la nouvelle interface HD dynamique avec zoom, navigation fluide, aperçu météo et descriptions de lieux.
+- **Comment désactiver en cas de bug** :
+  - `git revert HEAD`
+
+---
+
 ### `[AGY-092]` — 2026-10-23 — Intégration du Deluxe Battle Kit (DBK v1.3.1) & Sorts d'Invocateur LoL (Option 4 : Combats Dresseurs/Boss & IA Tactique)
 - **Auteur** : `Antigravity`
 - **Catégorie** : Combat, Moteur & Plugins (`Plugins/[DBK_000] Deluxe Battle Kit/`, `Plugins/[LoL_000] Summoner Spells/`, `Audio/`, `Graphics/`)
@@ -59,6 +92,41 @@ En cas de bug plus tard, ce journal permet d'identifier immédiatement **quel fi
   - Lancer un combat contre un dresseur (ex: Kael ou PNJ de test).
   - Sélectionner la 4e option du menu (ou appuyer sur Shift/Action) pour ouvrir le menu des Sorts d'Invocateur.
   - Observer l'IA ennemie utiliser ses propres sorts tactiquement selon l'état des PV.
+- **Comment désactiver en cas de bug** :
+  - `git revert HEAD`
+
+---
+
+## 📅 Historique des Ajouts & Modifications
+
+### `[AGY-093]` — 2026-10-23 — Intégration d'Arcky's Region Map v3.3.0 & Arcky's Utilities v1.1.0 (Guide Officiel)
+- **Auteur** : `Antigravity`
+- **Catégorie** : Carte Régionale, Interface & Plugins (`Plugins/Arcky's Region Map/`, `Plugins/Arcky's Utilities/`, `Graphics/`, Racine)
+- **Demande Utilisateur** :
+  - *« https://docs.arcky-tech.be/region-map tu sais me rajouter ca selon les regles du site web ou il y a tout expliquer »*
+  - Archives fournies : `media_1792784452117_f09a9f3e.zip` (*Arcky's Utilities v1.1.0*) et `media_1792784456989_790e4181.zip` (*Arcky's Region Map v3.3.0*).
+- **Conformité Stricte aux Directives Officielles (Arcky-Tech Docs)** :
+  1. **Dépendance Prérequise Installée** :
+     - Installation d'*Arcky's Utilities v1.1.0* dans `Plugins/Arcky's Utilities/` (`Requires = Arcky's Utilities, 1.0.9` satisfait).
+  2. **Structure des Répertoires Respectée** :
+     - Plugin principal extrait dans `Plugins/Arcky's Region Map/`.
+     - Intégration complète des ressources graphiques dans `Graphics/UI/Town Map/` (7 thèmes d'interface au choix, boîtes d'aperçu de lieux, météo, quêtes, baies, surbrillances de routes, icônes de vol et de dresseurs).
+     - Déploiement des surcouches Pokédex dans `Graphics/UI/Pokedex/` et des icônes cardinales dans `Graphics/Icons/`.
+     - Mise en place de `townmapgen v21.1.html` à la racine du projet pour la génération assistée des coordonnées PBS.
+  3. **Configuration & Support des Lieux de Freljord** :
+     - Ajout de l'entrée de lieu `HavreGivre` dans [`001_RegionMap_LocationInfo.rb`](file:///c:/Users/Mon%20POc/3D%20Objects/Pokemon%20Essentials%20v21.1%202023-07-30/Plugins/Arcky's%20Region%20Map/000_Settings_and_Setup/001_RegionMap_LocationInfo.rb) pour le village fortifié de l'Acte 1.
+     - Prise en charge du zoom carte (`Ctrl` / touches de saut), du changement de région, de la recherche rapide et de la compatibilité souris (`Input::MOUSELEFT`, `Input::MOUSERIGHT`).
+- **Fichiers créés / modifiés** :
+  - `Plugins/Arcky's Utilities/` (suite complète v1.1.0)
+  - `Plugins/Arcky's Region Map/` (suite complète v3.3.0)
+  - `Graphics/UI/Town Map/` (thèmes, icônes et surbrillances)
+  - `Graphics/UI/Pokedex/`
+  - `Graphics/Icons/`
+  - `townmapgen v21.1.html`
+  - `CHANGELOG.md`
+- **Comment tester en jeu** :
+  - Ouvrir la Carte Régionale (depuis le Poké-Matos / Sac / Événement PNJ).
+  - Observer la nouvelle interface HD dynamique avec zoom, navigation fluide, aperçu météo et descriptions de lieux.
 - **Comment désactiver en cas de bug** :
   - `git revert HEAD`
 
