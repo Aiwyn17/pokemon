@@ -134,6 +134,7 @@ class Scene_Map
   end
 
   def updateMaps
+    return if !$map_factory
     $map_factory.maps.each do |map|
       map.update
     end
@@ -141,6 +142,7 @@ class Scene_Map
   end
 
   def updateSpritesets(refresh = false)
+    return if !$map_factory
     @spritesets = {} if !@spritesets
     $map_factory.maps.each do |map|
       @spritesets[map.map_id] = Spriteset_Map.new(map) if !@spritesets[map.map_id]

@@ -575,7 +575,7 @@ def pbDirigeableNoxus_EmbarquementEchelle(actors_to_board = [], egg_actor = nil)
   c_rung    = Color.new(165, 115, 48)
 
   # 1) L'échelle de corde se déroule lentement depuis le pont du Dirigeable (70 frames)
-  pbSEPlay("Battle Throw", 75, 85) rescue nil
+  pbSEPlay("Battle throw", 75, 85) rescue nil
   unroll_frames = 70
   unroll_frames.times do |i|
     cur_h = ((i + 1) * max_h.to_f / unroll_frames).round.clamp(8, max_h)
@@ -738,7 +738,7 @@ def pbDirigeableNoxus_CaptureOeuf(egg_event = nil, egg_actor = nil, altar_cx = 2
   c_gold    = Color.new(235, 190, 80)
   c_red     = Color.new(195, 38, 46)
 
-  pbSEPlay("Battle Throw", 85, 65) rescue nil
+  pbSEPlay("Battle throw", 85, 65) rescue nil
   descent_frames = 130
   descent_frames.times do |i|
     t = (i + 1).to_f / descent_frames
@@ -1060,6 +1060,6 @@ def pbCinematiqueDirigeableNoxus(explicit_egg_event_id = nil, utiliser_ma_carte 
 
   # [AGY-102] Activation de la Premiere Quete Principale de Freljord
   if defined?(activateQuest)
-    activateQuest(:Quest1, colorQuest("blue"), true) rescue nil
+    activateQuest(:Quest1, colorQuest("blue"), true, true) rescue nil
   end
 end

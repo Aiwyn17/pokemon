@@ -16,43 +16,41 @@ class QuestList_Scene
 end
 
 #===============================================================================
-# Auto-initialisation et Synchronisation de la Quête de Départ
+# Auto-initialisation et Synchronisation Silencieuse de la Quête de Départ
 #===============================================================================
 def pbAutoInitFreljordQuests
   return if !$PokemonGlobal || !$PokemonGlobal.quests
-  # Si aucune quête n'a encore été activée, démarrer automatiquement la Quête 1
+  # Ne jamais déclencher pendant la cinématique de l'Intro (Map 1)
+  return if $game_map && $game_map.map_id == 1
+
+  # Si aucune quête n'a encore été activée, démarrer discrètement la Quête 1 (silent = true)
   if !hasAnyQuests?
-    activateQuest(:Quest1, colorQuest("blue"), true)
+    activateQuest(:Quest1, colorQuest("blue"), true, true)
   end
 
-  # Synchronisation dynamique selon la progression du joueur
+  # Synchronisation dynamique selon la progression du joueur (toujours silent = true)
   if getCurrentStage(:Quest1)
     stage = getCurrentStage(:Quest1)
     # Étape 1 : Maman dans la maison -> Si le joueur a déjà parlé à Maman, passer à l'étape 2 (Labo)
     if stage == 1 && $player && $player.has_running_shoes
-      advanceQuestToStage(:Quest1, 2)
+      advanceQuestToStage(:Quest1, 2, nil, true, true)
     end
     stage = getCurrentStage(:Quest1)
     # Étape 2 : Laboratoire -> Si le joueur a déjà son starter, passer à l'étape 3 (Route 1)
     if stage <= 2 && $player && $player.party && $player.party.length > 0
-      advanceQuestToStage(:Quest1, 3)
+      advanceQuestToStage(:Quest1, 3, nil, true, true)
     end
     # Étape 3 : Arrivée à Havre-Givré (Map 76) -> Compléter la quête 1 et démarrer la quête 2
     if $game_map && $game_map.map_id == 76
-      completeQuest(:Quest1)
-      activateQuest(:Quest2, colorQuest("blue"), true) if !getCurrentStage(:Quest2)
+      completeQuest(:Quest1, nil, true, true)
+      activateQuest(:Quest2, colorQuest("blue"), true, true) if !getCurrentStage(:Quest2)
     end
   end
 end
 
 EventHandlers.add(:on_enter_map, :freljord_auto_start_quest,
-  proc { |_map_id|
-    pbAutoInitFreljordQuests rescue nil
-  }
-)
-
-EventHandlers.add(:on_step_taken, :freljord_step_quest_sync,
-  proc {
+  proc { |map_id|
+    next if map_id == 1 # Ignorer la carte d'intro / cinématique
     pbAutoInitFreljordQuests rescue nil
   }
 )

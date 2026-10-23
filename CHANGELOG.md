@@ -17,6 +17,39 @@ En cas de bug plus tard, ce journal permet d'identifier immédiatement **quel fi
 ## 📅 Historique des Ajouts & Modifications
 
 
+### `[AGY-103]` — 2026-10-23 — Résolution des 3 Erreurs Console (NoMethodError Scene_Map, ENOENT Battle throw) & Suppression des Boîtes de Dialogue Intrusives MQS
+- **Auteur** : `Antigravity`
+- **Catégorie** : Correctif Moteur & Quêtes Silencieuses (`Data/Scripts/003_Game processing/002_Scene_Map.rb`, `Data/Scripts/012_Overworld/009_Overworld_Cinematics_LoL.rb`, `Plugins/MQS/002_Quest_Main.rb`, `Plugins/MQS/005_Quest_MenuHandlers.rb`)
+- **Demande Utilisateur** : 
+  - *« au debut de la cinematique ya eu une casse blanche de disocussion et lorsque j'ai spawn cest ecrit jai deja start la quest en dialoguqe aussi et j'ai 3 eereurs »* (avec captures d'écran de la console montrant les 3 exceptions).
+- **Problèmes Identifiés & Corrections Appliquées** :
+  1. **Boîtes de Dialogue Intrusives MQS au Démarrage & au Réveil** :
+     - *Cause* : Le plugin MQS contenait des `pbMessage` natifs intrusifs (`pbMessage("New quest discovered!")` et `pbMessage("You have already started this quest.")`). Cela provoquait l'affichage d'un cadre de dialogue bloquant au début de la cinématique sur écran noir, puis une boîte de texte parasite au réveil dans la maison.
+     - *Correctif* :
+       - Suppression de tous les messages d'avertissement inutiles dans `Plugins/MQS/002_Quest_Main.rb`.
+       - Ajout du paramètre `silent = false` dans toutes les méthodes MQS (`activateQuest`, `advanceQuestToStage`, `completeQuest`).
+       - Les initialisations automatiques de Freljord s'exécutent désormais en mode 100% discret et silencieux (`silent: true`).
+       - Exclusion totale de la carte d'Intro (`map_id == 1`) : zéro interaction intempestive pendant la cinématique.
+  2. **Erreur `NoMethodError at 002_Scene_Map.rb:137 - undefined method 'maps' for nil:NilClass`** :
+     - *Cause* : `updateMaps` et `updateSpritesets` étaient appelés avant l'instanciation complète de `$map_factory` lors du chargement initial de la carte.
+     - *Correctif* : Ajout de la garde de sécurité `return if !$map_factory` dans `updateMaps` et `updateSpritesets` de `002_Scene_Map.rb`.
+  3. **Erreurs `Errno::ENOENT - No such file or directory - Audio/SE/Battle Throw`** :
+     - *Cause* : Le fichier physique dans `Audio/SE/` est nommé `Battle throw.ogg` (avec 'throw' en minuscule). L'appel dans `009_Overworld_Cinematics_LoL.rb` utilisait `"Battle Throw"` avec un 'T' majuscule, déclenchant l'exception d'absence de fichier.
+     - *Correctif* : Remplacement par `"Battle throw"` aux lignes 578 et 741.
+- **Fichiers modifiés** :
+  - `Data/Scripts/003_Game processing/002_Scene_Map.rb`
+  - `Data/Scripts/012_Overworld/009_Overworld_Cinematics_LoL.rb`
+  - `Plugins/MQS/002_Quest_Main.rb`
+  - `Plugins/MQS/005_Quest_MenuHandlers.rb`
+  - `CHANGELOG.md`
+- **Comment tester en jeu** :
+  - Lancer une nouvelle partie : la cinématique démarre immédiatement de manière fluide sans aucune boîte de dialogue blanche intempestive.
+  - La console n'affiche plus aucune exception (ni `NoMethodError`, ni `ENOENT Battle Throw`).
+  - Au réveil dans la chambre, aucun dialogue parasite n'apparaît. En ouvrant les quêtes (Touche Q ou Menu Pause), la quête *« Le Serment de Freljord »* est parfaitement présente.
+- **Comment désactiver en cas de bug** :
+  - `git revert HEAD`
+
+
 ### `[AGY-102]` — 2026-10-23 — Intégration Native & Transparente des Quêtes dans le Déroulement du Prologue (Cinématique -> Chambre -> Maman -> Labo -> Havre-Givré)
 - **Auteur** : `Antigravity`
 - **Catégorie** : Scénarisation & Quêtes Overworld (`Data/Scripts/012_Overworld/009_Overworld_Cinematics_LoL.rb`, `Plugins/MQS/005_Quest_MenuHandlers.rb`)
