@@ -17,6 +17,28 @@ En cas de bug plus tard, ce journal permet d'identifier immédiatement **quel fi
 ## 📅 Historique des Ajouts & Modifications
 
 
+### `[AGY-108]` — 2026-10-24 — Résolution du Manquant Sprite `Gemini_Generated_Image_3rofbw3rofbw3rof` (Laboratoire Map042)
+- **Auteur** : `Antigravity`
+- **Catégorie** : Correctif Graphismes Événement & Carte (`Data/Map042.rxdata`, `Graphics/Characters/`)
+- **Demande Utilisateur** : 
+  - Capture d'écran de l'erreur console :
+    `Exception 'Errno::ENOENT' at 001_RPG_Cache.rb:127 - No such file or directory - Graphics/Characters/Gemini_Generated_Image_3rofbw3rofbw3rof`
+- **Cause identifiée** :
+  - Dans la carte du Laboratoire (`Map042.rxdata`), l'événement du Professeur de Freljord possédait une page utilisant l'ancien nom de fichier brut `Gemini_Generated_Image_3rofbw3rofbw3rof` au lieu du sprite officiel `prof_meleze_walk`.
+  - Lors du déclenchement de cette page d'événement (choix du Pokémon starter / dialogue du Professeur), `RPG::Cache` tentait de charger ce fichier absent du dossier `Graphics/Characters/`.
+- **Correctif appliqué** :
+  1. Correction directe de la carte `Data/Map042.rxdata` : l'événement du Professeur utilise désormais officiellement `prof_meleze_walk` sur toutes ses pages.
+  2. Création par précaution de `Graphics/Characters/Gemini_Generated_Image_3rofbw3rofbw3rof.png` (copie conforme de `prof_meleze_walk.png`) pour garantir une compatibilité et résilience totale contre tout résidu de sauvegarde.
+- **Fichiers modifiés** :
+  - `Data/Map042.rxdata`
+  - `Graphics/Characters/Gemini_Generated_Image_3rofbw3rofbw3rof.png`
+  - `CHANGELOG.md`
+- **Comment tester en jeu** :
+  - Entrer dans le Laboratoire de Freljord et parler au Professeur : aucun message d'erreur `Errno::ENOENT` n'apparaît et son sprite de marche s'affiche parfaitement.
+- **Comment désactiver en cas de bug** :
+  - `git revert HEAD`
+
+
 ### `[AGY-107]` — 2026-10-24 — Correctif Crash Combat NameError `calc_type` dans Deluxe Battle Kit (`[002] Damage Calc Refactor.rb`)
 - **Auteur** : `Antigravity`
 - **Catégorie** : Correctif Crash Moteur de Combat (`Plugins/[DBK_000] Deluxe Battle Kit/[000] Essentials Patches/[002] Damage Calc Refactor.rb`)
