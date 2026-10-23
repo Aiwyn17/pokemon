@@ -16,6 +16,1117 @@ En cas de bug plus tard, ce journal permet d'identifier immédiatement **quel fi
 
 ## 📅 Historique des Ajouts & Modifications
 
+### `[AGY-089]` — 2026-10-23 — Intégration Sécurisée des 49 Objets League of Legends & des Nouvelles Mécaniques de Combat (Travaux de Jules AI)
+- **Auteur** : `Antigravity` (portage et sécurisation des travaux de `Jules AI` sur GitHub)
+- **Catégorie** : Objets PBS, Moteur de Combat Ruby & Système de Statistiques LoL (`PBS/items.txt`, `Data/Scripts/`)
+- **Contexte & Sécurisation Critique** :
+  - La branche GitHub de Jules AI contenait d'importantes suppressions accidentelles d'assets audio, graphiques et cartes RPG Maker dues à une modification de `.gitignore`.
+  - Intégration sélective et chirurgicale de l'ensemble des 49 objets et mécaniques de combat créés et corrigés par Jules AI, sans aucune perte de données locales (cartes 076..081, graphismes et sons préservés à 100%).
+- **Contenu Intégré & Nouvelles Mécaniques** :
+  1. **49 Objets League of Legends (`PBS/items.txt`)** :
+     - **33 Objets Mythiques / Légendaires** : Coiffe de Rabadon (`RABADON`), Lame d'infini (`INFINITYEDGE`), Cotte épineuse (`THORNMAIL`), Force de la Trinité (`TRINITYFORCE`), Ange Gardien (`GUARDIANANGEL`), Soif-de-sang (`BLOODTHIRSTER`), Cœurgel / Warmog (`WARMOGSARMOR`), Sablier de Zhonya (`ZHONYASHOURGLASS`), Tempête de Luden (`LUDENSTEMPEST`), Épée vespérale de Draktharr (`DUSKBLADE`), Bâton du vide (`VOIDSTAFF`), Salutations de Dominik (`LORDDOMINIKSREGARDS`), Couperet noir (`BLACKCLEAVER`), Danseur fantôme (`PHANTOMDANCER`), Gage de Sterak (`STERAKSGAGE`), Canon ultrarapide (`RAPIDFIRECANNON`), Poignard de Statikk (`STATIKKSHIV`), Tueur de krakens (`KRAKENSLAYER`), Éviscérateur (`GOREDRINKER`), Estropieur (`STRIDEBREAKER`), Pourfendeur divin (`DIVINESUNDERER`), Éclipse (`ECLIPSE`), Griffe du rôdeur (`PROWLERSCLAW`), Angoisse de Liandry (`LIANDRYSANGUISH`), Gel éternel (`EVERFROST`), Moissonneur nocturne (`NIGHTHARVESTER`), Ceinture-roquette Hextech (`HEXTECHROCKETBELT`), Créateur de failles (`RIFTMAKER`), Égide solaire (`SUNFIREAEGIS`), Gantelet givrant (`FROSTFIREGAUNTLET`), Chimico-scaphandre turbo (`TURBOCHEMTANK`), Médaillon de l'Iron Solari (`LOCKETOFTHEIRONSOLARI`), Régénérateur de pierre de lune (`MOONSTONEKRENOWER`).
+     - **16 Composants & Objets de Base** : Épée longue (`LONGSWORD`), Pioche (`PICKAXE`), B.F. Glaive (`BFSWORD`), Tome d'amplification (`AMPLIFYINGTOME`), Baguette explosive (`BLASTINGWAND`), Baguette trop grosse (`NEEDLESSLYLARGEROD`), Armure d'étoffe (`CLOTHARMOR`), Cotte de mailles (`CHAINVEST`), Manteau de corbeau (`NULLMAGICMANTLE`), Manteau de Négatron (`NEGATRONCLOAK`), Cristal de rubis (`RUBYCRYSTAL`), Ceinture du géant (`GIANTSBELT`), Sceptre vampirique (`VAMPIRICSCEPTER`), Maillet gelé / Phage (`PHAGE`), Brillance (`SHEEN`), Zèle (`ZEAL`).
+  2. **Formule de Dégâts League of Legends (`003_Move_UsageCalculations.rb`)** :
+     - Calcul des dégâts bruts normalisés puis réduction d'Armure / RM selon la formule canonique LoL : `damage = (raw_damage * (100.0 / (100.0 + defense))).floor`.
+     - Pénétration d'Armure (Salutations de Dominik 35%, Pourfendeur divin 20%, Éclipse 15%) et Pénétration Magique (Bâton du vide 40%).
+     - Multiplicateurs de dégâts critiques bonus (+25% pour Lame d'infini, Danseur fantôme, Canon ultrarapide ; +10% pour Zèle).
+  3. **Résurrection de l'Ange Gardien (`003_Battler_ChangeSelf.rb`)** :
+     - Hook direct dans `pbFaint` : si le Pokémon tient l'Ange Gardien lors d'un K.O., il est immédiatement ressuscité avec 50% de ses PV max, animation de soin et consommation de l'objet.
+  4. **Effets Passifs d'Objets en Combat (`009_Battle_ItemEffects.rb`)** :
+     - **Vol de vie (Omnivamp / Lifesteal)** après chaque attaque infligeant des dégâts : Soif-de-sang (+18% physique), Éviscérateur (+20% physique), Sceptre vampirique (+5% physique), Créateur de failles (+15% spécial).
+     - **Renvoi de dégâts (Thornmail)** : 1/8ème des PV max de l'attaquant renvoyé sur coup physique reçu.
+     - **Régénération Warmog** : +5% des PV max à la fin de chaque tour si le porteur peut être soigné.
+     - **Bonus de Vitesse (MS)** : Force de la Trinité, Danseur fantôme, Canon ultrarapide, Statikk (+30%), Luden, Krakens, Estropieur, Chimico-scaphandre (+20%), Zèle (+10%).
+  5. **Attribution Dynamique des PV Max (`001_Pokemon.rb`)** :
+     - Les objets accordant des PV plats (Warmog +150, Sterak +100, etc.) mettent à jour dynamiquement `totalhp` et les PV actuels lors de l'équipement via `item=` et `calc_stats`, sans bug lors de la montée de niveau.
+- **Fichiers modifiés** :
+  - `PBS/items.txt`
+  - `Data/Scripts/011_Battle/002_Battler/003_Battler_ChangeSelf.rb`
+  - `Data/Scripts/011_Battle/003_Move/003_Move_UsageCalculations.rb`
+  - `Data/Scripts/011_Battle/007_Other battle code/009_Battle_ItemEffects.rb`
+  - `Data/Scripts/014_Pokemon/001_Pokemon.rb`
+  - `CHANGELOG.md`
+- **Comment tester en jeu** :
+  - Ouvrir le menu Debug (`F9`) -> `Objets` -> S'octroyer un objet LoL (ex. `RABADON`, `INFINITYEDGE`, `GUARDIANANGEL`, `BLOODTHIRSTER`, `WARMOGSARMOR`).
+  - Équiper un Pokémon : vérifier dans le résumé que les PV augmentent (avec Warmog) et lancer un combat.
+  - En combat : vérifier que l'Ange Gardien ressuscite à 50% PV, que la Soif-de-sang soigne 18% des dégâts physiques infligés, et que la Cotte épineuse inflige des dégâts à l'attaquant.
+- **Comment désactiver en cas de bug** :
+  - `git revert HEAD` ou restaurer les 5 fichiers : `git checkout HEAD~1 -- PBS/items.txt Data/Scripts/011_Battle/ Data/Scripts/014_Pokemon/`
+
+---
+
+### `[AGY-088]` — 2026-10-23 — Salle 4 : Restructuration Complète & Mise en Scène du Cratère du Crash Noxien (Map 081)
+- **Auteur** : `Antigravity`
+- **Catégorie** : Création de Carte, Mise en Scène Narrative & Combats de Boss (`Data/Map081.rxdata`, `Data/Tilesets.rxdata`)
+- **Demande Utilisateur** :
+  - *« ok maintenant c'est la salle du crash on est daccord tu peux faire un beau truc scenarisé avec ce qu'on avait convenu »*.
+- **Réalisations & Correctifs Appliqués** :
+  1. **Correction Intégrale de la Praticabilité (0 Blocage)** :
+     - Remplacement de l'ancien sol impassable par le véritable sol en pierre praticable de caverne (`Tile 388`, collision `0x0000`).
+     - Configuration stricte des débris métalliques et du réacteur Hextech en impassable (`Tile 512..543`, collision `0x0F` dans `Tileset 28`). Le joueur peut se déplacer librement à travers toute la salle dès son arrivée en `(10, 23)` sans jamais être bloqué.
+  2. **Scénarisation & Cinématique d'Entrée** :
+     - En avançant en `(10, 20)`, un tremblement de terre retentit (`Voltorb Flip explosion` + secousse d'écran), suivi du cri d'alerte des soldats noxiens (`Exclaim`).
+     - Les soldats Kael et Draven apostrophent le joueur, stupéfaits qu'un habitant de Freljord ait survécu aux épreuves.
+  3. **Confrontation des 2 Soldats d'Élite de Noxus** :
+     - **Soldat Kael** `(9, 13)` : Affronte le joueur avec *Rocphite* (Niv. 13) et *Voragath* (Niv. 14).
+     - **Soldat Draven** `(12, 13)` : Affronte le joueur avec *Xenosai* (Niv. 14) et *Ziggs* (Niv. 15).
+     - Révélation narrative : ils admettent leur défaite mais révèlent que le Commandant Valerius a déjà évacué l'Œuf d'Anivia vers Port-Brumeux pour appareiller vers Zaun !
+  4. **Fouille de l'Épave du Réacteur Hextech** :
+     - En inspectant le réacteur en `(10, 10)`, le joueur découvre une sacoche militaire noxienne contenant la **CT13 Laser Glace** (`pbItemBall(:TM13)`) ainsi que l'ordre de mission officiel confirmant la destination de Valerius.
+  5. **Sorties de Carte** :
+     - Au Sud en `(10..11, 23)` : retour vers l'Abîme Hurlant (`Map 080`).
+     - Au Nord en `(10..11, 1)` : sortie de la caverne vers la Route 3 / le col extérieur menant à Port-Brumeux (`Map 031`).
+- **Aperçus Visuels** :
+  - [salle4_crash_final_visual.png](file:///C:/Users/Mon%20POc/.gemini/antigravity/brain/829cfc1b-7134-4156-b9ea-bafe0bbd893b/salle4_crash_final_visual.png) (Rendu complet de la caverne avec réacteur, débris et acteurs).
+  - [map081_passability_grid.png](file:///C:/Users/Mon%20POc/.gemini/antigravity/brain/829cfc1b-7134-4156-b9ea-bafe0bbd893b/map081_passability_grid.png) (Grille de praticabilité 100% verte).
+
+---
+
+### `[AGY-087]` — 2026-10-23 — Salle 3 : Reset Automatique du Dresseur Sigurd à Chaque Chute
+- **Auteur** : `Antigravity`
+- **Catégorie** : Logique de Combat & Événements (`Data/Map080.rxdata`)
+- **Demande Utilisateur** :
+  - *« le dresseur reset aussi? »* -> Option validée : réinitialiser le dresseur à chaque chute (il faut le rebattre à chaque fois pour rouvrir le TP).
+- **Réalisations & Correctifs Appliqués** :
+  - Lors de l'utilisation du téléporteur runique pour remonter au départ du pont, la commande `pbSetSelfSwitch(6, "A", false)` réinitialise instantanément le Gardien Sigurd (Event ID 6).
+  - En conséquence :
+    - Le pont de glace est remis à neuf (Switch 50 OFF).
+    - Le téléporteur redevient éteint et scellé (Switch 51 OFF).
+    - Si le joueur chute à nouveau, le **Gardien Sigurd est à nouveau prêt au combat** et bloque la sortie tant qu'il n'est pas battu !
+- **Aperçu Visuel** :
+  - [preview_salle3_pont_avec_intersections.png](file:///C:/Users/Mon%20POc/.gemini/antigravity/brain/829cfc1b-7134-4156-b9ea-bafe0bbd893b/preview_salle3_pont_avec_intersections.png).
+
+---
+
+### `[AGY-086]` — 2026-10-23 — Salle 3 : Conditionnement du Téléporteur de Remontée (Victoire Contre Sigurd Obligatoire)
+- **Auteur** : `Antigravity`
+- **Catégorie** : Logique de Combat & Déverrouillage d'Événement (`Data/Map080.rxdata`)
+- **Demande Utilisateur** :
+  - *« ok bien le tp derriere le dresseur meme invisble est actif arrange ca »*.
+- **Réalisations & Correctifs Appliqués** :
+  1. **Téléporteur Scellé et Inactif tant que Sigurd n'est pas battu** :
+     - **Page 1 (Switch 51 OFF)** : Le téléporteur est totalement désactivé (invisible et inopérant au toucher). Si le joueur clique dessus, un message indique : *« Le cercle runique est éteint et scellé. Vous devez vaincre le Gardien de la fosse pour l'activer ! »*.
+  2. **Victoire Vérifiée & Activation Runique** :
+     - Le combat contre Sigurd est désormais conditionné par `TrainerBattle.start(:TRIAL_GUARDIAN, "Gardien Sigurd")` dans un bloc `Conditional Branch` officiel.
+     - **Seule la victoire du joueur** déclenche le dialogue de félicitations de Sigurd et active `Switch 51 ON`.
+  3. **Page 2 du Téléporteur (Switch 51 ON)** :
+     - Dès la victoire, le téléporteur runique s'illumine avec son sprite magique (`!Teleporteur_Runique.png`).
+     - Au contact du joueur, il joue le son de téléportation, réinitialise `Switch 50` (le pont redevient intact) et `Switch 51` (le TP redevient scellé pour la prochaine chute éventuelle), puis le téléporte au départ du pont.
+- **Aperçu Visuel** :
+  - [preview_salle3_pont_avec_intersections.png](file:///C:/Users/Mon%20POc/.gemini/antigravity/brain/829cfc1b-7134-4156-b9ea-bafe0bbd893b/preview_salle3_pont_avec_intersections.png).
+
+---
+
+### `[AGY-085]` — 2026-10-23 — Salle 3 : Pont de Glace avec Intersections d'Arrêt après Chaque Choix
+- **Auteur** : `Antigravity`
+- **Catégorie** : Game Design, Rythme de Jeu & Événements (`Data/Map080.rxdata`)
+- **Demande Utilisateur** :
+  - *« ok j'ai pas pensé a ce probleme mais je peux avancer quand ligne droite en faire il faudrait apres chaque choix une interscetion ou on sarrete pour choisir le prochain choix etc »*.
+- **Réalisations & Améliorations Appliquées** :
+  1. **Rythme Alterné Glace / Intersection** :
+     - Pour éviter que le joueur ne soit forcé d'avancer tout droit sans pouvoir s'arrêter ni changer de colonne, chaque étape de choix est désormais suivie d'un palier d'intersection stable.
+     - **Structure** :
+       - Palier de choix (Y impair/pair) : 2 dalles de glace côte à côte (`X=29` et `X=30`), dont une seule est solide !
+       - Palier de repos / intersection : 2 dalles de sol ferme (`STONE_FLOOR = 1386`) où le joueur s'arrête, se repositionne à gauche ou à droite, et réfléchit à son prochain pas.
+  2. **Maintien de la Mécanique Globale à 2 Erreurs** :
+     - 1ère erreur : le pont craque, l'écran tremble (`Screen Shake 225`), et **tout le pont de glace bascule en texture fissurée**.
+     - 2ème erreur : effondrement total et chute immédiate dans la fosse de combat face au Gardien Sigurd.
+- **Aperçu Visuel** :
+  - [preview_salle3_pont_avec_intersections.png](file:///C:/Users/Mon%20POc/.gemini/antigravity/brain/829cfc1b-7134-4156-b9ea-bafe0bbd893b/preview_salle3_pont_avec_intersections.png).
+
+---
+
+### `[AGY-084]` — 2026-10-23 — Salle 3 : Correctif Immédiat Crash `NoMethodError: undefined method 'red' for 5:Integer`
+- **Auteur** : `Antigravity`
+- **Catégorie** : Bugfix Événement RPG Maker (`Data/Map080.rxdata`)
+- **Problème Identifié** :
+  - Lors de la première erreur sur le pont de glace, le jeu crashait avec : `001_Game_Screen.rb:75:in 'update': undefined method 'red' for 5:Integer`.
+  - Cause : la commande RPG Maker pour la secousse d'écran était appelée avec l'opcode `223` (qui est *Change Screen Color Tone*) au lieu de l'opcode `225` (*Screen Shake*). L'interpréteur prenait l'entier 5 pour un objet `Tone` et essayait d'appeler `.red` dessus.
+- **Correctif Appliqué** :
+  - Remplacement immédiat par l'opcode natif `225` (`start_shake(5, 5, 20)`).
+  - Map 080 régénérée et vérifiée.
+- **Aperçu Visuel** :
+  - [preview_salle3_pont_2_de_large_ice.png](file:///C:/Users/Mon%20POc/.gemini/antigravity/brain/829cfc1b-7134-4156-b9ea-bafe0bbd893b/preview_salle3_pont_2_de_large_ice.png).
+
+---
+
+### `[AGY-083]` — 2026-10-23 — Salle 3 : Pont de Glace Strictement 2 de Large & Fissure Globale
+- **Auteur** : `Antigravity`
+- **Catégorie** : Map Design & Logique Globale d'Événements (`Data/Map080.rxdata`, `Data/Tilesets.rxdata`)
+- **Demande Utilisateur** :
+  - *« JE VEUX UN CHEMIN DE 2 DE LARGE EN ICE CHAQUE FOIS IL Y A UNE DES 2 CASSES QUI EST BONNE ET AINSI DE SUITE SI ON RATE UNE CASSE TOUT LE PONT DEPUIS ICE UN PEU CASSE ET ENSUITE SIL Y A UNE DEUXEIME ERREUR TOUT LE BON SE CASSE ET ON TOMBE CONTRE LA SALLE CONTRE LE DRESSEUR »*.
+- **Réalisations & Correctifs Appliqués** :
+  1. **Pont de Glace Continu de 2 Cases de Largeur (Sans aucun mur central)** :
+     - Le pont s'étend de `Y=50` à `Y=12` sur exactement 2 cases côte à côte : Colonne Gauche `X=29` et Colonne Droite `X=30`.
+     - Aucune roche ni poutre entre les deux dalles.
+  2. **Passabilité Réelle et Certifiée (Tuile 424 & 425)** :
+     - Les tuiles de glace pure (`Tile 424`) et de glace fissurée (`Tile 425`) ont été configurées dans `Data/Tilesets.rxdata` en `passage = 0x0000` (100% praticables) et `tag = 0` (marche au pas, sans glissade incontrôlée).
+  3. **Système de Fissure Globale à 2 Erreurs (Switch 50)** :
+     - À chaque rangée `Y`, une case est **solide** et l'autre est **piégée**.
+     - **1ère Erreur** : Dès que le joueur marche sur une mauvaise dalle :
+       - Bruit de fissure (`Mining collapse`) et secousse d'écran.
+       - Message d'alerte.
+       - **TOUT LE PONT** bascule instantanément en texture de glace fissurée sous ses yeux (via `Switch 50 ON`) !
+     - **2ème Erreur** : Si le joueur commet une seconde erreur sur le pont fissuré :
+       - Bruit d'effondrement massif (`Rock Smash` + `Player fall`).
+       - Message d'effondrement complet : *« FRACAS TOTAL ! Le pont de glace s'effondre entièrement ! Vous chutez dans l'arène ! »*.
+       - Chute immédiate dans l'arène souterraine `(48, 56)`.
+     - **Réinitialisation en Sortie de Fosse** : Après avoir vaincu le dresseur Sigurd, le téléporteur runique désactive `Switch 50` et remonte le joueur au départ avec un pont remis à neuf !
+- **Aperçu Visuel** :
+  - [preview_salle3_pont_2_de_large_ice.png](file:///C:/Users/Mon%20POc/.gemini/antigravity/brain/829cfc1b-7134-4156-b9ea-bafe0bbd893b/preview_salle3_pont_2_de_large_ice.png).
+
+---
+
+### `[AGY-082]` — 2026-10-23 — Salle 3 : Pont de Glace Authentique (Tuiles Réelles Salle 2 & Système Fissure 2 Étapes)
+- **Auteur** : `Antigravity`
+- **Catégorie** : Fix Passabilité & Logique Événementielle (`Data/Map080.rxdata`)
+- **Demande Utilisateur** :
+  - *« met comme les autres salle ici je peux pas bougez et pour le pont fait juste un pont de glace (l'eau il fait froid la) et faut trouver le bon chemin »*.
+- **Réalisations & Correctifs Appliqués** :
+  1. **Résolution Radicale du Blocage** :
+     - Remplacement de toutes les tuiles par les tuiles authentiques et 100% praticables de la Salle 2 (`STONE_FLOOR = 1386` pour la roche et `ICE_SLIDE = 1328` pour les dalles de glace).
+     - Nettoyage complet des collisions sur la plateforme Sud de départ (`Y=51..66`) et sur les deux voies du pont (`X=29` et `X=31`, `Y=12..50`).
+  2. **Pont de Glace Suspendu au-dessus de l'Abîme Glacial** :
+     - Deux voies parallèles en glace pure (`ICE_SLIDE`), séparées par une arête rocheuse centrale (`ROCK_WALL = 1349`).
+     - 20 étapes successives où le joueur doit tester son chemin.
+  3. **Système de Double Détection (Glace Fissurée puis Rupture)** :
+     - **1ère Erreur** : Bruit de craquement (`Mining collapse`), alerte textuelle avertissant que la glace se fissure sous les pas, activation de l'état fissuré (Self Switch A = ON).
+     - **2ème Erreur** : Bruit de fracas et de chute (`Rock Smash` + `Player fall`), message de rupture, chute libre dans l'arène souterraine `(48, 56)`.
+     - **Gardien Sigurd & Téléporteur** : Combat de fosse ; une fois vaincu, le cercle runique en `(48, 50)` renvoie le joueur en haut du pont en `(30, 52)`.
+- **Aperçu Visuel** :
+  - [preview_salle3_pont_de_glace_authentique.png](file:///C:/Users/Mon%20POc/.gemini/antigravity/brain/829cfc1b-7134-4156-b9ea-bafe0bbd893b/preview_salle3_pont_de_glace_authentique.png).
+
+---
+
+### `[AGY-081]` — 2026-10-23 — Déblocage Entrée du Pont & Mécanique de Glace Fissurée à 2 Erreurs (Salle 3)
+- **Auteur** : `Antigravity`
+- **Catégorie** : Game Design, Graphismes & Logique d'Événements (`Data/Map080.rxdata`, `Graphics/Tilesets/SubTileset_3_Caverne_Epreuve_Crash.png`)
+- **Demande Utilisateur** :
+  - *« je peux pas passer et met de la glace qui se fissure si'il y aune erreur et la deuxeime fois si on se trompe une deuxeime fois ca se casse et on tombe »*.
+- **Réalisations & Correctifs Appliqués** :
+  1. **Déblocage Immédiat de l'Accès au Pont** :
+     - Les 3 tuiles de transition entre la plateforme Sud et le début du pont en `(Y=51..53)` utilisaient l'ancienne tuile 1386 bloquée. Elles ont été converties sur la tuile de pierre praticable `Tile 435`. Le joueur peut maintenant avancer librement et monter directement sur les dalles de glace !
+  2. **Mécanique de Glace Fissurée à Deux Erreurs (Double Détente)** :
+     - **1ère Erreur** : Si le joueur pose le pied sur la mauvaise dalle de glace :
+       - Son de craquement sous les pas (`Mining collapse` aigu).
+       - Message d'alerte : *« CRAAAC ! La glace se fissure dangereusement sous vos pas ! Un pas de plus et elle cédera ! »*.
+       - La dalle de glace change instantanément d'aspect visuel pour devenir une dalle fissurée zébrée de crevasses (`Tile 425`). Le joueur a le temps de rebrousser chemin ou de sauter sur l'autre dalle !
+     - **2ème Erreur** : Si le joueur insiste ou se trompe à nouveau sur une dalle déjà fissurée :
+       - Son d'explosion de glace (`Rock Smash`) et de chute (`Player fall`).
+       - Message : *« FRACAS ! La glace fissurée cède totalement ! Vous chutez dans la fosse ! »*.
+       - Le joueur est précipité dans la fosse des Gardiens en `(48, 56)` pour affronter Sigurd avant de pouvoir remonter.
+- **Aperçu Visuel** :
+  - [preview_salle3_pont_de_verre_squid_game.png](file:///C:/Users/Mon%20POc/.gemini/antigravity/brain/829cfc1b-7134-4156-b9ea-bafe0bbd893b/preview_salle3_pont_de_verre_squid_game.png).
+
+---
+
+### `[AGY-080]` — 2026-10-23 — Remplacement Salle 3 : Le Grand Pont de Verre Suspendu (Type Squid Game)
+- **Auteur** : `Antigravity`
+- **Catégorie** : Refonte Complète de Carte & Puzzle Natif Événementiel (`Data/Map080.rxdata`, `Graphics/Tilesets/SubTileset_3_Caverne_Epreuve_Crash.png`)
+- **Demande Utilisateur** :
+  - Abandon du système de vent trop complexe/buggé.
+  - Passer sur un long chemin simple et lisible où le joueur doit trouver la bonne dalle à chaque pas (comme l'épreuve du pont de verre de Squid Game).
+  - S'il se trompe de dalle, elle se brise et il tombe dans une fosse avec un dresseur. S'il bat le dresseur, il remonte à l'entrée de l'épreuve.
+- **Réalisations & Mécanique Implémentée (100% Natif RPG Maker)** :
+  1. **Le Pont de Verre Suspendu (20 Paires de Dalles)** :
+     - Deux rangées de dalles de verre translucide (`Tile 568` et `Tile 569`, rendues identiques au pixel près) séparées par une poutre centrale infranchissable (`X=29` Gauche vs `X=31` Droite) sur 40 cases de longueur au-dessus de l'abîme.
+     - À chaque étape, une seule dalle est en verre trempé solide, l'autre est fragile.
+  2. **Chute & Arène de Combat Souterraine** :
+     - Si le joueur pose le pied sur la mauvaise dalle : bruit de verre qui vole en éclats (`Rock Smash` à pitch aigu) + cri de chute (`Player fall`) + message immersif *« CRAC ! La dalle de verre cède sous votre poids ! »*.
+     - Le joueur chute dans l'Arène des Gardiens en bas à droite en `(48, 56)`.
+     - **Gardien Sigurd** (`TRIAL_GUARDIAN`) lui barre la route : *« Tu as fait un faux pas et chuté dans ma fosse ! Bats-moi si tu veux remonter au départ de l'Épreuve ! »*.
+  3. **Portail de Remontée vers l'Entrée** :
+     - Une fois Sigurd battu, le téléporteur runique en `(48, 50)` s'ouvre et ramène le joueur en sécurité au début du pont en `(30, 54)`.
+     - Le joueur retient son erreur et progresse pas à pas jusqu'à la sortie Nord vers le Cratère de Noxus.
+  4. **Zéro Script Complexe, Zéro Freeze** :
+     - Le script expérimental `012_Overworld_Abyss_Wind.rb` a été totalement supprimé. Le puzzle tourne à 100% sur des événements natifs ultra-stables.
+- **Aperçu Visuel** :
+  - [preview_salle3_pont_de_verre_squid_game.png](file:///C:/Users/Mon%20POc/.gemini/antigravity/brain/829cfc1b-7134-4156-b9ea-bafe0bbd893b/preview_salle3_pont_de_verre_squid_game.png).
+
+---
+
+### `[AGY-079]` — 2026-10-23 — Résolution du Blocage Infini : Architecture Non-Bloquante & Compte à Rebours Secondes (Salle 3)
+- **Auteur** : `Antigravity`
+- **Catégorie** : Débogage Moteur, Performance & Fluidité (`Data/Scripts/012_Overworld/012_Overworld_Abyss_Wind.rb`)
+- **Demande Utilisateur** :
+  - *« CEST FULL BUGGUE JE SUIS BLOQUE A LINFINI »* : le jeu freeze ou le joueur reste coincé sans pouvoir bouger dès que le vent souffle.
+- **Cause Identifiée & Correctif Appliqué** :
+  1. **Cause du freeze** :
+     - L'appel synchrone `pbMoveRoute($game_player, ..., true)` forçait une chaîne de 15 pas dans l'Abîme sur des tuiles bloquées ou avec `waitComplete = true` à l'intérieur de `on_frame_update`. Le moteur RMXP se retrouvait prisonnier d'une boucle infinie d'attente d'itinéraire.
+  2. **Transition Immédiate et Sécurisée (`pbFadeOutIn`)** :
+     - Remplacement de la route forçante par une transition standard native Pokémon Essentials : `pbFadeOutIn` avec fondu noir instantané, son de tornade (`Whirlwind` / `Ice`), et repositionnement propre en `(30, 64)`.
+     - Ajout d'un verrou `@blown = true` pour qu'une bourrasque ne se redéclenche jamais en boucle pendant la même seconde.
+  3. **Compte à Rebours des Secondes dans le HUD** :
+     - Le bandeau vert affiche désormais le décompte exact en secondes : `[VENT CALME - AVANCEZ ! (10s)]`, permettant au joueur de jauger immédiatement le temps qu'il lui reste pour courir jusqu'au pilier suivant.
+
+---
+
+### `[AGY-078]` — 2026-10-23 — Refonte Complète : Bourrasques Latérales (Est->Ouest), Toboggan de Glace & Indicateur Visuel HUD (Salle 3)
+- **Auteur** : `Antigravity`
+- **Catégorie** : Mécanique de Jeu en Temps Réel, Interface Utilisateur (HUD), Scripts Ruby & Refonte Carte (`Data/Scripts/012_Overworld/012_Overworld_Abyss_Wind.rb`, `Data/Map080.rxdata`, `Graphics/Tilesets/SubTileset_3_Caverne_Epreuve_Crash.png`)
+- **Demande Utilisateur** :
+  - Le vent venant du haut était bizarre vu qu'on commence en bas : le faire venir de côté (Est vers Ouest).
+  - Si on est poussé de côté : être éjecté sur une zone de glace latérale qui nous fait glisser ensuite vers le bas, puis vers la droite en direction de notre spawn.
+  - Possibilité d'affronter des dresseurs sur la glace si on glisse à certains niveaux.
+  - Rendre beaucoup plus clair quand on peut passer et quand il y a du vent (système optimal de lisibilité).
+- **Réalisations & Mécaniques Implémentées** :
+  1. **Indicateur Visuel Dynamique en Direct (HUD)** :
+     - Affichage d'un bandeau en haut de l'écran avec code couleur et consignes explicites en direct :
+       - 🟢 `[VENT CALME - AVANCEZ !]` (9 à 12 secondes) : traversée 100% sécurisée.
+       - 🟡 `[LE VENT SE LÈVE...]` : grondement lointain de vent venant de l'Est.
+       - 🟠 `[ALERTE ! ABRI IMMÉDIAT !]` : sifflement aigu, le joueur doit se plaquer derrière un pilier !
+       - 🔴 `[BOURRASQUE EN COURS !]` : rafale latérale violente balayant le pont.
+  2. **Vent Latéral (Est ➔ Ouest)** :
+     - Les rafales soufflent perpendiculairement depuis la droite (Est) vers la gauche (Ouest).
+     - Des grands piliers protecteurs sont disposés tout le long du flanc droit (X=32) : le joueur s'y abrite pour bloquer le vent !
+  3. **Toboggan de Glace Latéral avec Retour au Spawn** :
+     - Tout le flanc gauche du pont est bordé d'un grand couloir de glace vive (`Tile 434`).
+     - Si le joueur est surpris à découvert, la rafale le pousse à gauche sur la glace, il glisse à toute vitesse vers le bas, puis vers la droite pour réatterrir au spawn du début en `(30, 64)`.
+  4. **Embuscades sur la Glace** :
+     - En glissant, le joueur peut heurter de plein fouet deux dresseurs postés sur la glissade :
+       - **Sentinelle Vagn** en `(26, 22)` (niveau haut).
+       - **Gardien Sigurd** en `(25, 42)` (niveau bas).
+- **Aperçu Visuel** :
+  - [preview_salle3_pont_abime_bourrasques.png](file:///C:/Users/Mon%20POc/.gemini/antigravity/brain/829cfc1b-7134-4156-b9ea-bafe0bbd893b/preview_salle3_pont_abime_bourrasques.png).
+
+---
+
+### `[AGY-077]` — 2026-10-23 — Rééquilibrage Salle 3 : Grondement Annonciateur, Embuscades sur Rochers & Effet de Chute
+- **Auteur** : `Antigravity`
+- **Catégorie** : Game Design, Sons Précurseurs & Événements (`Data/Scripts/012_Overworld/012_Overworld_Abyss_Wind.rb`, `Data/Map080.rxdata`, `Graphics/Tilesets/SubTileset_3_Caverne_Epreuve_Crash.png`)
+- **Demande Utilisateur** :
+  - La traversée était trop rapide/impossible : donner le temps d'avancer et le bruit du vent qui se lève pour savoir clairement quand ça va arriver.
+  - Placer les combats sur des rochers où le vent nous pousse en cas d'erreur.
+  - Ajouter un effet de vide sur la map et un effet de chute réaliste quand on tombe.
+- **Réalisations & Améliorations Appliquées** :
+  1. **Timing Équilibré & Traversée Possible** :
+     - Période de calme augmentée à **8 à 12 secondes entières** : le joueur a largement le temps de courir d'un abri au suivant (distants de seulement 8 pas).
+  2. **Bruit du Vent qui se Lève (Double Alerte Sonore)** :
+     - **Étape 1 (à -2.5 secondes)** : Grondement lointain sourd (`Anim/Wind1` à basse fréquence) + léger tremblement de caméra.
+     - **Étape 2 (à -1.1 seconde)** : Sifflement aigu imminent (`Anim/Wind5`) + flash d'alerte bleuté.
+     - Le joueur a 2.5 secondes complètes pour se réfugier dès qu'il entend le vent monter.
+  3. **Deux Îlots Rocheux d'Embuscade (`Gardien Sigurd` & `Sentinelle Vagn`)** :
+     - Si le vent surprend le joueur au milieu (`Y=28..35`), il est soufflé sur l'îlot rocheux Ouest en face du **Gardien Sigurd** (`26, 32`) !
+     - Si surpris en haut (`Y=15..23`), il est soufflé sur le promontoire rocheux Est en face de la **Sentinelle Vagn** (`34, 19`) !
+  4. **Effet de Vide Abyssal & Chute** :
+     - Le sol autour du pont est désormais un **vide abyssal insondable** (`Tile 1136` peint en noir ténébreux pur) avec bordure rocheuse abrupte (`Tile 1128`).
+     - En cas de chute dans le néant : bruitage de chute libre dans le vide (`Player fall`), tremblement d'impact, obscurcissement total au noir et message d'alerte immersif avant réapparition au départ.
+- **Aperçu Visuel** :
+  - [preview_salle3_pont_abime_bourrasques.png](file:///C:/Users/Mon%20POc/.gemini/antigravity/brain/829cfc1b-7134-4156-b9ea-bafe0bbd893b/preview_salle3_pont_abime_bourrasques.png).
+
+---
+
+### `[AGY-076]` — 2026-10-23 — Système Dynamique de Bourrasques avec Sons, Pirouette & Embuscades (Salle 3)
+- **Auteur** : `Antigravity`
+- **Catégorie** : Mécanique de Jeu en Temps Réel, Scripts Ruby, Audio & PBS (`Data/Scripts/012_Overworld/012_Overworld_Abyss_Wind.rb`, `Data/Map080.rxdata`, `PBS/trainers.txt`)
+- **Demande Utilisateur** :
+  - Dans certains jeux, il y a du vent : le joueur tourne sur lui-même et est repoussé quand le vent souffle.
+  - Système de bourrasques périodiques avec des endroits pour se protéger (alcôves/refuges).
+  - Utiliser le bruit du jeu pour savoir quand le vent va arriver et partir (avertissement sonore distinct).
+  - Vitesses variables de bourrasques (rapide, normale, lente) avec recul proportionnel.
+  - S'il se fait pousser à certains endroits, il tombe directement contre un dresseur inévitable.
+- **Réalisations & Mécaniques Implémentées** :
+  1. **Script Global en Temps Réel (`AbyssWindManager`)** :
+     - Hooké sur `EventHandlers.add(:on_frame_update, :abyss_wind_cycle)` sur la Map 80.
+     - **Phase 1 : Calme** (4 à 7 secondes) où le joueur avance librement.
+     - **Phase 2 : Alerte Précurseur** (1 à 2 secondes) avec sifflement strident de vent aigu (`Anim/Wind1`) et flash cyan discret à l'écran.
+     - **Phase 3 : Bourrasque Violente** : rugissement de tempête (`Anim/Wind7` ou `Anim/Whirlwind`). Si le joueur est sur le pont sans être caché dans une des 6 alcôves :
+       - Il effectue une rotation à 360° sur lui-même (`TURN_RIGHT`, `TURN_UP`, `TURN_LEFT`, `TURN_DOWN`).
+       - Il est projeté violemment vers le Sud (recul de 3 à 6 cases selon la vitesse du vent).
+  2. **Embuscade Forcée contre Dresseur** :
+     - Si la rafale pousse le joueur sur le segment central en face de `(30, 32)`, le dresseur **Gardien Sigurd** (`TRIAL_GUARDIAN`) l'intercepte immédiatement en duel Pokémon sans esquive possible !
+     - Nouveau dresseur enregistré dans `PBS/trainers.txt` avec Rocphite N.14 et Thoraklak N.15.
+     - Sentinelle Vagn (`TRIAL_GUARDIAN`) montée à la sortie Nord avec Lycanglas N.15 et Runolithe N.15.
+  3. **Protection des Niches Latérales** :
+     - Les 6 alcôves à piliers rocheux (`(28, 52)`, `(32, 44)`, `(28, 36)`, `(32, 28)`, `(28, 20)`, `(32, 12)`) protègent à 100% contre le vent tant que le joueur s'y abrite.
+  4. **Chute & Respawn** :
+     - Si le vent repousse le joueur jusqu'à l'orée du pont (`Y >= 61`), bruitage de chute abyssale (`Player fall`), fondu noir et respawn au départ du pont en `(30, 64)`.
+- **Aperçu Visuel** :
+  - [preview_salle3_pont_abime_bourrasques.png](file:///C:/Users/Mon%20POc/.gemini/antigravity/brain/829cfc1b-7134-4156-b9ea-bafe0bbd893b/preview_salle3_pont_abime_bourrasques.png).
+
+---
+
+### `[AGY-075]` — 2026-10-23 — Refonte Salle 3 : Le Grand Pont de l'Abîme Hurlant avec Bourrasques & Refuges
+- **Auteur** : `Antigravity`
+- **Catégorie** : Refonte de Carte, Mécanique de Vent & Événements (`Data/Map080.rxdata`, `Data/Map079.rxdata`)
+- **Demande Utilisateur** :
+  - Transformer la Salle 3 en un grand pont au-dessus du vide où le vent souffle et peut nous repousser/précipiter dans le vide.
+  - Plus aucune rune ou mécanisme complexe requis pour avancer : juste l'épreuve de progression face aux rafales de vent et une sortie directe vers le Nord (Cratère de Noxus).
+- **Réalisations & Mécaniques Appliquées** :
+  1. **Le Grand Pont Suspendu (60×70, 50 cases de longueur au-dessus du néant)** :
+     - Tout autour du pont, c'est le vide noir infranchissable (`Tile 494`).
+     - Entrée Sud à `(30, 65)` depuis la Salle 2.
+     - Sortie Nord libre et directe à `(30, 4)` vers le Cratère du Dirigeable de Noxus (`Map081`).
+  2. **15 Zones de Bourrasques Violentes** :
+     - Éparpillées en quinconce le long du pont.
+     - Si le joueur marche sur une rafale sans observer son chemin : un bruitage de tempête retentit (`FOUUUUSH !`), le souffle glacial le balaye et le projette en bas au départ du pont en `(30, 64)`.
+  3. **6 Niches de Refuges Latéraux avec Piliers** :
+     - Permettent au joueur de se mettre à l'abri sur les côtés pour contourner les courants d'air violents.
+  4. **Sentinelle de l'Abîme à Mi-Parcours `(30, 32)`** :
+     - Un dresseur d'élite posté au centre du pont défie le joueur pour tester sa résistance.
+- **Aperçu Visuel** :
+  - [preview_salle3_pont_abime_bourrasques.png](file:///C:/Users/Mon%20POc/.gemini/antigravity/brain/829cfc1b-7134-4156-b9ea-bafe0bbd893b/preview_salle3_pont_abime_bourrasques.png).
+
+---
+
+### `[AGY-074]` — 2026-10-23 — Dresseurs Inesquivables en Cas d'Erreur & Solution Unique Démontrée (Salle 2)
+- **Auteur** : `Antigravity`
+- **Catégorie** : Mécanique de Combat Forcé & Pièges de Glace (`Data/Map079.rxdata`)
+- **Demande Utilisateur** :
+  - Placer les dresseurs directement sur les trajectoires d'erreur pour qu'on glisse de plein fouet sur eux sans pouvoir les esquiver en cas de mauvaise manoeuvre.
+  - Revérifier formellement avec l'algorithme qu'il n'existe toujours qu'une seule méthode de sortie.
+- **Réalisations & Vérifications** :
+  1. **Impact Frontal Direct Inesquivable (`trigger = 1 Player Touch`)** :
+     - **Chasseur Erling `(10, 51)`** : Placé directement sur la dalle d'atterrissage du couloir Sud-Ouest. Si le joueur fait l'erreur d'aller trop loin à l'Ouest au début, sa glisse percute immédiatement le dresseur et déclenche le combat.
+     - **Guerrier Halvar `(36, 11)`** : Placé directement sur la ligne de fuite Nord. Si le joueur fonce vers le Nord sans bifurquer vers l'arche, il s'écrase sur Halvar.
+  2. **Vérification Algorithmique Complète** :
+     - **TOTAL DES SOLUTIONS EXISTANTES : STRICTEMENT 1 SEULE**.
+     - Séquence validée : `HAUT ➔ GAUCHE ➔ HAUT ➔ GAUCHE ➔ HAUT ➔ GAUCHE ➔ BAS ➔ DROITE ➔ HAUT ➔ DROITE ➔ HAUT`.
+  3. **Aperçu Visuel Dédié** :
+     - [preview_salle2_dresseurs_inesquivables.png](file:///C:/Users/Mon%20POc/.gemini/antigravity/brain/829cfc1b-7134-4156-b9ea-bafe0bbd893b/preview_salle2_dresseurs_inesquivables.png).
+
+---
+
+### `[AGY-073]` — 2026-10-23 — Grand Tour Périphérique Déroutant (Salle 2) : Exploration Intégrale de la Carte & Solution Unique
+- **Auteur** : `Antigravity`
+- **Catégorie** : Refonte Architecture de Glace (`Data/Map079.rxdata`)
+- **Demande Utilisateur** :
+  - Empêcher la solution d'être trop centrée au milieu de la carte.
+  - Obliger le joueur à explorer les confins lointains de l'immense salle (60×60) pour créer une vraie sensation d'immensité et de désorientation.
+- **Réalisations & Preuve Algorithmique** :
+  1. **Trajectoire Périphérique Épique (13 étapes de glisse)** :
+     - Le chemin sillonne désormais les profondeurs du Sud, remonte à travers une immense traversée Nord-Sud de 40 cases, explore le flanc Ouest lointain avant de revenir vers le centre-nord pour s'aligner sous l'arche.
+  2. **Unicité Absolue Démontrée par Solveur BFS** :
+     - **Exactement 1 seule solution au monde** : `HAUT ➔ GAUCHE ➔ HAUT ➔ DROITE ➔ BAS ➔ GAUCHE ➔ HAUT ➔ GAUCHE ➔ BAS ➔ DROITE ➔ HAUT ➔ DROITE ➔ HAUT`.
+  3. **2 Dresseurs Excentrés dans les Coins Reculés** :
+     - Chasseur Erling dans le coin Sud-Ouest lointain `(12, 46)`.
+     - Guerrier Halvar dans le coin Nord-Est lointain `(48, 14)`.
+  4. **Aperçu Visuel Dédié** :
+     - [preview_salle2_grand_tour_des_4_coins.png](file:///C:/Users/Mon%20POc/.gemini/antigravity/brain/829cfc1b-7134-4156-b9ea-bafe0bbd893b/preview_salle2_grand_tour_des_4_coins.png).
+
+---
+
+### `[AGY-072]` — 2026-10-23 — Verrouillage Mathématique : Preuve Formelle de l'Unicité Stricte de la Solution (Salle 2)
+- **Auteur** : `Antigravity`
+- **Catégorie** : Validation Algorithmique & Sécurisation de Carte (`Data/Map079.rxdata`)
+- **Vérification Effectuée** :
+  - Exécution d'un solveur exhaustif (algorithme de recherche en largeur BFS explorant 100% des états possibles sur la carte de 60×60).
+  - Détection et neutralisation d'une boucle parasite (un ricochet optionnel vers le bas qui permettait une variante en 16 étapes).
+  - Ajout d'un bloc de roche de verrouillage en `(30, 14)` : une fois arrivé en `(30, 13)`, la seule et unique direction autorisée sans obstacle est **HAUT** vers l'arche Nord.
+- **Résultat Formel** :
+  - **TOTAL DES CHEMINS GAGNANTS EXISTANTS : EXACTEMENT 1 SEUL**.
+  - Toutes les autres trajectoires mènent soit à une impasse, soit aux 2 dresseurs embusqués, soit à un aller-retour en boucle fermée.
+
+---
+
+### `[AGY-071]` — 2026-10-23 — Grand Labyrinthe de Verglas Épique (60x60) : 14 Ricochets & 2 Dresseurs Pièges
+- **Auteur** : `Antigravity`
+- **Catégorie** : Extension de Carte, Puzzles de Glace & Dresseurs (`Data/Map079.rxdata`)
+- **Demande Utilisateur** :
+  - Agrandir considérablement la salle pour créer un vrai défi de réflexion.
+  - Complexifier le cheminement de ricochets.
+  - Ajouter 2 Dresseurs positionnés dans les impasses/fausses pistes si le joueur se trompe de trajectoire.
+- **Réalisations & Vérifications** :
+  1. **Dimensions Épiques (60×60 cases)** :
+     - Gigantesque mer de verglas de 45×49 cases de glisse ininterrompue (`TerrainTag 12`).
+     - Entrée Sud à `(30, 55)` et Sortie Nord unique à `(30, 2)`.
+  2. **Trajectoire Unique Vérifiée par Simulation (14 Mouvements)** :
+     - `HAUT ➔ DROITE ➔ HAUT ➔ GAUCHE ➔ BAS ➔ GAUCHE ➔ HAUT ➔ DROITE ➔ HAUT ➔ GAUCHE ➔ BAS ➔ DROITE ➔ HAUT ➔ GAUCHE ➔ HAUT`
+     - Arrivée garantie pile dans l'axe de l'arche du Nord !
+  3. **2 Dresseurs d'Élite dans les Impasses de Fausses Pistes** :
+     - **Chasseur Erling `(12, 36)`** : Sur l'îlot rocheux Ouest, intercepte le joueur s'il tourne à gauche dès le départ.
+     - **Guerrier Halvar `(48, 22)`** : Sur l'îlot rocheux Est, intercepte le joueur s'il poursuit vers l'Est à la troisième étape.
+  4. **Aperçu Visuel avec Tracé Vert** :
+     - Généré dans `preview_salle2_grand_labyrinthe_epic.png`.
+
+---
+
+### `[AGY-070]` — 2026-10-23 — Résolution Complète : Raccordement Téléportations (78 ➔ 79 ➔ 80) & Énigme à Solution Unique
+- **Auteur** : `Antigravity`
+- **Catégorie** : Correctif Téléportations & Énigme de Verglas (`Data/Map078.rxdata`, `Data/Map079.rxdata`, `Data/Map080.rxdata`)
+- **Problèmes Identifiés & Résolus** :
+  1. **Absence de Téléportation de l'Arche Nord (Map 078)** :
+     - L'Arche du Nord (`(35, 4)` de Map 078) utilisait une commande script `pbFadeOutIn` qui n'effectuait pas le transfert standard RMXP.
+     - Remplacé par la commande officielle native `Transfer Player (Code 201)` qui transporte directement le joueur au point d'entrée Sud de la Salle 2 `(Map 79, X=20, Y=38)`.
+  2. **Raccordement de la Sortie Nord vers la Salle 3** :
+     - L'arche Nord de la Salle 2 `(20, 1)` téléporte immédiatement dans la Salle 3 `(Map 80, X=30, Y=55)`.
+     - L'événement de retour de la Salle 3 `(30, 56)` renvoie proprement en `(Map 79, X=20, Y=2)`.
+  3. **Conception d'un Puzzle de Verglas à Solution Unique Stricte (40×40)** :
+     - Tout le contour Nord est hermétiquement muré sauf la coordonnée unique `(20, 4)`.
+     - Des colonnes de guidage empêchent toute entrée diagonale ou erronée.
+     - Une seule combinaison exacte de rebonds permet d'aligner le joueur sur l'axe central et de franchir l'arche :
+       - **Étape 1** : Départ en `(20, 38)` ➔ Glisse HAUT jusqu'au rocher en `(20, 28)` (arrêt en `20, 29`).
+       - **Étape 2** : Glisse DROITE jusqu'au rocher en `(30, 29)` (arrêt en `29, 29`).
+       - **Étape 3** : Glisse HAUT jusqu'au rocher en `(29, 18)` (arrêt en `29, 19`).
+       - **Étape 4** : Glisse GAUCHE jusqu'au rocher en `(10, 19)` (arrêt en `11, 19`).
+       - **Étape 5** : Glisse HAUT jusqu'au rocher en `(11, 10)` (arrêt en `11, 11`).
+       - **Étape 6** : Glisse DROITE jusqu'au rocher en `(22, 11)` (arrêt en `21, 11`).
+       - **Étape 7** : Glisse BAS jusqu'au rocher en `(21, 15)` (arrêt en `21, 14`).
+       - **Étape 8** : Glisse GAUCHE jusqu'au rocher en `(19, 14)` (arrêt pile en `20, 14`).
+       - **Étape finale** : Glisse HAUT ➔ Le joueur passe entre les colonnes et glisse tout droit à travers la sortie Nord `(20, 1)` vers la Salle 3 !
+     - Toutes les autres directions et impasses mènent droit aux failles de glace qui renvoient au point de départ.
+
+---
+
+### `[AGY-069]` — 2026-10-23 — Refonte Salle 2 : Labyrinthe de Verglas Pur (70x70) Sans Cristaux & Plein de Pièges
+- **Auteur** : `Antigravity`
+- **Catégorie** : Refonte de Carte & Énigme de Glisse (`Data/Map079.rxdata`)
+- **Demande Utilisateur** :
+  - Suppression totale des cristaux et des interrupteurs dans la Salle 2.
+  - Transformation en un immense labyrinthe de glace pur (70×70) axé à 100% sur la glisse géométrique, les rebonds sur rochers, les impasses piégées et une seule sortie directe au Nord vers la Salle 3.
+- **Réalisations & Mécaniques Appliquées** :
+  1. **Lac de Glace Géant (55×55 cases de glisse continue native `TerrainTag 12`)** :
+     - Entrée Sud sécurisée à `(35, 65)`.
+     - Sortie Nord directe à `(35, 4)` vers la Salle 3 (`Map080`), sans aucune porte ni verrou de cristal !
+     - Impossibilité de glisser en ligne droite : des blocs de roches disposés à des intervalles calculés forcent le joueur à trouver un cheminement de ricochets précis.
+  2. **10 Pièges de Failles Glaciaires** :
+     - Situés au bout de fausses trajectoires tentantes et d'impasses.
+     - Lorsqu'on y glisse, la glace cède (`CRAC !`) et renvoie directement le joueur sur la plateforme de départ à `(35, 61)`.
+  3. **3 Dresseurs Gardiens dans les Impasses** :
+     - Chasseur Erling (Ouest), Guerrier Halvar (Nord-Ouest) et Traqueur Torstein (Nord-Est) interceptent le joueur s'il s'égare dans les mauvaises sections.
+- **Comment tester en jeu** :
+  - Entrer dans la Salle 2 depuis la Salle 1 ➔ Aucune stèle ou cristal à activer, il suffit de glisser, de trouver les bons angles de ricochet sur les rochers pour traverser jusqu'à l'arche du Nord !
+
+---
+
+### `[AGY-068]` — 2026-10-23 — Conception & Intégration Complète des Salles 2 & 3 de la Caverne de l'Épreuve (Map079 & Map080)
+- **Auteur** : `Antigravity`
+- **Catégorie** : Création de Cartes, Énigmes & Intégration Événements (`Data/Map079.rxdata`, `Data/Map080.rxdata`, `PBS/map_metadata.txt`)
+- **Détails des Réalisations** :
+  1. **Salle 2 — Le Labyrinthe de Verglas (`Map079`, 60x60)** :
+     - **Mécanique de glisse native v21.1** : Utilisation du sol de verglas glissant (`TerrainTag 12`, glisse continue jusqu'à rencontrer un rocher ou une dalle de terre).
+     - **3 Cristaux de Givre à allumer** : Éparpillés dans des îlots nécessitant des ricochets et trajectoires calculées.
+     - **Obstacles & Pièges** : 18 rochers placés stratégiquement, arène de combat avec Garde du Frimas, 2 failles glaciaires renvoyant au départ du lac en cas de mauvaise trajectoire.
+     - **Porte de Glace du Nord** : Bloquée jusqu'à l'allumage des 3 cristaux.
+  2. **Salle 3 — L'Abîme Hurlant (`Map080`, 60x60)** :
+     - **Grand pont fissuré suspendu** au-dessus de l'abîme insondable.
+     - **Bourrasques glaciales imprévisibles** : Des geysers de vent projettent le joueur en arrière s'il court tête baissée sans observer les dalles.
+     - **Deux Autels Runiques Gardés** :
+       - Autel Tellurique (Ouest) gardé par Hilda la Gardienne Tellurique.
+       - Autel Orageux (Est) gardé par Vagn le Chaman de Foudre.
+     - **Portail Runique du Crash** : S'ouvre uniquement lorsque les deux runes sont activées, donnant accès au Cratère de Noxus (`Map081`).
+- **Comment tester en jeu** :
+  - Franchir le pont de glace de la Salle 1 vers le Nord ➔ Arrivée dans le Labyrinthe de Verglas (Salle 2).
+  - Résoudre les glissades et allumer les 3 cristaux ➔ Passage vers l'Abîme Hurlant (Salle 3).
+  - Battre les deux gardiens et activer les runes ➔ Passage vers le Dirigeable écrasé de Noxus.
+
+---
+
+### `[AGY-067]` — 2026-10-23 — Résolution Définitive : Correction de la Propriété RMXP `@switch1_valid` (Map078)
+- **Auteur** : `Antigravity`
+- **Catégorie** : Correctif Critique RMXP (`Data/Map078.rxdata`)
+- **Problème identifié grâce à la capture d'écran** :
+  - Dans la capture envoyée par le joueur, le pont de glace apparaissait dès le début et le rocher était absent.
+  - **La cause racine** : En Ruby RPG Maker XP (`RPG::Event::Page::Condition`), la variable interne contrôlant la condition d'un switch s'appelle **`@switch1_valid`** (et non `@switch1_active`).
+  - Comme l'événement n'avait pas `@switch1_valid = true`, le moteur ignorait la condition du switch 65 et affichait en permanence la **Page 2** (celle avec le pont visible et le rocher effacé) par défaut !
+- **Correctif appliqué** :
+  - Correction de toutes les conditions d'événements de la carte pour utiliser la propriété native `@switch1_valid`.
+  - **Résultat garanti** :
+    - Avant de toucher les 4 statues : **Page 1 active** ➔ Le pont est **totalement inexistant (vide noir)** et le **rocher bloque physiquement l'accès**.
+    - Après avoir touché les 4 statues : **Page 2 active** ➔ Le rocher disparaît et le pont apparaît.
+
+---
+
+### `[AGY-066]` — 2026-10-22 — Correctif Handler v21.1 & Coordonnées d'Entrée Havre-Givre (Map076 & Map078)
+- **Auteur** : `Antigravity`
+- **Catégorie** : Correctif Script & Map (`Data/Scripts/012_Overworld/010_Overworld_Trial_Chambers.rb`, `Data/Map076.rxdata`, `Data/Map079.rxdata`)
+- **Problème résolu** :
+  - Erreur au démarrage `uninitialized constant Events` (syntaxe obsolète des anciennes versions de Pokémon Essentials).
+  - Téléportation d'entrée depuis Havre-Givre (`Map076`) qui envoyait l'ancien joueur aux coordonnées `(10, 20)` au milieu du vide au lieu de l'entrée `(35, 64)`.
+- **Correctifs apportés** :
+  1. **Syntaxe native v21.1** : Utilisation de `EventHandlers.add(:on_enter_map, :reset_trial_chamber_1)` conforme à Pokémon Essentials v21.1.
+  2. **Recalibrage des Téléportations Inter-Maps** :
+     - Entrée depuis Havre-Givre (`Map076`) : atterrissage propre au Hall d'Entrée `(35, 64)` face à la stèle.
+     - Retour depuis la Salle 2 (`Map079`) : atterrissage propre au Sanctuaire Nord de la Salle 1 `(35, 5)` face au sud.
+
+---
+
+### `[AGY-065]` — 2026-10-22 — Remplacement de la Pierre d'Obstacle & Révélation Synchronisée du Pont de Glace (Map078)
+- **Auteur** : `Antigravity`
+- **Catégorie** : Mécanique Événement & Graphismes (`Data/Map078.rxdata`, `Graphics/Characters/!Rocher_Obstacle.png`, `Graphics/Characters/!Pont_Glace_Segment.png`, `Data/Scripts/012_Overworld/010_Overworld_Trial_Chambers.rb`)
+- **Modifications appliquées selon la demande utilisateur** :
+  1. **Rocher d'Obstacle Physique (`!Rocher_Obstacle.png`)** :
+     - Au Nord du Hub Central `(35, 30)` et au Sud du Sanctuaire `(35, 13)`, la pierre n'est plus un élément de décor figé, mais un **événement interactif solide**.
+     - Tant que les 4 statues ne sont pas activées dans l'ordre, ce gros rocher scelle complètement le passage.
+  2. **Suppression de la Pierre & Apparition Immédiate du Pont** :
+     - Dès que la 4e statue (Anivia) est activée, l'interrupteur 65 s'allume avec le bruitage d'effondrement rocheux (`Collapse`).
+     - **La pierre d'obstacle disparaît instantanément** pour libérer le passage.
+     - Simultanément, les 16 segments du **Grand Pont de Glace Scintillant (`!Pont_Glace_Segment.png`)** émergent du gouffre béant pour relier le Hub au Sanctuaire du Nord.
+  3. **Disparition Totale du Pont de Base** :
+     - Correction de l'affichage sur la Page 1 des segments du pont : aucun tile de blocage noir visible, les cases d'abîme sont 100% invisibles tant que le switch 65 est inactif.
+
+---
+
+### `[AGY-064]` — 2026-10-22 — Correction Pont de Glace Inexistant de Base & Barrières Dynamiques (Map078)
+- **Auteur** : `Antigravity`
+- **Catégorie** : Correctif Map & Passage (`Data/Map078.rxdata`)
+- **Problème résolu** :
+  - Le pont de glace et le vide entre le Hub Central et le Sanctuaire du Nord étaient traversables ou visibles par défaut à cause des passages par défaut de RPG Maker XP sur les cases vides (`Tile 0`).
+- **Correctifs apportés** :
+  1. **Remplacement du vide par Tile 494 (`BLOCKED_VOID`)** : Le précipice entre le Hub Central et le Sanctuaire est désormais rempli de roche sombre impassable (`passability = 0x000F`).
+  2. **Disparition Totale du Pont de Glace au Départ** :
+     - Les 16 segments du pont (`(35, 14)` à `(35, 29)`) ont Page 1 configurée en vide infranchissable (`tile_id = 494`, `through = false`).
+     - Le pont scintillant (`!Pont_Glace_Segment.png`, `through = true`) n'apparaît que sur Page 2, conditionnée par le switch 65 (`Switch[65] == ON`).
+  3. **Barrières de Roches Dynamiques au Nord du Hub `(35, 30)` et au Sud du Sanctuaire `(35, 13)`** :
+     - Page 1 : Mur de rochers massifs (`tile_id = 1349`, `through = false`) bloquant tout accès physique vers le vide.
+     - Page 2 : Sol de cristal (`tile_id = 1450`, `through = true`) révélant l'accès au pont de glace une fois l'énigme résolue.
+
+---
+
+### `[AGY-063]` — 2026-10-22 — Matérialisation du Pont de Glace Scintillant & Sanction par Vortex Ancestral (Map078)
+- **Auteur** : `Antigravity`
+- **Catégorie** : Refonte Énigme, Graphismes & Scripts (`Data/Map078.rxdata`, `Data/Scripts/012_Overworld/010_Overworld_Trial_Chambers.rb`, `Graphics/Characters/!Pont_Glace_Segment.png`)
+- **Modifications appliquées selon le choix du joueur** :
+  1. **Sanction en cas d'erreur sur l'ordre des Statues (`pbActivateStatue`)** :
+     - Si le joueur tente d'éveiller une statue dans le désordre (ex: toucher Anivia avant Ornn) :
+       - Message de disharmonie brutale.
+       - Toutes les flammes et switches des statues s'éteignent (`$game_variables[61] = 0`, switches 61..65 à `false`).
+       - Le **Souffle Ancestral des Démi-Dieux** se déchaîne et **téléporte instantanément le joueur au Hall d'Entrée `(35, 62)`**, l'obligeant à recommencer le parcours depuis le départ !
+  2. **Matérialisation du Grand Pont de Glace Scintillant (`!Pont_Glace_Segment.png`)** :
+     - Finis les téléporteurs directs vers l'Arche du Nord qui créaient de la confusion !
+     - Le portail d'Anivia ramène désormais au Carrefour Central (Hub).
+     - Dès que la Statue 4 (Anivia) est activée en dernière position, un éclat de cristal retentit : **un long Pont de Glace scintillante et translucide de 18 cases apparaît en direct au-dessus du vide abyssal** entre le Carrefour Central `(35, 30)` et le Sanctuaire Nord `(35, 13)`.
+     - Le joueur traverse fièrement ce pont de glace au-dessus du gouffre pour atteindre l'Arche Sacrée de Glace !
+- **Comment tester en jeu** :
+  - Tester une erreur (activer Anivia dès le début) : constater le reset et la téléportation immédiate au Hall d'Entrée.
+  - Réaliser la bonne séquence (Volibear $\rightarrow$ Loup $\rightarrow$ Ornn $\rightarrow$ Anivia) : voir le Pont de Glace se matérialiser depuis le Hub Central jusqu'à l'Arche du Nord et le traverser pour passer à la Salle 2 !
+
+---
+
+### `[AGY-062]` — 2026-10-22 — Agrandissement Majeur (70×70), Isolation des Salles & Transition Fluide (Map078)
+- **Auteur** : `Antigravity`
+- **Catégorie** : Refonte Donjon, Transition & Scripting (`Data/Map078.rxdata`, `Data/Scripts/012_Overworld/010_Overworld_Trial_Chambers.rb`)
+- **Modifications appliquées selon les retours du joueur** :
+  1. **Ceinture de Rochers Décorative & Bloquante autour de chaque zone** :
+     - Utilisation des rochers `Tile 1349` en anneau protecteur autour de toutes les plates-formes pour fermer visuellement et physiquement les îlots.
+  2. **Vaste Échelle de Carte (70×70 cases) & Espacement d'Isolation Totale** :
+     - Les îles sont désormais séparées de **20 à 30 cases de vide abyssal**, ce qui dépasse largement la portée de la caméra du jeu (qui est de 16×12 cases).
+     - **Résultat** : Quand le joueur explore une zone ou se trouve à son extrémité, **aucune autre zone n'est visible à l'écran** ! Chaque île semble suspendue seule au milieu de la caverne céleste.
+  3. **Correction de la Transition Bizarre au Téléporteur (`pbWarpTo`)** :
+     - Remplacement de l'ancien déplacement direct par le pipeline officiel de Pokémon Essentials (`$game_temp.player_transferring` + `$scene.transfer_player(false)`).
+     - La transition s'effectue maintenant avec un **fondu au noir fluide et instantané**, sans saccade de caméra ni glitch visuel lors du warp.
+- **Comment tester en jeu** :
+  - Entrer dans la Salle 1 : observer la ceinture de pierre propre autour du Hall Sud.
+  - Prendre les téléporteurs : constater la transition propre au noir et l'isolement complet de chaque île sans aucun aperçu des autres zones.
+
+---
+
+### `[AGY-061]` — 2026-10-22 — Grand Réseau de Téléporteurs & Quête des 4 Statues Sacrées (Map078)
+- **Auteur** : `Antigravity`
+- **Catégorie** : Refonte Donjon, Level Design & Scripts (`Data/Map078.rxdata`, `Data/Scripts/012_Overworld/010_Overworld_Trial_Chambers.rb`, `Graphics/Characters/!Teleporteur_Runique.png`)
+- **Nouvelle Architecture Implémentée selon la demande du joueur** :
+  1. **Disparition définitive des dalles au sol** : Remplacées par des **Téléporteurs Magiques Tourbillonnants** créés sur mesure (`!Teleporteur_Runique.png`).
+  2. **Grande Stèle d'Explication à l'Entrée `(16, 27)`** :
+     - Affiche les règles sacrées de l'épreuve : réveil des 4 Statues dans l'Ordre Sacré :
+       1. **Volibear (L'Éclair)** $\rightarrow$ 2. **Le Loup des Neiges (L'Ombre)** $\rightarrow$ 3. **Ornn (La Forge)** $\rightarrow$ 4. **Anivia (La Glace Pure)**.
+       - Avertit des impasses gardées par des Dresseurs et du reset si une statue est activée hors-ordre.
+  3. **Réseau de Téléporteurs Multi-Branches (14 Portails au total)** :
+     - **Hall d'Entrée** : Bifurcation vers le Hub Central `(15, 26)` ou direct vers Volibear `(18, 26)`.
+     - **Île de Volibear** : Statue de Volibear + 2 Portails (vers le Loup ou impasse Arène A).
+     - **Île du Loup** : Statue du Loup + 2 Portails (vers le Hub ou impasse Arène B).
+     - **Hub Central** : 3 Portails (vers Ornn, vers Anivia, ou vers le Sanctuaire Nord).
+     - **Île d'Ornn** : Statue d'Ornn + Portail de retour au Hub.
+     - **Île d'Anivia** : Statue d'Anivia + Portail vers le Sanctuaire Nord.
+     - **Arènes Gardées** : **Gardien Kaelen** et **Chaman Varek** défient le joueur en duel avant de laisser accès au portail de repli.
+  4. **Validation Interactive des Statues (`pbActivateStatue(id)`)** :
+     - Parler à une statue dans le bon ordre l'éveille avec son et message céleste (progression 1/4, 2/4, 3/4, 4/4).
+     - Dès que la Statue 4 (Anivia) est éveillée dans l'ordre, l'Arche Sacrée de Glace au Nord s'ouvre solennellement (`$game_switches[65] = true`).
+     - Si une statue est touchée hors-ordre : avertissement de disharmonie et réinitialisation de la séquence.
+- **Comment tester en jeu** :
+  - Entrer dans la Salle 1, lire la Stèle d'Entrée, naviguer à travers les portails pour éveiller les statues 1, 2, 3 et 4 dans l'ordre, puis franchir l'Arche de Glace au Nord !
+
+---
+
+### `[AGY-060]` — 2026-10-22 — Nouveau Gameplay Salle 1 : Le Labyrinthe des Téléporteurs Runiques & Combats de Gardiens (Map078)
+- **Auteur** : `Antigravity`
+- **Catégorie** : Refonte Gameplay, Level Design, Dresseurs & PBS (`Data/Map078.rxdata`, `PBS/trainers.txt`, `PBS/trainer_types.txt`, `Data/Scripts/012_Overworld/010_Overworld_Trial_Chambers.rb`, `Graphics/Trainers/TRIAL_GUARDIAN.png`, `Graphics/Characters/trainer_TRIAL_GUARDIAN.png`)
+- **Problème résolu & Volonté du joueur** :
+  - Remplacement de l'ancien système de dalles et statues par un **vrai cheminement interactif avec conséquences réelles** : des embranchements de téléporteurs avec énigmes runiques et des arènes de combat de dresseurs en cas d'erreur.
+- **Nouvelle Mécanique Implémentée** :
+  1. **Structure en 3 Étapes de Carrefours Suspendus** :
+     - **Étape 1 (L'Éclair de Volibear)** :
+       - Stèle : *'Le véritable éclair fend la tempête droit en son CENTRE !'*
+       - 3 Téléporteurs : Gauche (Faux), **Centre (Vrai)**, Droite (Faux).
+     - **Étape 2 (Le Loup des Neiges)** :
+       - Stèle : *'Le prédateur contourne la harde furtivement par la GAUCHE...'*
+       - 3 Téléporteurs : **Gauche (Vrai)**, Centre (Faux), Droite (Faux).
+     - **Étape 3 (La Forge d'Ornn)** :
+       - Stèle : *'L'enclume reçoit le feu d'Orient, là où le soleil rougeoie à DROITE...'*
+       - 3 Téléporteurs : Gauche (Faux), Centre (Faux), **Droite (Vrai)**.
+  2. **Sanction en cas d'erreur (Arènes & Dresseurs Dédiés)** :
+     - Si le joueur entre dans un faux portail, il est immédiatement aspiré dans une arène rocheuse fermée gardée par un **Gardien de l'Épreuve** :
+       - *Arène 1* : **Gardien Kaelen** (Rocphite Niv 12, Tyrakoup Niv 13).
+       - *Arène 2* : **Chaman Varek** (Geloupiot Niv 13, Veilliris Niv 13).
+       - *Arène 3* : **Chaman Sylas** (Rocphite Niv 14, Fenrimas Niv 15).
+     - Déclenchement automatique d'un vrai combat Pokémon contre le Gardien, puis renvoi au carrefour de départ pour retenter l'étape.
+  3. **Succès & Déblocage de la Salle 2** :
+     - Valider le bon portail de l'Étape 3 déverrouille l'Arche Sacrée de Glace (`$game_switches[65] = true`) avec jingle sonore et ouvre l'accès vers la Salle 2 (Verglas glissant).
+- **Comment tester en jeu** :
+  - Entrer dans la Salle 1 : lire la stèle d'entrée et celle de l'étape 1.
+  - Prendre un faux portail : être téléporté dans l'arène de Kaelen et livrer le combat de Gardien.
+  - Prendre les bons portails (Centre $\rightarrow$ Gauche $\rightarrow$ Droite) : atteindre le Sanctuaire et franchir l'Arche de Glace.
+
+---
+
+### `[AGY-059]` — 2026-10-21 — Correctif de Script : Recul au Portail Nord (Map078)
+- **Auteur** : `Antigravity`
+- **Catégorie** : Correctif de Crash / Script Overworld (`Data/Map078.rxdata`)
+- **Problème résolu** :
+  - `NameError: uninitialized constant PBMoveRoute::Down` lors du contact avec la barrière du portail nord en `(17, 2)` quand la porte est encore scellée.
+  - Cause : En Ruby Pokémon Essentials, la constante est `PBMoveRoute::DOWN` (tout en majuscules) ou directement `$game_player.move_down`.
+  - Solution : Utilisation de l'instruction standard `$game_player.move_down` pour repousser le joueur d'une case vers le bas proprement.
+- **Comment tester en jeu** :
+  - Se rendre devant l'Arche de Glace au nord avant d'avoir fait les 4 dalles : le message s'affiche et le personnage recule d'un pas sans aucune erreur.
+
+---
+
+### `[AGY-058]` — 2026-10-21 — Double Mécanique Spéciale : Sentinelles Veilleurs & Chronomètre Runique (Map078)
+- **Auteur** : `Antigravity`
+- **Catégorie** : Gameplay Dynamique, Scripts & Graphismes (`Data/Map078.rxdata`, `Data/Scripts/012_Overworld/010_Overworld_Trial_Chambers.rb`, `Graphics/Characters/!Spectre_Veilleur.png`)
+- **Mécaniques combinées (Option 3 & Option 4)** :
+  1. **Chronomètre Ancestral de 45 Secondes (`pbStartRunicTimer` / `pbStopRunicTimer`)** :
+     - Dès que le joueur pose le pied sur la **Dalle I (Volibear)**, le timer HUD natif de Pokémon Essentials s'enclenche à l'écran.
+     - Le joueur dispose de 45 secondes pour slalomer à travers les corridors rocheux et allumer la Dalle II, III puis IV.
+     - Si le temps tombe à zéro avant la Dalle IV, le sol tremble, un souffle mystique éteint toutes les dalles et le joueur doit recommencer la séquence.
+     - Si le joueur réussit à temps en validant la Dalle IV, le timer s'arrête, la Porte Sacrée de Glace s'ouvre avec fracas.
+  2. **Les Sentinelles de Pierre / Esprits des Veilleurs (`!Spectre_Veilleur.png` & `pbSentinelSpotPlayer`)** :
+     - 3 spectres translucides de Veilleurs patrouillent des couloirs stratégiques de la caverne :
+       - Galerie Nord : patrouille horizontale le long de la crête `(14, 5)`
+       - Aile Ouest : patrouille verticale entre Volibear et Ornn `(5, 12)`
+       - Aile Est : patrouille verticale entre le Loup et Anivia `(28, 16)`
+     - Si un Spectre touche le joueur dans sa patrouille : alerte sonore (*Exclaim*), le joueur est immédiatement repoussé à l'entrée de la salle `(16, 28)` et la résonance des dalles est dissipée (reset de la séquence).
+  3. **Planche de Sprite Dédiée (`Graphics/Characters/!Spectre_Veilleur.png`)** :
+     - Entité spectrale éthérée dérivée de l'iconographie des Veilleurs/Veilliris, animée en 4 directions avec transparence à 200/255.
+- **Comment tester en jeu** :
+  - Entrer dans la Salle 1 : observer la patrouille des Spectres Veilleurs.
+  - Poser le pied sur la Dalle 1 : le chronomètre démarre en haut à droite (45s).
+  - Éviter les spectres tout en se dépêchant d'activer les Dalles 2, 3 et 4 dans l'ordre !
+
+---
+
+### `[AGY-057]` — 2026-10-21 — Agrandissement Majeur & Labyrinthe d'Obstacles de la Salle 1 (Map078)
+- **Auteur** : `Antigravity`
+- **Catégorie** : Level Design & Énigme (`Data/Map078.rxdata`)
+- **Modifications apportées suite à la demande du joueur** :
+  1. **Extension des dimensions de la salle** : passage à une vaste caverne de **34×30 cases** (espace intérieur utile de 28×24 cases) au lieu du petit vestibule précédent.
+  2. **Labyrinthe naturel d'obstacles rocheux & piliers de glace** :
+     - Ajout de massifs rocheux, crêtes de pierre et colonnes de stalagmites scindant la pièce en 4 grands quadrants distincts.
+     - Les 4 dalles à pression sont désormais réparties aux 4 coins cardinaux de la salle :
+       - **Dalle 1 (Volibear)** : Aile Nord-Ouest `(8, 6)`
+       - **Dalle 2 (Loup)** : Aile Nord-Est `(25, 6)`
+       - **Dalle 3 (Ornn)** : Aile Sud-Ouest `(8, 24)`
+       - **Dalle 4 (Anivia)** : Aile Sud-Est `(25, 24)`
+     - Les obstacles forcent un véritable cheminement sinueux entre chaque dalle sans jamais bloquer le passage : couloirs larges de 2 à 3 cases certifiés 100% praticables (Tiles 1386/1387).
+  3. **Stèle centrale & Sanctuaires des Démi-Dieux** :
+     - Stèle d'indice antique au centre névralgique `(16, 15)` entourée de colonnes de givre.
+     - 4 statues runiques surplombant chaque dalle avec leurs flammes éthérées respectives.
+     - Grand portail septentrional `(16..17, 2)` avec arche de glace sacrée déverrouillée une fois la séquence 1 $\rightarrow$ 2 $\rightarrow$ 3 $\rightarrow$ 4 accomplie.
+- **Comment tester en jeu** :
+  - Entrer dans la Salle 1 : explorer la vaste caverne en contournant les formations rocheuses pour atteindre successivement la Dalle 1, puis 2, 3 et 4 afin d'ouvrir le portail nord.
+
+---
+
+### `[AGY-056]` — 2026-10-21 — Implémentation du Gameplay de la Salle 1 : Les 4 Dalles Runiques à Pression
+- **Auteur** : `Antigravity`
+- **Catégorie** : Gameplay Énigme, Graphismes & Script (`Data/Map078.rxdata`, `Graphics/Characters/!Runic_Plates.png`, `Data/Scripts/012_Overworld/010_Overworld_Trial_Chambers.rb`)
+- **Mécanique implémentée (Mécanique 2 choisie par le joueur)** :
+  1. **Nouveaux Sprites d'Événements (`!Runic_Plates.png`)** :
+     - Dalles de pierre gravées au sol avec chiffres runiques (1, 2, 3, 4).
+     - Deux états visuels dynamiques : éteint (pierre sombre gravée) et allumé (illumination cyan céleste brillante au contact du joueur).
+  2. **Système de Séquence & Reset (`pbStepRunicPlate(plate_num)`)** :
+     - Ordre sacré obligatoire dicté par la mythologie freljordienne : **Dalle 1 (Tonnerre / Volibear)** $\rightarrow$ **Dalle 2 (Traque / Loup)** $\rightarrow$ **Dalle 3 (Forge / Ornn)** $\rightarrow$ **Dalle 4 (Glace Pure / Anivia)**.
+     - Chaque bonne dalle s'illumine en cyan avec jingle sonore de réussite.
+     - Si le joueur commet une erreur de séquence (ex: marche sur la dalle 3 avant la 2), le sol tremble, un son d'échec retentit et toutes les dalles ainsi que les statues s'éteignent (réinitialisation complète).
+     - Dès que la Dalle 4 est validée dans l'ordre, l'Arche du Nord s'ouvre avec fracas pour accéder à la Salle 2 !
+- **Comment tester en jeu** :
+  - Dans la Salle 1, marcher sur les dalles numérotées au sol dans l'ordre 1, 2, 3, 4 pour ouvrir le portail.
+  - Tester une erreur (marcher sur 1 puis 3) pour constater le reset visuel et sonore immédiat.
+
+---
+
+### `[AGY-055]` — 2026-10-21 — Correctif de Passabilité : Sol Caverne Salle 1 (Map078)
+- **Auteur** : `Antigravity`
+- **Catégorie** : Correctif de Collision / Déplacement (`Data/Map078.rxdata`)
+- **Problème résolu** : 
+  - Le joueur était figé et ne pouvait pas faire un pas en entrant dans la Salle 1.
+  - Cause : Le tile de sol choisi (Tile 1305) possédait le flag bloquant `0x000F` dans la base de données de `Tileset 6: Caves`.
+  - Correction : Remplacement de tout le sol de la pièce par les tiles officiels certifiés 100% praticables (`Tiles 1386 & 1387 : Pass=0x0000`).
+- **Comment tester en jeu** :
+  - Entrer dans la Salle 1 depuis Havre-Givre : le joueur peut maintenant se déplacer librement dans toute la pièce, contourner la stèle et interagir avec les statues.
+
+---
+
+### `[AGY-054]` — 2026-10-21 — Correctif de Compilation PBS : Paramètre Météo des Salles Intérieures (`Weather`)
+- **Auteur** : `Antigravity`
+- **Catégorie** : Correctif PBS (`PBS/map_metadata.txt`)
+- **Problème résolu** : 
+  - Erreur au chargement : `Message: Field '' is not a positive integer or 0. File PBS/map_metadata.txt, section 078, key Weather None`.
+  - Dans Pokémon Essentials, la syntaxe de `Weather` exige deux valeurs (`Weather = Type,Probabilité`, ex: `Snow,15`). Si une carte d'intérieur n'a pas de météo, la ligne `Weather` ne doit tout simplement pas être présente (et non pas `Weather = None`).
+  - Suppression de la clé `Weather = None` sur les sections 078, 079 et 081.
+- **Comment tester en jeu** :
+  - Lancer `Game.exe` : les métadonnées de carte se compilent instantanément sans aucune exception.
+
+---
+
+### `[AGY-053]` — 2026-10-21 — Correctif de Compilation PBS : Capacité Voragath (BUGLEAP -> BUGBITE)
+- **Auteur** : `Antigravity`
+- **Catégorie** : Correctif PBS (`PBS/trainers.txt`)
+- **Problème résolu** : 
+  - Crash au lancement du jeu / compilation Debug : `Undefined value BUGLEAP in GameData::Move` pour le dresseur `[NOXIAN_SOLDIER,Soldat Kael]`.
+  - Remplacement de l'attaque inexistante `BUGLEAP` par l'attaque officielle canonique de Voragath : **`BUGBITE`** (Piqûre).
+- **Comment tester en jeu** :
+  - Relancer le jeu (`Game.exe`) : la compilation PBS se termine désormais sans aucune erreur.
+
+---
+
+### `[AGY-052]` — 2026-10-21 — Salle 1 Épurée de la Caverne de l'Épreuve (Vestibule des 4 Statues — Style Officiel Pokémon)
+- **Auteur** : `Antigravity`
+- **Catégorie** : Carte Dédiée & Événements Authentiques (`Data/Map078.rxdata`)
+- **Problème résolu** : 
+  - Abandon des maps prototypes surchargées et instables au profit d'une **progression pas-à-pas salle par salle**.
+  - Recalibrage sur les standards et tilesets officiels de grottes glaciaires de Pokémon Essentials (`Tileset 6: Caves`).
+- **Caractéristiques de la Salle 1 (`Map078.rxdata` — 22×20 tiles)** :
+  1. **Géométrie & Esthétique Clean** :
+     - Salle de caverne fermée et lisible entourée de parois rocheuses et falaises de glace à reliefs authentiques.
+     - Sol glacé homogène sans glitch de quadrillage ou d'autotile découpé.
+     - Stèle centrale en bois/pierre rappelant l'ordre de l'épreuve sacrée.
+  2. **Interactions & Énigme des 4 Statues** :
+     - 4 Statues sacrées aux 4 angles : **Volibear** (NO), **Loup des Neiges** (NE), **Ornn** (SO), **Anivia** (SE).
+     - Chaque statue réagit à la touche Action, affiche son texte d'activation et enclenche son interrupteur dédié (`Switches 61 à 64`).
+  3. **Portail de Sortie Nord** :
+     - Vérifie l'activation des 4 statues avant de laisser passer le joueur vers la Salle 2 (Labyrinthe de Verglas). Si les 4 statues ne sont pas activées, une barrière énergétique repousse poliment le joueur d'un pas en arrière.
+- **Comment tester en jeu** :
+  - Depuis Havre-Givre (`Map076`), monter par le passage Nord pour entrer dans la Salle 1.
+  - Lire la stèle centrale, allumer les 4 statues aux quatre coins, puis franchir l'arche au Nord.
+- **Comment annuler en cas de problème** :
+  - Restaurer `Data/Map078.rxdata` depuis la sauvegarde ou via Git.
+
+---
+
+### `[AGY-051]` — 2026-10-21 — Refonte Majeure : Donjon Organique Unifié de la Caverne de l'Épreuve & Puzzle de Verglas Platine
+- **Auteur** : `Antigravity`
+- **Catégorie** : Refonte Donjon Organique & Labyrinthe Glissant (`Data/Map078.rxdata`, `Graphics/Tilesets/SubTileset_3_Caverne_Epreuve_Crash.png`, `Data/Tilesets.rxdata`)
+- **Problème résolu** : 
+  - Remplacement de l'ancien prototype carré par **1 Grande Carte Organique continue (38×72 tiles)** inspirée des donjons officiels de Sinnoh (Arène de Frimapic / Temple de Frimapic) et Pokémon Platine.
+  - Fin des coupures artificielles de salles carrées : intégration fluide des 4 zones narratives sur la même carte (`Map078.rxdata`).
+- **Éléments créés et validés** :
+  1. **Tileset Unifié Haute Résolution (256×3040 px, 95 rangées)** :
+     - Fusion et alignement pixel-perfect des roches de caverne, du sol de glace pure, des falaises naturelles, des ponts de l'abîme et de l'épave de réacteur noxien (`SubTileset_3_Caverne_Epreuve_Crash.png`).
+     - Configuration des passages, hauteurs de vue et du tag glissant (`TerrainTag = 12 :Ice`) dans `Data/Tilesets.rxdata`.
+  2. **Zone 1 (Sud) — Le Vestibule des Demi-Dieux** :
+     - Entrée sinueuse depuis Havre-Givre connectée avec chemin de runes scintillantes.
+     - Grande chambre ovoïde sacrée abritant les 4 Statues de Demi-Dieux (*Volibear, Loup, Ornn, Anivia*).
+     - Arche de pierre ancestrale avec contrôleur d'interrupteurs runiques (`Switches 61..65`).
+  3. **Zone 2 (Centre-Sud) — Le Grand Labyrinthe de Verglas Glissant** :
+     - Puzzle de glace à rebonds authentique et 100% résoluble mathématiquement.
+     - Système de rochers de glace (`ICE_BOULDER`) servant de points de pivot directionnels.
+     - 7 étapes de glisse précises pour franchir la salle vers le Nord + bifurcation secrète vers l'alcôve Est contenant **Glace Éternelle** (`NEVERMELTICE`).
+  4. **Zone 3 (Centre-Nord) — Le Pont de l'Abîme Hurlant** :
+     - Franchissement aérien au-dessus du vide insondable sur un pont de pierre antique avec garde-corps.
+     - Sentinelle initiée freljordienne prête pour l'affrontement d'épreuve.
+  5. **Zone 4 (Nord) — Le Cratère du Réacteur Noxien** :
+     - Vaste cratère d'impact avec machinerie Hextech noxienne écrasée et générateurs fumants.
+     - Soldat d'élite de Noxus en faction (`NOXIAN_SOLDIER`), récompense `CT13` (Laser Glace) et tunnel d'échappée vers la Route 3.
+- **Comment tester en jeu** :
+  - Depuis Havre-Givre (`Map076`), franchir la passe rocheuse au Nord pour entrer directement dans la Grande Caverne (`Map078`).
+  - Activer les 4 statues des Demi-Dieux pour déverrouiller l'arche runique.
+  - Réaliser le parcours de verglas : depuis le rebord Sud (X:19, Y:48), glisser vers le Nord, pivoter sur les rochers pour rejoindre la sortie Nord ou l'alcôve secrète à l'Est.
+- **Comment annuler en cas de problème** :
+  - Restaurer le fichier `Data/Map078.rxdata` ou utiliser `git checkout HEAD~1 -- Data/Map078.rxdata Data/Tilesets.rxdata`.
+
+---
+
+### `[AGY-050]` — 2026-10-21 — Création intégrale de la Caverne de l'Épreuve (Maps 78 à 81, Énigmes & Soldats de Noxus)
+- **Auteur** : `Antigravity`
+- **Catégorie** : Création de Cartes, Énigmes & Lore de l'Épreuve (`Data/Map078.rxdata` à `Map081.rxdata`, `Data/Map076.rxdata`, `Data/Tilesets.rxdata`, `Data/System.rxdata`, `PBS/`)
+- **Fonctionnalités créées de A à Z selon le scénario officiel (`STORY.md`)** :
+  1. **Tileset 28 configuré (`Caverne de l'Épreuve`)** :
+     - Associé au `SubTileset_3_Caverne_Epreuve_Crash.png`.
+     - Paramétrage complet des collisions, hauteurs de vue et du **tag de terrain glissant verglas (`TerrainTag = 12`)** pour les puzzles de glace.
+  2. **Salle 1 : Vestibule & Énigme des 4 Statues Ancestrales (`Map078.rxdata`)** :
+     - 4 Statues de Demi-Dieux de Freljord (*Volibear l'Ours, Loup des Neiges, Ornn le Bélier, Anivia le Phénix*).
+     - Stèle d'indices croisés dictant l'ordre d'invocation ancestral.
+     - Gestionnaire d'interrupteurs (`Switches 61..64`) qui débloque la Grande Porte de Glace (`Switch 65`) une fois les 4 esprits éveillés.
+     - Objet caché : **Antigel** (`:ICEHEAL`).
+  3. **Salle 2 : Le Labyrinthe de Verglas Glissant (`Map079.rxdata`)** :
+     - Casse-tête de glissade sur glace vive avec rochers de butée.
+     - Îlot central avec piédestal de cristal givré déverrouillant la porte nord (`Switch 66`).
+     - Dresseur Initié de Freljord et objet rare sur corniche : **Glace Éternelle** (`:NEVERMELTICE`).
+  4. **Salle 3 : Le Pont de l'Abîme Hurlant (`Map080.rxdata`)** :
+     - Traversée monumentale d'un gouffre sans fond à travers les bourrasques de blizzard.
+     - Gardien Sentinelle sur le pont et objet : **Super Potion** (`:SUPERPOTION`).
+  5. **Salle Finale : Le Cratère du Crash Noxien (`Map081.rxdata` — Le Twist Narratif)** :
+     - Voûte éventrée par la chute des débris du dirigeable de Valerius.
+     - Épave fumante du réacteur Hextech avec morceaux de coque noxienne.
+     - **Confrontation contre les 2 Soldats de Noxus rescapés** :
+       - **Soldat Kael** : *Rocphite* (Niv. 13) et *Voragath* (Niv. 14).
+       - **Soldat Draven** : *Xenosai* (Niv. 14) et *Ziggs* (Niv. 15).
+     - Révélation du vol de l'Œuf d'Anivia et indice menant vers Piltover/Zaun.
+     - Récompense cachée dans l'épave : **CT13 Laser Glace** (`:TM13`).
+  6. **Ressources graphiques créées & intégrées** :
+     - Nouveau sprite de combat officiel dresseur : `Graphics/Trainers/NOXIAN_SOLDIER.png` (Soldat d'élite de Noxus en armure d'acier noir et cape cramoisie).
+     - Déclaration dans `PBS/trainer_types.txt` et `PBS/trainers.txt`.
+     - Rencontres sauvages par salle enregistrées dans `PBS/encounters.txt` et métadonnées dans `PBS/map_metadata.txt`.
+     - Entrée de la caverne reliée au nord de Havre-Givre (`Map076` à $(20, 1)$).
+- **Comment tester** :
+  - Depuis Havre-Givre, se diriger au nord pour pénétrer dans la Caverne de l'Épreuve.
+  - Résoudre l'énigme des statues dans la Salle 1 pour ouvrir la porte.
+  - Traverser le verglas de la Salle 2 pour activer le cristal.
+  - Franchir le pont de l'Abîme Hurlant (Salle 3) jusqu'au Cratère du Crash (Salle 4).
+  - Vaincre les 2 soldats noxiens et fouiller l'épave du réacteur.
+
+### `[AGY-049]` — 2026-10-20 — Correction de l'altitude au combat de tous les Pokémon de Freljord (Ancrage au sol)
+- **Auteur** : `Antigravity`
+- **Catégorie** : Équilibrage Graphique / Métriques Pokémon (`PBS/pokemon_metrics.txt`, `Data/species_metrics.dat`)
+- **Modifications apportées suite aux retours utilisateur** :
+  1. **Analyse de la cause de la lévitation / flottement en combat** :
+     - Dans Pokémon Essentials, l'altitude du sprite d'un Pokémon adverse sur le socle de combat est déterminée par le paramètre `FrontSprite = X,Y` dans `PBS/pokemon_metrics.txt`.
+     - Les Pokémon officiels du jeu possèdent un offset vertical `Y` descendant de `+18` à `+26` pour aligner leurs pieds avec le sol de l'arène.
+     - Tous nos Pokémon personnalisés avaient été initialisés à `FrontSprite = 0,0`, ce qui laissait le vide transparent sous leurs pattes flotter au-dessus de leur ombre et du socle.
+  2. **Ajustement précis de l'ancrage au sol de tous les 19 Pokémon de Freljord** :
+     - **Petits Pokémon au sol (haute correction)** :
+       - `CAMALYX` : `FrontSprite = 0,22` (pattes posées fermement au sol)
+       - `ZIGGS` : `FrontSprite = 0,20`
+       - `KINDRAME` : `FrontSprite = 0,12`
+       - `FIDDLEFFROI` : `FrontSprite = 0,12`
+       - `VEILLIRIS` : `FrontSprite = 0,10`
+       - `VORAGATH` : `FrontSprite = 0,10`
+     - **Pokémon moyens & grands au sol** :
+       - `TYRAKOUP`, `GELOUPIOT`, `XENOSAI`, `VOLIBJORN` : `FrontSprite = 0,6`
+       - `RUNOLITHE`, `RAGNARUNE` : `FrontSprite = 0,5`
+       - `LYCANGLAS`, `FENRIMAS`, `THORAKLAK`, `AURELIASTRE`, `SYLVERN`, `OMBREVEX` : `FrontSprite = 0,4`
+       - `ROCPHITE` : `FrontSprite = 0,2`
+  3. **Recompilation automatique** :
+     - Suppression du cache compilé binaire `Data/species_metrics.dat`. Au prochain lancement du jeu, Essentials recompilera automatiquement les métriques pour une prise en compte immédiate.
+- **Comment tester** :
+  - Lancer un combat contre un dresseur ou un Pokémon sauvage : observer les pieds du Pokémon adverse, ils sont désormais posés directement sur l'herbe/le socle sans aucun vide ni lévitation.
+
+### `[AGY-048]` — 2026-10-20 — Suppression de l'écran noir de transition entre Route 1 et Havre-Givre (Connexion fluide native)
+- **Auteur** : `Antigravity`
+- **Catégorie** : Transition de Cartes / Map Connections (`Data/Map048.rxdata`, `Data/Map076.rxdata`, `PBS/map_connections.txt`)
+- **Modifications apportées suite aux retours utilisateur** :
+  1. **Identification de la cause de l'écran noir de 2 secondes** :
+     - La Route 1 (`Map048`) et Havre-Givre (`Map076`) sont déjà reliées de façon native et sans coupure par le moteur Essentials via `PBS/map_connections.txt` (`48,N,0,76,S,0`).
+     - Des événements de téléportation manuelle `Transfer` (avec fondu au noir `Fade to black` et temporisation) avaient été superposés à la frontière nord de la Route 1 $(X=19..21, Y=0)$ et sud de Havre-Givre $(X=19..21, Y=29)$, créant un conflit et un écran noir forcé de 2 secondes.
+  2. **Suppression des téléportations en doublon** :
+     - Retrait des événements `Transfer` 4, 5, 6 sur `Map048`.
+     - Retrait des événements `Transfer` 1, 2, 3 sur `Map076`.
+  3. **Résultat** :
+     - Le passage entre la Route 1 et Havre-Givre est maintenant **100% instantané, fluide et sans aucun écran noir** (défilement continu de la caméra comme sur les routes officielles de Pokémon).
+- **Comment tester** :
+  - Marcher vers le nord sur la Route 1 et franchir la ligne $Y=0$ : la caméra défile directement sur Havre-Givre sans aucun temps de chargement ni écran noir.
+
+### `[AGY-047]` — 2026-10-20 — Refonte Krag : Combat optionnel sur dialogue, cinématique de démontage pièce par pièce & garnison permanente
+- **Auteur** : `Antigravity`
+- **Catégorie** : Événements & Cinématique RPG Maker XP (`Data/Map048.rxdata`, `Data/System.rxdata`)
+- **Modifications apportées suite aux retours utilisateur** :
+  1. **Suppression de l'agression automatique de Krag au regard** :
+     - Renommage de l'événement de `Trainer(3)` en `Krag`.
+     - Déclencheur passé en touche d'action (`Trigger = 0`). Krag ne bouge plus et n'attaque plus tout seul.
+  2. **Choix explicite du joueur pour lancer le combat** :
+     - Krag interpelle le joueur amicalement : *"Halte voyageur ! Je monte la garde devant les Portes des Tours boréales. Es-tu prêt pour un duel d'entraînement ?"*.
+     - Boîte de choix (`code 102`) :
+       - **"Oui, je suis prêt !"** : Lance le combat contre Krag (`TrainerBattle.start(:HIKER, "Krag")`).
+       - **"Pas encore"** : Krag répond poliment d'aller s'entraîner et de revenir quand on sera prêt.
+  3. **Cinématique visuelle de démontage de la barrière de bois pièce par pièce** :
+     - Une fois vaincu, Krag félicite le joueur et annonce qu'il va démonter la barricade.
+     - Découpage du barrage en 3 sections animées indépendantes avec les interrupteurs `Switch 51` (gauche), `Switch 52` (milieu) et `Switch 53` (droite).
+     - Krag se déplace physiquement devant chaque bout de bois avec bruitage et temporisation :
+       - Il monte à $(20, 6)$ et **se tourne directement vers le haut (`turn_up`) pour faire face à la poutre du milieu** $\rightarrow$ bruit de démontage $\rightarrow$ la poutre centrale disparaît (`Switch 52 = ON`).
+       - Il marche à gauche à $(19, 6)$ face au haut (`turn_up`) $\rightarrow$ bruit de démontage $\rightarrow$ la poutre de gauche disparaît (`Switch 51 = ON`).
+       - Il marche à droite à $(21, 6)$ face au haut (`turn_up`) $\rightarrow$ bruit de démontage $\rightarrow$ la poutre de droite disparaît (`Switch 53 = ON`).
+       - Validation finale de l'ouverture complète de la route (`Switch 50 = ON`).
+  4. **Placement permanent de Krag devant la tour** :
+     - Krag avance de 2 pas vers la droite pour se placer directement à $(23, 6)$ (une case plus haut qu'auparavant, juste au pied de la tour droite) et se tourne vers le bas.
+     - Activation de l'interrupteur local `Self Switch A`.
+     - Page 2 permanente : Krag reste posté là pour toujours avec un dialogue encourageant pour la suite de l'aventure vers Havre-Givre.
+- **Comment tester** :
+  - Sur la Route 1, aller devant les tours : Krag reste immobile et n'attaque pas automatiquement.
+  - Lui parler : refuser d'abord pour vérifier qu'aucun combat ne se lance.
+  - Lui reparler et choisir "Oui, je suis prêt !" : battre son équipe.
+  - Observer la cinématique : Krag marche vers chaque poteau en bois et les retire un à un, puis s'installe définitivement à côté de la tour droite.
+
+### `[AGY-046]` — 2026-10-20 — Connexion Village 1 -> Route 001 -> Havre-Givre & Boss Gardien Krag aux Portes des Tours
+- **Auteur** : `Antigravity`
+- **Catégorie** : Événements, Boss Dresseur & Transitions de cartes (`Data/Map022.rxdata`, `Data/Map048.rxdata`, `Data/Map076.rxdata`, `PBS/trainers.txt`)
+- **Modifications apportées** :
+  1. **Connexion fluide Village 1 (`Map022`) <-> Route 001 (`Map048`)** :
+     - Événements de téléportation placés au sud du village $(X=26..29, Y=43)$ vers le début sud de la Route 1 à $(20, 28)$.
+     - Téléportations retour au bas de la Route 1 $(X=19..21, Y=29)$ ramenant le joueur au village à $(27, 42)$.
+  2. **Boss Gardien des Portes : Krag le Gardien (`Map048.rxdata` à $X=20, Y=7$)** :
+     - Situé en sentinelle juste devant le mur en bois reliant les deux tours nordiques $(X=17..18$ et $X=22..23)$.
+     - Interpelle le joueur au regard (`Trainer(3)`) : *"Halte ! Personne ne franchit les Portes des Tours sans prouver sa valeur au combat !"*.
+     - Combat officiel contre **`[HIKER,Krag]`** avec son équipe de Freljord : **Rocphite** (Niveau 6) et **Tyrakoup** (Niveau 7).
+  3. **Système de Barrière des Tours verrouillée / déverrouillée (Disparition visuelle)** :
+     - Les tuiles du barrage de bois ont été retirées de la couche statique de la carte et converties en événements interactifs avec apparence de tuile aux coordonnées $(19..21, 5..6)$.
+     - Utilisation de l'interrupteur libre **`Switch 50` ("Route 1 Gate Open")** au lieu du Switch 16 (qui était écrasé par le système météo horaire d'Essentials `isMorning?`).
+     - **Tant que Krag n'est pas battu (`Switch 50 == OFF`)** : Le barrage de bois est visible à l'écran et bloque physiquement le passage.
+     - **Dès que Krag est battu (`Switch 50 == ON`)** : Le barrage de bois **disparaît immédiatement de l'écran**, libérant totalement l'accès vers Havre-Givre !
+  4. **Connexion Route 001 (`Map048`) <-> Havre-Givre (`Map076`)** :
+     - Téléportations nord $(X=19..21, Y=0)$ menant directement à l'entrée sud de Havre-Givre à $(20, 28)$.
+     - Téléportations retour au sud de Havre-Givre ramenant à la Route 1.
+  5. **Objet à ramasser sur la Route 1** :
+     - Ajout d'une Poké Ball d'objet (`Item`) contenant une **Super Potion** (`:SUPERPOTION`) à $(9, 16)$.
+- **Comment tester** :
+  - Sortir au sud du Village 1 : le joueur arrive sur la Route 1.
+  - Traverser la Route 1 vers le nord jusqu'aux deux tours : Krag bloque le passage et lance le duel de boss.
+  - Vaincre Krag : la barrière s'ouvre, permettant d'accéder au village d'étape Havre-Givre !
+
+### `[AGY-045]` — 2026-10-20 — Ajustement Événements : Maman dans la maison, Starters officiels et Cinématique dynamique de Soren arrivant de gauche
+- **Auteur** : `Antigravity`
+- **Catégorie** : Événements RPG Maker XP (`Data/Map033.rxdata`, `Data/Map042.rxdata`, `Data/Map004.rxdata`, `Data/Map022.rxdata`)
+- **Modifications apportées suite aux retours utilisateur** :
+  1. **Maman intégrée dans la maison de départ (`Map033.rxdata`)** :
+     - Ajout de l'événement Maman (`NPC 28`) à $(7, 4)$ au rez-de-chaussée de la maison du joueur.
+     - Dialogue adapté à l'Épreuve de Freljord : elle encourage le joueur, lui remet le **Pokégéar** et les **Chaussures de Course** (`$player.has_pokegear = true`, `$player.has_running_shoes = true`), et soigne l'équipe après les combats (`Starting Over`).
+  2. **Starters officiels de Freljord dans le Laboratoire (`Map042.rxdata` & `Map004.rxdata`)** :
+     - Correction du sérialiseur binaire Ruby Marshal (`scratch/MarshalHelper.cs`) pour encoder directement les scripts modifiés.
+     - Poké Ball 1 : **Geloupiot** (`:GELOUPIOT`, niveau 5, Glace).
+     - Poké Ball 2 : **Tyrakoup** (`:TYRAKOUP`, niveau 5, Combat).
+     - Poké Ball 3 : **Veilliris** (`:VEILLIRIS`, niveau 5, Psy).
+  3. **Arrivée cinématique de Soren depuis la gauche à la sortie du labo (`Map022.rxdata`)** :
+     - **Avant d'avoir son starter (`Variable 7 == 0`)** : Soren est **100% invisible** (graphique indépendant vide et opacité 0). Le parvis du laboratoire est parfaitement dégagé.
+     - **Dès la sortie du laboratoire avec le starter (`Variable 7 >= 1`)** : Un événement de cinématique automatique se déclenche à la sortie $(37, 16)$ : Soren surgit en courant depuis la gauche du village, interpelle le joueur en criant *"Hé ! Attends-moi !"*, le joueur se tourne vers lui, Soren propose le premier combat de rivalité, puis s'écarte pour le laisser libre de partir vers la Route 1 !
+- **Comment tester** :
+  - Lancer le jeu, descendre dans la maison (`Map033`) : parler à Maman pour obtenir les chaussures et le Pokégéar.
+  - Sortir dans `village 1` : Soren n'est PAS là devant le labo.
+  - Entrer dans le labo : choisir Geloupiot, Tyrakoup ou Veilliris.
+  - Ressortir du labo : Soren vous interpelle immédiatement pour le combat de rivaux !
+
+### `[AGY-044]` — 2026-10-20 — Implémentation du Prologue & Scénario du Choix de Starter (Labo Map042 & Village 1 Map022)
+- **Auteur** : `Antigravity`
+- **Catégorie** : Événements In-Game & Scénarisation (`Data/Map042.rxdata`, `Data/Map022.rxdata`, `PBS/trainers.txt`)
+- **Sauvegardes de sécurité créées** :
+  - `Data/Map042_backup_before_starter_event.rxdata`
+  - `Data/Map022_backup_before_starter_event.rxdata`
+- **Contenu & Événements intégrés** :
+  - **Scène du Choix dans le Laboratoire (`Map042.rxdata`)** :
+    - *Guidage automatique du joueur* : Déplacement programmé du joueur montant 7 pas depuis l'entrée puis tournant à droite de 4 pas pour se positionner directement devant les 3 Poké Balls.
+    - *Attribution des Starters de Freljord* :
+      - Poké Ball Gauche $(9, 4)$ : **`GELOUPIOT`** (Niveau 5 — Type Glace).
+      - Poké Ball Centre $(10, 4)$ : **`TYRAKOUP`** (Niveau 5 — Type Combat).
+      - Poké Ball Droite $(11, 4)$ : **`VEILLIRIS`** (Niveau 5 — Type Psy).
+    - *Dialogues d'ambiance d'Épreuve* : Le Professeur annonce l'âge de la Grande Épreuve et invite le joueur à choisir son partenaire officiel.
+  - **Événements Extérieurs de `village 1` (`Map022.rxdata`)** :
+    - *Sentinelle de sortie (Blocage vers Route 1 à $X=27..28, Y=42$)* : Tant que le starter n'est pas choisi (`Var 7 == 0`), le passage est bloqué et le garde repousse le joueur vers le village. Dès le starter obtenu, le passage s'ouvre librement.
+    - *Rival Soren devant le laboratoire ($X=37, Y=18$)* :
+      - Avant le choix : invite le joueur à entrer dans le labo.
+      - Après le choix : interpelle le joueur et déclenche le **Premier Combat de rivalité** avec le starter opposé (niveau 5).
+      - Post-combat : félicite le joueur et part en éclaireur sur la Route 1 vers Havre-Givre.
+  - **Données Dresseurs (`PBS/trainers.txt`)** :
+    - Définition de `[RIVAL1,Soren]` avec 3 variations selon le starter choisi par le joueur.
+- **Comment tester en jeu** :
+  - Lancer le jeu, sortir de la maison et aller parler à Soren devant le labo à $(37, 18)$.
+  - Entrer dans le labo : observer le déplacement automatique vers la droite devant les 3 Poké Balls.
+  - Choisir son starter (Geloupiot, Tyrakoup ou Veilliris).
+  - Sortir du labo : affronter Soren, puis descendre librement vers la Route 1 au Sud !
+- **Comment désactiver en cas de bug** :
+  - `cp Data/Map042_backup_before_starter_event.rxdata Data/Map042.rxdata`
+  - `cp Data/Map022_backup_before_starter_event.rxdata Data/Map022.rxdata`
+
+---
+
+### `[AGY-043]` — 2026-10-18 — Finalisation & Injection In-Game de l'Acte 1 (Havre-Givre Map 076 & Route 1 Map 048)
+- **Auteur** : `Antigravity`
+- **Catégorie** : Cartes / Level Design In-Game & Données (`Data/Map076.rxdata`, `Data/Map048.rxdata`, `Data/Tilesets.rxdata`, `Graphics/Tilesets/SubTileset_5_Routes_Freljord.png`, `PBS/map_connections.txt`, `PBS/encounters.txt`)
+- **Sauvegardes de sécurité créées** :
+  - `Data/Map076_backup_before_v13.rxdata`
+  - `Data/Map048_backup_before_v13.rxdata`
+  - `Graphics/Tilesets/SubTileset_5_Routes_Freljord_backup.png`
+- **Éléments construits & intégrés directement dans le moteur de jeu** :
+  - **Havre-Givre (`Map076.rxdata`, 40×30 cases, Tileset 25 `SubTileset_4_Villages_Freljord_Port`)** :
+    - *7 Bâtiments natifs complets* : Toitures intégrales sans aucune coupure ($Y \ge 4$), Centre Pokémon (Refuge), Boutique Poké Mart, Grand Chalet, Cabane rustique, Long Lodge en rondins, Manoir du lac et Cabane de pêcheur.
+    - *Réseau d'allées intelligent* : Grande Avenue centrale reliant la Route 1 au Sud ($X=19..21$) jusqu'au Col d'altitude au Nord, boulevard civique ouest, quartier artisanal et promenade du port à l'Est.
+    - *Milieu aquatique & Port* : Canal gelé continu ($X=24..26$) débouchant sur la Grande Baie boréale ($X=22..36, Y=17..29$) surmontée d'un grand ponton d'amarrage en bois.
+    - *Place centrale & Mobilier* : Spire de guet en glace boréale au centre de la place, lampadaires nordiques, bancs en bois chaud, statue de gardien, puits de neige et panneau de bienvenue.
+    - *Bordures infranchissables* : Forêt dense de sapins boréaux de 3 cases de profondeur sur les 4 bordures (« 3 de 3 de largeur ») pour empêcher la caméra de voir le vide.
+  - **Route 1 (`Map048.rxdata`, 40×30 cases, Tileset 27 `SubTileset_5_Routes_Freljord`)** :
+    - *Level Design Pokémon authentique* : Avenue centrale bloquée vers le Nord par un rebord naturel de montagne sautable au Sud ($Y=20$), forçant le joueur à explorer vers l'Ouest.
+    - *Progression & Clairières* : Clairière inférieure de hautes herbes enneigées boréales, sentier montant le long de la falaise Ouest, terrasse supérieure à embranchements.
+    - *Bivouac d'éclaireur (Nord-Ouest)* : Tente en peau 100% propre de face (sans aucun artefact), marmite sur feu de camp animé, banc en rondins, lit de camp, provisions et tas de bois à la hache.
+    - *Bosquet secret (Nord-Est)* : Autel de pierre gravé de runes, bannière clanique de Freljord, grand cairn mégalithique, cristaux de Vrai Givre géants et Pokéball dissimulée.
+    - *Raccourci de retour* : Rebord sautable au Sud ($Y=20$) permettant de redescendre instantanément à l'entrée Sud.
+    - *Raccordement territorial 1:1* : Alignement parfait de l'Avenue ($X=19..21$) avec la sortie Sud de Havre-Givre.
+    - *Bordures infranchissables* : Périmètre forestier de 3 cases d'épaisseur sur les 4 côtés.
+  - **Harmonisation Graphique & Collisions (`SubTileset_5_Routes_Freljord.png` & `Data/Tilesets.rxdata`)** :
+    - Harmonisation des rangées 0-2 de SubTileset_5 avec le sol de neige pure, le pavage de pierre et les sapins de SubTileset_4 pour une continuité visuelle 100% sans raccord entre les deux cartes.
+    - Configuration des tags de terrain : Tag 2 (Hautes Herbes boréales déclenchant les combats sauvages), Tag 1 (Rebord sautable vers le Sud), et flags de passage infranchissables sur les sapins, rochers et bâtiments.
+  - **Métadonnées & Rencontres Sauvages** :
+    - Connexion `48,N,0,76,S,0` ajoutée dans `PBS/map_connections.txt`.
+    - Rencontres sauvages boréales configurées dans `PBS/encounters.txt` pour `[048]` (Geloupiot, Tyrakoup, Camalyx).
+- **Comment tester en jeu** :
+  - Ouvrir le projet dans **RPG Maker XP** : les cartes `048` et `076` s'affichent avec leur disposition finale.
+  - Lancer le jeu en mode Debug : marcher de la Route 1 vers Havre-Givre via l'avenue $X=19..21$ pour constater la transition fluide et sans coupure, tester le saut du rebord vers le bas et déclencher des rencontres sauvages dans les hautes herbes boréales.
+- **Comment désactiver en cas de bug** :
+  - Restaurer les sauvegardes :
+    `cp Data/Map048_backup_before_v13.rxdata Data/Map048.rxdata`
+    `cp Data/Map076_backup_before_v13.rxdata Data/Map076.rxdata`
+    `cp Graphics/Tilesets/SubTileset_5_Routes_Freljord_backup.png Graphics/Tilesets/SubTileset_5_Routes_Freljord.png`
+
+---
+
+### `[AGY-042]` — 2026-10-18 — Création du Village de Transition de Freljord « Havre-Givre » (Map076)
+- **Auteur** : `Antigravity`
+- **Catégorie** : Cartes / Level Design & Données (`Data/Map076.rxdata`, `Data/MapInfos.rxdata`, `PBS/map_metadata.txt`, `Data/Scripts/012_Overworld/011_Overworld_HavreGivre_Freljord.rb`)
+- **Éléments construits & intégrés** :
+  - **Level Design de Havre-Givre (`Map076.rxdata`, 45×30 cases)** :
+    - *Place centrale & Allées* : Grand croisement en dalles de pierre boréale reliant la Route 1 (Sud), le Poste de traite (Ouest), le Pont sur le canal gelé (Est) et le Col d'altitude (Nord).
+    - *Refuge de Montagne (Centre Pokémon)* : Grand chalet en bois chaud avec toiture enneigée et cheminée fumante au centre du village.
+    - *Poste de Garde & Ravitaillement (Boutique Mart)* : Cottage d'approvisionnement avec tour de guet fortifiée en bois (2×4 cases) et tas de bois de chauffe.
+    - *Secteur Résidentiel & Canal Gelé* : Deux chalets d'habitants séparés par une rivière gelée franchie par un pont en madriers de bois.
+    - *Ambiance & Décorations* : Lampadaires nordiques à lanterne bleue, bonhomme de neige, bancs en bois, panneaux indicateurs et petits Poros curieux.
+  - **Enregistrement RPG Maker XP & Métadonnées** :
+    - Ajout de l'entrée `[076]` dans `PBS/map_metadata.txt` (`Name = Havre-Givre`, `Weather = Snow,25`).
+    - Enregistrement de `Map 76` dans `Data/MapInfos.rxdata` comme enfant de la Route 1.
+  - **Script d'Overworld (`011_Overworld_HavreGivre_Freljord.rb`)** :
+    - Mécaniques d'auberge (`pbHealAtHavreGivreRefuge`), de boutique de survie (`pbShopHavreGivre`), dialogue d'éclaireur (`pbScoutHavreGivre`) et interactions Poro.
+- **Comment tester en jeu** :
+  - Ouvrir le projet dans **RPG Maker XP** (la carte `Havre-Givre [076]` apparaît désormais dans l'arborescence sous la Route 1).
+  - Ou lancer le jeu en mode Debug et se téléporter sur la carte `076`.
+- **Comment désactiver en cas de bug** :
+  - Restaurer la sauvegarde : `cp Data/Map076_backup_user.rxdata Data/Map076.rxdata`
+
+---
+
+### `[AGY-041]` — 2026-10-18 — Construction & Aménagement de la Route 1 de Freljord (Map048)
+- **Auteur** : `Antigravity`
+- **Catégorie** : Cartes / Level Design & Données (`Data/Map048.rxdata`, `PBS/map_metadata.txt`, `PBS/encounters.txt`, `Graphics/Tilesets/SubTileset_5_Routes_Freljord.png`)
+- **Éléments construits & intégrés** :
+  - **Level Design de la Route 1** : Aménagement complet de la carte `Map048` ("route 1 ", 40×30 cases) en conservant les structures posées par le joueur (tente, bivouac, chemin, sapins).
+  - **Nouveaux Sprites de Hautes Herbes Givrés & Rebords de Neige** : Ajout de tuiles de hautes herbes enneigées boréales et de rebords sautables dans le tileset officiel.
+  - **Tracé & Aménagement** : Grandes clairières de hautes herbes givrées, camp d'étape avec barricades et bannières, cristaux de givre, rochers et rebords de retour.
+  - **Rencontres sauvages configurées dans `encounters.txt`** : Rencontres de niveau 3 à 5 incluant *Geloupiot*, *Tyrakoup*, *Camalyx*, Roucool et Hoothoot nocturne.
+  - **Métadonnées de la carte** : Enregistrement de `[048]` avec météo de neige boréale.
+- **Comment tester en jeu** :
+  - Lancer le jeu ou recharger le projet RPG Maker XP pour voir directement la carte `Map048` actualisée.
+- **Comment désactiver en cas de bug** :
+  - Restaurer la sauvegarde : `cp Data/Map048_backup_user.rxdata Data/Map048.rxdata`
+
+---
+
+### `[AGY-040]` — 2026-10-17 — Intégration du Méga-Tileset Officiel pour les Routes & Extérieurs de Freljord
+- **Auteur** : `Antigravity`
+- **Catégorie** : Graphismes / Tilesets (`Graphics/Tilesets/`)
+- **Contenu & Découpe RPG Maker XP** :
+  - **Calage strict 32×32 px** : Format normalisé de 256 px de large (8 colonnes) avec fond transparent sans aucun décalage de pixel.
+  - **Intégration complète de la planche de sprites de routes Freljord** :
+    - *Sols & Passages* : Neige fraîche, sentiers avec traces de pas, dalles de pierre froide, glace fissurée, lac gelé avec berges, escaliers de pierre taillée, ledges de saut Pokémon, et hautes herbes boréales de rencontres sauvages.
+    - *Reliefs & Grottes* : Parois de falaises escarpées enneigées, grottes de glace et de roche, stalagmites géantes, stalactites, pics rocheux et cavités givrées.
+    - *Végétation Boréale* : Grands sapins enneigés individuels, bosquets denses, cimes de forêts boréales pour bordures infranchissables, souches et buissons de baies enneigés.
+    - *Campements & Bivouacs* : Grandes tentes nordiques en peaux, tentes trappeur moyennes, feux de camp actifs avec marmite fumante, feux de camp compacts, feux éteints, lits de camp, duvets, haches, billots, tas de bois et tonneaux de provisions.
+    - *Lore Freljord & Défenses* : Statues colossales du bélier d'Ornn, tours de guet en bois de Freljord (2x4 tiles), menhirs de pierre avec runes cyan éclatantes, cristaux de Vrai Givre géants, bannières de clan de Freljord, râteliers d'armes (épées, haches, boucliers), barricades et chevaux de frise.
+    - *Ponts & Mobilier* : Ponts suspendus en corde (horizontaux et verticaux), lanternes boréales, bornes de sentier, panneaux indicateurs enneigés, clôtures de corde et murets de pierre.
+    - *Vie Sauvage* : Mini Poros sauvages, poros qui roulent, poro surpris, bonhomme de neige poro et empreintes de pattes dans la neige.
+- **Fichiers modifiés** :
+  - `Graphics/Tilesets/SubTileset_5_Routes_Freljord.png`
+  - `CHANGELOG.md`
+- **Comment tester en jeu** :
+  - Ouvrir l'éditeur RPG Maker XP, associer `SubTileset_5_Routes_Freljord` à un tileset ou à une carte extérieure pour peindre les routes avec toute la panoplie d'éléments de Freljord calés au carreau près.
+- **Comment désactiver en cas de bug** :
+  - `git checkout HEAD~1 -- "Graphics/Tilesets/SubTileset_5_Routes_Freljord.png"`
+
+---
+
 ### `[AGY-039]` — 2026-10-16 — Nettoyage Intégral du Halo et Cadrage au Sol de Veilliris de Dos
 - **Auteur** : `Antigravity`
 - **Catégorie** : Graphismes / Sprites Combat de Dos (`Graphics/Pokemon/Back/` & `Back shiny/`)

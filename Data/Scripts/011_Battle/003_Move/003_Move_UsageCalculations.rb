@@ -227,13 +227,75 @@ class Battle::Move
   def pbModifyDamage(damageMult, user, target);         return damageMult; end
 
   def pbGetAttackStats(user, target)
-    return user.spatk, user.stages[:SPECIAL_ATTACK] + Battle::Battler::STAT_STAGE_MAXIMUM if specialMove?
-    return user.attack, user.stages[:ATTACK] + Battle::Battler::STAT_STAGE_MAXIMUM
+    if specialMove?
+      spatk = user.spatk
+      spatk = ((spatk + 40) * 1.15).floor if user.hasActiveItem?(:RABADON)
+      spatk += 30 if user.hasActiveItem?(:TRINITYFORCE)
+      spatk += 50 if user.hasActiveItem?(:ZHONYASHOURGLASS)
+      spatk += 80 if user.hasActiveItem?(:LUDENSTEMPEST)
+      spatk += 65 if user.hasActiveItem?(:VOIDSTAFF)
+      spatk += 80 if user.hasActiveItem?(:LIANDRYSANGUISH)
+      spatk += 80 if user.hasActiveItem?(:EVERFROST)
+      spatk += 90 if user.hasActiveItem?(:NIGHTHARVESTER)
+      spatk += 90 if user.hasActiveItem?(:HEXTECHROCKETBELT)
+      spatk += 80 if user.hasActiveItem?(:RIFTMAKER)
+      spatk += 40 if user.hasActiveItem?(:MOONSTONEKRENOWER)
+      spatk += 8 if user.hasActiveItem?(:AMPLIFYINGTOME)
+      spatk += 16 if user.hasActiveItem?(:BLASTINGWAND)
+      spatk += 25 if user.hasActiveItem?(:NEEDLESSLYLARGEROD)
+      spatk += 10 if user.hasActiveItem?(:SHEEN)
+      return spatk, user.stages[:SPECIAL_ATTACK] + Battle::Battler::STAT_STAGE_MAXIMUM
+    end
+
+    attack = user.attack
+    attack += 30 if user.hasActiveItem?(:INFINITYEDGE)
+    attack += 30 if user.hasActiveItem?(:TRINITYFORCE)
+    attack += 40 if user.hasActiveItem?(:GUARDIANANGEL)
+    attack += 55 if user.hasActiveItem?(:BLOODTHIRSTER)
+    attack += 60 if user.hasActiveItem?(:DUSKBLADE)
+    attack += 30 if user.hasActiveItem?(:LORDDOMINIKSREGARDS)
+    attack += 40 if user.hasActiveItem?(:BLACKCLEAVER)
+    attack += 20 if user.hasActiveItem?(:PHANTOMDANCER)
+    attack += 50 if user.hasActiveItem?(:STERAKSGAGE)
+    attack += 40 if user.hasActiveItem?(:STATIKKSHIV)
+    attack += 60 if user.hasActiveItem?(:KRAKENSLAYER)
+    attack += 55 if user.hasActiveItem?(:GOREDRINKER)
+    attack += 50 if user.hasActiveItem?(:STRIDEBREAKER)
+    attack += 40 if user.hasActiveItem?(:DIVINESUNDERER)
+    attack += 55 if user.hasActiveItem?(:ECLIPSE)
+    attack += 60 if user.hasActiveItem?(:PROWLERSCLAW)
+    attack += 5 if user.hasActiveItem?(:LONGSWORD)
+    attack += 12 if user.hasActiveItem?(:PICKAXE)
+    attack += 20 if user.hasActiveItem?(:BFSWORD)
+    attack += 8 if user.hasActiveItem?(:VAMPIRICSCEPTER)
+    attack += 8 if user.hasActiveItem?(:PHAGE)
+    return attack, user.stages[:ATTACK] + Battle::Battler::STAT_STAGE_MAXIMUM
   end
 
   def pbGetDefenseStats(user, target)
-    return target.spdef, target.stages[:SPECIAL_DEFENSE] + Battle::Battler::STAT_STAGE_MAXIMUM if specialMove?
-    return target.defense, target.stages[:DEFENSE] + Battle::Battler::STAT_STAGE_MAXIMUM
+    if specialMove?
+      spdef = target.spdef
+      spdef = (spdef * 0.6).floor if user.hasActiveItem?(:VOIDSTAFF)
+      spdef += 50 if target.hasActiveItem?(:TURBOCHEMTANK)
+      spdef += 30 if target.hasActiveItem?(:LOCKETOFTHEIRONSOLARI)
+      spdef += 10 if target.hasActiveItem?(:NULLMAGICMANTLE)
+      spdef += 22 if target.hasActiveItem?(:NEGATRONCLOAK)
+      return spdef, target.stages[:SPECIAL_DEFENSE] + Battle::Battler::STAT_STAGE_MAXIMUM
+    end
+
+    defense = target.defense
+    defense += 80 if target.hasActiveItem?(:THORNMAIL)
+    defense += 40 if target.hasActiveItem?(:GUARDIANANGEL)
+    defense += 50 if target.hasActiveItem?(:ZHONYASHOURGLASS)
+    defense += 60 if target.hasActiveItem?(:SUNFIREAEGIS)
+    defense += 50 if target.hasActiveItem?(:FROSTFIREGAUNTLET)
+    defense += 30 if target.hasActiveItem?(:LOCKETOFTHEIRONSOLARI)
+    defense += 8 if target.hasActiveItem?(:CLOTHARMOR)
+    defense += 18 if target.hasActiveItem?(:CHAINVEST)
+    defense = (defense * 0.65).floor if user.hasActiveItem?(:LORDDOMINIKSREGARDS)
+    defense = (defense * 0.80).floor if user.hasActiveItem?(:DIVINESUNDERER)
+    defense = (defense * 0.85).floor if user.hasActiveItem?(:ECLIPSE)
+    return defense, target.stages[:DEFENSE] + Battle::Battler::STAT_STAGE_MAXIMUM
   end
 
   def pbCalcDamage(user, target, numTargets = 1)
@@ -275,7 +337,11 @@ class Battle::Move
     baseDmg = [(baseDmg * multipliers[:power_multiplier]).round, 1].max
     atk     = [(atk     * multipliers[:attack_multiplier]).round, 1].max
     defense = [(defense * multipliers[:defense_multiplier]).round, 1].max
-    damage  = ((((2.0 * user.level / 5) + 2).floor * baseDmg * atk / defense).floor / 50).floor + 2
+
+    # League of Legends Damage Formula Calculation
+    raw_damage = ((((2.0 * user.level / 5) + 2).floor * baseDmg * atk / 50.0).floor / 50).floor + 2
+    damage  = (raw_damage * (100.0 / (100.0 + defense))).floor
+
     damage  = [(damage * multipliers[:final_damage_multiplier]).round, 1].max
     target.damageState.calcDamage = damage
   end
@@ -429,6 +495,10 @@ class Battle::Move
       else
         multipliers[:final_damage_multiplier] *= 2
       end
+      multipliers[:final_damage_multiplier] *= 1.25 if !specialMove? && user.hasActiveItem?(:INFINITYEDGE)
+      multipliers[:final_damage_multiplier] *= 1.25 if !specialMove? && user.hasActiveItem?(:PHANTOMDANCER)
+      multipliers[:final_damage_multiplier] *= 1.25 if !specialMove? && user.hasActiveItem?(:RAPIDFIRECANNON)
+      multipliers[:final_damage_multiplier] *= 1.1 if !specialMove? && user.hasActiveItem?(:ZEAL)
     end
     # Random variance
     if !self.is_a?(Battle::Move::Confusion)

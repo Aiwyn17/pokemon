@@ -563,6 +563,7 @@ class Pokemon
   def item=(value)
     return if value && !GameData::Item.exists?(value)
     @item = (value) ? GameData::Item.get(value).id : value
+    calc_stats
   end
 
   # Returns whether this Pokémon is holding an item. If an item id is passed,
@@ -1116,8 +1117,25 @@ class Pokemon
         stats[s.id] = calcStat(base_stats[s.id], this_level, this_IV[s.id], @ev[s.id], nature_mod[s.id])
       end
     end
-    hp_difference = stats[:HP] - @totalhp
+    old_totalhp = @totalhp
     @totalhp = stats[:HP]
+    @totalhp += 150 if self.item == :WARMOGSARMOR
+    @totalhp += 100 if self.item == :STERAKSGAGE
+    @totalhp += 100 if self.item == :GOREDRINKER
+    @totalhp += 80 if self.item == :STRIDEBREAKER
+    @totalhp += 80 if self.item == :DIVINESUNDERER
+    @totalhp += 60 if self.item == :EVERFROST
+    @totalhp += 80 if self.item == :NIGHTHARVESTER
+    @totalhp += 60 if self.item == :HEXTECHROCKETBELT
+    @totalhp += 80 if self.item == :RIFTMAKER
+    @totalhp += 100 if self.item == :SUNFIREAEGIS
+    @totalhp += 90 if self.item == :FROSTFIREGAUNTLET
+    @totalhp += 90 if self.item == :TURBOCHEMTANK
+    @totalhp += 50 if self.item == :MOONSTONEKRENOWER
+    @totalhp += 25 if self.item == :RUBYCRYSTAL
+    @totalhp += 60 if self.item == :GIANTSBELT
+    @totalhp += 30 if self.item == :PHAGE
+    hp_difference = @totalhp - old_totalhp
     self.hp = [@hp + hp_difference, 1].max if @hp > 0 || hp_difference > 0
     @attack  = stats[:ATTACK]
     @defense = stats[:DEFENSE]
