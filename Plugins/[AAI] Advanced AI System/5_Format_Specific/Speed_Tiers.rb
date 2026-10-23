@@ -1,0 +1,332 @@
+# Advanced AI System - Speed Tiers
+
+module AdvancedAI
+  module SpeedTiers
+    SPEED_TIERS = {
+      ultra_fast: { min: 130, name: "Ultra Fast (130+)" },      # Regieleki, Electrode
+      very_fast: { min: 110, name: "Very Fast (110-129)" },     # Weavile, Gengar
+      fast: { min: 95, name: "Fast (95-109)" },                 # Garchomp, Hydreigon
+      medium_fast: { min: 80, name: "Medium-Fast (80-94)" },    # Gyarados, Dragonite
+      medium: { min: 60, name: "Medium (60-79)" },              # Tyranitar, Gastrodon
+      slow: { min: 40, name: "Slow (40-59)" },                  # Ferrothorn, Dondozo
+      very_slow: { min: 0, name: "Very Slow (<40)" }            # Trick Room mons
+    }
+
+    COMMON_SCARF_USERS = [
+      :LANDORUS, :LANDORUSTHERIAN, :URSHIFU, :URSHIFURAPIDSTRIKE,
+      :DARMANITAN, :DITTO, :EXCADRILL, :HYDREIGON, :KARTANA,
+      :TYRANITAR, :MAGNEZONE, :ROTOMWASH, :ROTOMHEAT,
+      :GARCHOMP, :SALAMENCE, :CHANDELURE, :GOTHITELLE
+    ]
+
+    def self.calculate_effective_speed(battle, battler)
+      return 0 unless battler && !battler.fainted?
+      # Use engine modifiers and rounding; reserve Pokemon only have raw stats.
+      return battler.pbSpeed if battler.respond_to?(:pbSpeed)
+      return battler.speed
+    end
+
+    def self.compare_speed(battle, battler1, battler2)
+      speed1 = calculate_effective_speed(battle, battler1)
+      speed2 = calculate_effective_speed(battle, battler2)
+
+      trick_room = battle.field.effects[PBEffects::TrickRoom] &&
+                   battle.field.effects[PBEffects::TrickRoom] > 0
+
+      if trick_room
+        if speed1 < speed2
+          return 1  # battler1 goes first
+        elsif speed1 > speed2
+          return -1  # battler2 goes first
+        end
+      else
+        if speed1 > speed2
+          return 1
+        elsif speed1 < speed2
+          return -1
+        end
+      end
+
+      0  # Speed tie
+    end
+
+    def self.outspeeds?(battle, battler1, battler2)
+      compare_speed(battle, battler1, battler2) > 0
+    end
+
+    def self.get_speed_tier(base_speed)
+      SPEED_TIERS.each do |tier, data|
+        if base_speed >= data[:min]
+          return tier
+        end
+      end
+      :very_slow
+    end
+
+    def self.in_same_speed_tier?(battler1, battler2)
+      base1 = (battler1.respond_to?(:pokemon) ? battler1.pokemon.baseStats[:SPEED] : battler1.baseStats[:SPEED]) rescue battler1.speed
+      base2 = (battler2.respond_to?(:pokemon) ? battler2.pokemon.baseStats[:SPEED] : battler2.baseStats[:SPEED]) rescue battler2.speed
+      tier1 = get_speed_tier(base1)
+      tier2 = get_speed_tier(base2)
+      tier1 == tier2
+    end
+
+    def self.suspect_choice_scarf?(battle, battler, skill_level = 100)
+      return false unless skill_level >= 70
+      return false unless battler
+
+      if battler.item_id
+        return battler.item_id == :CHOICESCARF
+      end
+
+      return true if COMMON_SCARF_USERS.include?(battler.species)
+
+      if battler.effects[PBEffects::ChoiceBand]
+        base_speed = battler.pokemon.baseStats[:SPEED] rescue battler.speed
+        return true if base_speed >= 80 && base_speed <= 100
+      end
+
+      false
+    end
+
+    def self.scarf_adjusted_speed(battle, battler)
+      base_speed = calculate_effective_speed(battle, battler)
+
+      return base_speed if battler.item_id == :CHOICESCARF
+
+      (base_speed * 1.5).to_i
+    end
+
+    def self.outspeeds_with_scarf?(battle, user, target)
+      our_speed = calculate_effective_speed(battle, user)
+      their_scarf_speed = scarf_adjusted_speed(battle, target)
+
+      trick_room = battle.field.effects[PBEffects::TrickRoom] &&
+                   battle.field.effects[PBEffects::TrickRoom] > 0
+
+      if trick_room
+        our_speed < their_scarf_speed
+      else
+        our_speed > their_scarf_speed
+      end
+    end
+
+    def self.evaluate_speed_control(battle, attacker, move, skill_level = 100)
+      return 0 unless skill_level >= 60
+
+      score = 0
+
+      case move.id
+      when :TAILWIND
+        score += evaluate_tailwind_value(battle, attacker, skill_level)
+      when :TRICKROOM
+        score += evaluate_trick_room_value(battle, attacker, skill_level)
+      when :ICYWIND, :ELECTROWEB, :BULLDOZE, :ROCKTOMB, :LOWSWEEP, :GLACIATE, :MUDSHOT, :DRUMBEATING
+        score += evaluate_speed_drop_attack(battle, attacker, move, skill_level)
+      when :STICKYWEB
+        score += evaluate_sticky_web(battle, attacker, skill_level)
+      when :STRINGSHOT, :COTTONSPORE, :SCARYFACE
+        score += evaluate_speed_drop_status(battle, attacker, move, skill_level)
+      end
+
+      score
+    end
+
+    def self.evaluate_tailwind_value(battle, attacker, skill_level)
+      return 0 if skill_level < 65
+
+      score = 0
+      own_side = battle.sides[attacker.index & 1]
+
+      if own_side.effects[PBEffects::Tailwind] && own_side.effects[PBEffects::Tailwind] > 0
+        return -80  # Already active
+      end
+
+      allies = battle.allSameSideBattlers(attacker.index).select { |b| b && !b.fainted? }
+      opponents = battle.allOtherSideBattlers(attacker.index).select { |b| b && !b.fainted? }
+
+      currently_outspeed = 0
+      would_outspeed = 0
+
+      allies.each do |ally|
+        opponents.each do |opp|
+          ally_speed = calculate_effective_speed(battle, ally)
+          opp_speed = calculate_effective_speed(battle, opp)
+
+          currently_outspeed += 1 if ally_speed > opp_speed
+          would_outspeed += 1 if (ally_speed * 2) > opp_speed
+        end
+      end
+
+      improvement = would_outspeed - currently_outspeed
+      score += improvement * 20
+
+      score += 25 if improvement > 0
+
+      score
+    end
+
+    def self.evaluate_trick_room_value(battle, attacker, skill_level)
+      return 0 if skill_level < 70
+
+      score = 0
+
+      tr_active = battle.field.effects[PBEffects::TrickRoom] &&
+                  battle.field.effects[PBEffects::TrickRoom] > 0
+
+      if tr_active
+        allies = battle.allSameSideBattlers(attacker.index).select { |b| b && !b.fainted? }
+        opponents = battle.allOtherSideBattlers(attacker.index).select { |b| b && !b.fainted? }
+
+        our_slow = allies.count { |a| a.speed < 60 }
+        their_slow = opponents.count { |o| o.speed < 60 }
+
+        if their_slow > our_slow
+          score += 40  # Cancel their TR
+        else
+          score -= 60  # Don't cancel our TR
+        end
+      else
+        allies = battle.allSameSideBattlers(attacker.index).select { |b| b && !b.fainted? }
+        opponents = battle.allOtherSideBattlers(attacker.index).select { |b| b && !b.fainted? }
+
+        our_slow = allies.count { |a| a.speed < 60 }
+        their_slow = opponents.count { |o| o.speed < 60 }
+
+        if our_slow > their_slow
+          score += 50 + (our_slow * 15)  # We benefit from TR
+        else
+          score -= 30  # TR helps them more
+        end
+      end
+
+      score
+    end
+
+    def self.evaluate_speed_drop_attack(battle, attacker, move, skill_level)
+      return 0 if skill_level < 55
+
+      score = 0
+
+      opponents = battle.allOtherSideBattlers(attacker.index).select { |b| b && !b.fainted? }
+
+      flips = 0
+      opponents.each do |opp|
+        our_speed = calculate_effective_speed(battle, attacker)
+        their_speed = calculate_effective_speed(battle, opp)
+
+        if their_speed > our_speed
+          new_their_speed = (their_speed * 2 / 3)
+          if our_speed > new_their_speed
+            flips += 1
+          end
+        end
+      end
+
+      score += flips * 20
+
+      if [:ICYWIND, :ELECTROWEB, :BULLDOZE].include?(move.id)
+        score += 10  # Hits multiple
+      end
+
+      score
+    end
+
+    def self.evaluate_sticky_web(battle, attacker, skill_level)
+      return 0 if skill_level < 65
+
+      score = 0
+      opp_side = battle.sides[1 - (attacker.index & 1)]  # opponent side (safe in doubles)
+
+      if opp_side.effects[PBEffects::StickyWeb]
+        return -80
+      end
+
+      opp_party = battle.pbParty(1 - (attacker.index & 1))
+      grounded_fast = opp_party.count do |pkmn|
+        next false unless pkmn && !pkmn.fainted?
+        # Fast and grounded (pkmn is party Pokemon, use hasType? and ability_id)
+        pkmn.speed >= 80 && !pkmn.hasType?(:FLYING) && pkmn.ability_id != :LEVITATE
+      end
+
+      score += grounded_fast * 15
+      score += 20 if grounded_fast >= 2
+
+      score
+    end
+
+    def self.evaluate_speed_drop_status(battle, attacker, move, skill_level)
+      return 0 if skill_level < 60
+
+      10
+    end
+
+    def self.is_speed_tie?(battle, battler1, battler2)
+      compare_speed(battle, battler1, battler2) == 0
+    end
+
+    def self.evaluate_speed_tie_risk(battle, user, target, skill_level = 100)
+      return 0 unless skill_level >= 75
+      return 0 unless is_speed_tie?(battle, user, target)
+
+      score = 0
+
+      target.moves.each do |move|
+        next unless move && move.damagingMove?
+
+        resolved_type = AdvancedAI::CombatUtilities.resolve_move_type(target, move)
+        type_mod = Effectiveness.calculate(resolved_type, *user.pbTypes(true))
+        if Effectiveness.super_effective?(type_mod)
+          score -= 15
+        end
+      end
+
+      score
+    end
+
+  end
+end
+
+module AdvancedAI
+  def self.calculate_effective_speed(battle, battler)
+    SpeedTiers.calculate_effective_speed(battle, battler)
+  end
+
+  def self.outspeeds?(battle, battler1, battler2)
+    SpeedTiers.outspeeds?(battle, battler1, battler2)
+  end
+
+  def self.get_speed_tier(battler)
+    base_speed = (battler.respond_to?(:pokemon) ? battler.pokemon.baseStats[:SPEED] : battler.baseStats[:SPEED]) rescue battler.speed
+    SpeedTiers.get_speed_tier(base_speed)
+  end
+
+  def self.suspect_choice_scarf?(battle, battler, skill_level = 100)
+    SpeedTiers.suspect_choice_scarf?(battle, battler, skill_level)
+  end
+
+  def self.outspeeds_with_scarf?(battle, user, target)
+    SpeedTiers.outspeeds_with_scarf?(battle, user, target)
+  end
+
+  def self.evaluate_speed_control(battle, attacker, move, skill_level = 100)
+    SpeedTiers.evaluate_speed_control(battle, attacker, move, skill_level)
+  end
+
+  def self.is_speed_tie?(battle, battler1, battler2)
+    SpeedTiers.is_speed_tie?(battle, battler1, battler2)
+  end
+
+  def self.evaluate_speed_tie_risk(battle, user, target, skill_level = 100)
+    SpeedTiers.evaluate_speed_tie_risk(battle, user, target, skill_level)
+  end
+end
+
+AdvancedAI.log("Speed Tiers System loaded", "Speed")
+AdvancedAI.log("  - Effective speed calculation", "Speed")
+AdvancedAI.log("  - Weather ability speed boosts", "Speed")
+AdvancedAI.log("  - Tailwind / Trick Room awareness", "Speed")
+AdvancedAI.log("  - Choice Scarf detection", "Speed")
+AdvancedAI.log("  - Speed tier classification", "Speed")
+AdvancedAI.log("  - Speed control move evaluation", "Speed")
+AdvancedAI.log("  - Speed tie risk assessment", "Speed")

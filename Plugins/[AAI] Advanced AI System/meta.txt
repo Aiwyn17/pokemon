@@ -1,0 +1,7 @@
+Name         = Advanced AI System
+Version      = 2.7.2
+Essentials   = 21.1
+Website      = no
+Credits      = Nononever
+
+

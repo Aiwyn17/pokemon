@@ -1,0 +1,366 @@
+# Advanced AI System - Advanced Ability Awareness
+
+module AdvancedAI
+  SNOWBALL_ABILITIES = {
+    :MOXIE         => 1.8,  # +1 Atk on KO - snowball threat
+    :BEASTBOOST    => 1.8,  # +1 highest stat on KO
+    :SOULDEVOURING => 1.8,  # +1 all stats on KO (custom)
+    :CHILLINGNEIGH => 1.7,  # +1 Atk on KO (Ice)
+    :GRIMNEIGH     => 1.7,  # +1 SpAtk on KO (Dark)
+    :ASONEGLASTRIER => 1.9, # Unnerve + Chilling Neigh (+1 Atk on KO)
+    :ASONESPECTRIER => 1.9, # Unnerve + Grim Neigh (+1 SpAtk on KO)
+    :POWEROFALCHEMY => 1.5,  # Copies fainted ally's ability (could gain Moxie/Speed Boost)
+    :RECEIVER       => 1.5,  # Same as Power of Alchemy (doubles variant)
+  }
+
+  SPEED_SHIFT_ABILITIES = {
+    :UNBURDEN      => 2.5,  # 2x Speed after item consumption
+    :SLOWSTART     => 0.3,  # Half Atk/Speed for 5 turns - weakling
+    :SPEEDBOOST    => 1.6,  # +1 Speed per turn
+  }
+
+  REVERSE_ABILITIES = {
+    :CONTRARY      => 2.0,  # Inverts stat changes (Leaf Storm = +2 SpAtk)
+    :DEFIANT       => 1.7,  # +2 Atk when stat lowered
+    :COMPETITIVE   => 1.7,  # +2 SpAtk when stat lowered
+  }
+
+  SWITCH_ABILITIES = {
+    :REGENERATOR   => 1.4,  # Heals 33% on switch-out - free recovery
+    :NATURALCURE   => 1.3,  # Cures status on switch-out
+    :SHEDSKIN      => 1.2,  # 33% chance to cure status per turn
+  }
+end
+
+class Battle::AI
+
+  alias_method :advanced_abilities_pbRegisterMove, :pbRegisterMove unless method_defined?(:advanced_abilities_pbRegisterMove) || private_method_defined?(:advanced_abilities_pbRegisterMove)
+  def pbRegisterMove(user, move)
+    score = advanced_abilities_pbRegisterMove(user, move)
+
+    return score unless user && move
+
+    target_data = move.pbTarget(user) rescue nil
+    targets = []
+    if target_data && target_data.num_targets > 0
+      targets = @_resolved_targets || [@_resolved_target].compact
+    end
+
+    targets.each do |target|
+      next unless target && !target.fainted?
+      next unless target.opposes?(user)
+
+      # SNOWBALL ABILITIES: Don't feed kills to Moxie/Beast Boost users
+      snowball_key = AdvancedAI::SNOWBALL_ABILITIES.keys.find { |a| target.hasActiveAbility?(a) }
+      if snowball_key
+        score += evaluate_snowball_threat(user, move, target)
+      end
+
+      reverse_key = AdvancedAI::REVERSE_ABILITIES.keys.find { |a| target.hasActiveAbility?(a) }
+      if reverse_key
+        score += evaluate_reverse_ability(user, move, target)
+      end
+
+      if target.hasActiveAbility?(:UNBURDEN) && target.item
+        score += evaluate_unburden_threat(user, move, target)
+      end
+    end
+
+    if ["SwitchOutTargetStatusMove", "SwitchOutTargetDamagingMove"].include?(move.function_code)
+      target_battler = @_resolved_target
+      if target_battler && target_battler.hasActiveAbility?(:REGENERATOR)
+        score -= 15  # Penalty - they get free 33% heal
+        AdvancedAI.log("  #{move.name} vs Regenerator: -15 (free heal on force-out)", "Abilities")
+      end
+    end
+
+    return score
+  end
+
+  def evaluate_snowball_threat(user, move, target)
+    return 0 unless move.damagingMove?
+
+    score = 0
+    ability_name = ""
+    AdvancedAI::SNOWBALL_ABILITIES.each do |ab, _|
+      if target.hasActiveAbility?(ab)
+        ability_name = GameData::Ability.try_get(ab)&.name || ab.to_s
+        break
+      end
+    end
+
+    rough_damage = AdvancedAI::CombatUtilities.estimate_damage(user, move, target, as_percent: true)
+    would_ko = (rough_damage >= target.hp.to_f / target.totalhp)
+
+    if would_ko
+      score += 30
+      AdvancedAI.log("  KO #{target.name} (#{ability_name}): +30 (prevent snowball)", "Abilities")
+    end
+
+    if target.stages[:ATTACK] >= 1 || target.stages[:SPECIAL_ATTACK] >= 1
+      score += 25
+      AdvancedAI.log("  #{ability_name} already boosted: +25 (stop snowball)", "Abilities")
+    end
+
+    return score
+  end
+
+  def evaluate_reverse_ability(user, move, target)
+    score = 0
+    ability_id = AdvancedAI::REVERSE_ABILITIES.keys.find { |a| target.hasActiveAbility?(a) }
+
+    case ability_id
+    when :CONTRARY
+      stat_drops = move.function_code.include?("LowerTarget") &&
+                   !move.function_code.include?("LowerTargetHP")
+
+      if stat_drops
+        score -= 50  # NEVER do this
+        AdvancedAI.log("  #{move.name} vs Contrary: -50 (inverts to buff!)", "Abilities")
+      end
+
+      if move.damagingMove?
+        score += 15
+        AdvancedAI.log("  Damage to Contrary: +15 (prevent reverse setup)", "Abilities")
+      end
+
+    when :DEFIANT, :COMPETITIVE
+      # DON'T use Intimidate switch-ins or stat-lowering moves
+      # Includes damaging moves with stat-drop effects (Snarl, Icy Wind, etc.)
+      # Exclude LowerTargetHP (Endeavor) — it equalizes HP, doesn't lower stats
+      stat_drops = move.function_code.include?("LowerTarget") &&
+                   !move.function_code.include?("LowerTargetHP")
+      if stat_drops
+        score -= 40  # They get +2 Atk/SpAtk!
+        AdvancedAI.log("  #{move.name} vs #{ability_id}: -40 (triggers +2)", "Abilities")
+      end
+
+    end
+
+    return score
+  end
+
+  def evaluate_unburden_threat(user, move, target)
+    return 0 unless target.item  # No item = no threat
+
+    score = 0
+
+    if ["RemoveTargetItem", "UserTakesTargetItem"].include?(move.function_code)
+      score -= 35  # DON'T trigger Unburden unless KO
+      AdvancedAI.log("  #{move.name} vs Unburden: -35 (doubles speed!)", "Abilities")
+
+      rough_damage = AdvancedAI::CombatUtilities.estimate_damage(user, move, target, as_percent: true)
+      if rough_damage >= target.hp.to_f / target.totalhp
+        score += 50  # KO is fine
+        AdvancedAI.log("  But KOs: +50 (worth it)", "Abilities")
+      end
+    end
+
+    consumable_items = [:SITRUSBERRY, :LUMBERRY, :ORANBERRY, :AGUAVBERRY,
+                       :FIGYBERRY, :IAPAPABERRY, :MAGOBERRY, :WIKIBERRY]
+    if consumable_items.include?(target.item_id)
+      score -= 10  # Might trigger via damage
+      AdvancedAI.log("  Unburden + Berry: -10 (might auto-trigger)", "Abilities")
+    end
+
+    return score
+  end
+
+  def predict_regenerator_switch(target)
+    return false unless target.hasActiveAbility?(:REGENERATOR)
+
+    hp_percent = target.hp.to_f / target.totalhp
+
+    if hp_percent < 0.6 && hp_percent > 0.2
+      AdvancedAI.log("  Regenerator switch predicted (#{(hp_percent * 100).to_i}% HP)", "Abilities")
+      return true
+    end
+
+    return false
+  end
+
+  def calculate_ability_threat_modifier(battler)
+    return 1.0 unless battler
+
+    multiplier = 1.0
+
+    snowball_key = AdvancedAI::SNOWBALL_ABILITIES.keys.find { |a| battler.hasActiveAbility?(a) }
+    if snowball_key
+      base = AdvancedAI::SNOWBALL_ABILITIES[snowball_key]
+      if battler.stages[:ATTACK] >= 1 || battler.stages[:SPECIAL_ATTACK] >= 1
+        multiplier = base * 1.3
+      else
+        multiplier = base
+      end
+    end
+
+    speed_key = AdvancedAI::SPEED_SHIFT_ABILITIES.keys.find { |a| battler.hasActiveAbility?(a) }
+    if speed_key
+      multiplier = AdvancedAI::SPEED_SHIFT_ABILITIES[speed_key]
+
+      if speed_key == :UNBURDEN
+        active = !battler.item && (battler.effects[PBEffects::Unburden] rescue false)
+        multiplier = active ? 2.5 : 1.0
+      end
+    end
+
+    reverse_key = AdvancedAI::REVERSE_ABILITIES.keys.find { |a| battler.hasActiveAbility?(a) }
+    if reverse_key
+      multiplier = AdvancedAI::REVERSE_ABILITIES[reverse_key]
+    end
+
+    switch_key = AdvancedAI::SWITCH_ABILITIES.keys.find { |a| battler.hasActiveAbility?(a) }
+    if switch_key
+      multiplier = AdvancedAI::SWITCH_ABILITIES[switch_key]
+    end
+
+    return multiplier
+  end
+
+  def gen9_switchin_bonus(pkmn)
+    return 0 unless AdvancedAI::GEN9_PACK_COMPAT
+    return 0 unless pkmn
+    bonus = 0
+    begin
+      ab = pkmn.respond_to?(:ability_id) ? pkmn.ability_id : (pkmn.ability rescue nil)
+      ab = ab.id if ab.is_a?(GameData::Ability)
+
+      case ab
+      when :ZEROTOHERO
+        bonus += 60
+      when :ORICHALCUMPULSE
+        bonus += 25  # Sets Sun + 1.33x physical
+      when :HADRONENGINE
+        bonus += 25  # Sets Electric Terrain + 1.33x special
+      when :PROTOSYNTHESIS, :QUARKDRIVE
+        if pkmn.respond_to?(:item_id) && pkmn.item_id == :BOOSTERENERGY
+          bonus += 30
+        end
+        if @battle
+          begin
+            wx      = (@battle.field.weather rescue :None)
+            terrain = (@battle.field.terrain rescue :None)
+            if (ab == :PROTOSYNTHESIS && wx == :Sun) ||
+               (ab == :QUARKDRIVE     && terrain == :Electric)
+              bonus += 20
+            end
+          rescue
+          end
+        end
+      when :GRIMNEIGH, :CHILLINGNEIGH
+        bonus += 5  # Ready to snowball if it KOs
+      when :REGENERATOR
+        bonus += 10  # Comes in healthier on subsequent switches
+      when :INTIMIDATE
+        bonus += 15  # Free -1 Atk on opponent
+      when :GOODASGOLD
+        bonus += 15  # Status immunity is hugely valuable defensively
+      when :PURIFYINGSALT
+        bonus += 15  # Status immunity + Ghost resistance
+      when :ICESCALES
+        bonus += 20  # Halves all special damage — premier special wall
+      when :FURCOAT
+        bonus += 18  # Halves all physical damage
+      when :THERMALEXCHANGE
+        bonus += 12  # Burn immunity + Atk boost on Fire hits
+      when :GUARDDOG
+        bonus += 10  # Intimidate immunity + can't be phazed
+      when :WINDPOWER
+        bonus += 5
+      when :CUDCHEW
+        if pkmn.respond_to?(:item_id) && pkmn.item_id
+          item_data = (GameData::Item.try_get(pkmn.item_id) rescue nil)
+          if item_data && item_data.is_berry?
+            bonus += 12
+          end
+        end
+      when :ARMORTAIL, :DAZZLING, :QUEENLYMAJESTY
+        bonus += 8  # Priority immunity (vs. Sucker Punch / Fake Out / etc.)
+      when :MIRRORARMOR
+        bonus += 8  # Reflects stat drops back (Intimidate / etc.)
+      when :EMBODYASPECT_TEAL, :EMBODYASPECT_HEARTHFLAME, :EMBODYASPECT_WELLSPRING, :EMBODYASPECT_CORNERSTONE
+        bonus += 20
+      when :SUPERSWEETSYRUP
+        bonus += 10
+      when :OPPORTUNIST
+        bonus += 5
+      when :COSTAR
+        if @battle && @user
+          begin
+            user_side = @user.idxOwnSide rescue (@user.index & 1)
+            @battle.battlers.each do |a|
+              next unless a && !a.fainted?
+              a_side = a.idxOwnSide rescue (a.index & 1)
+              next if a_side != user_side
+              next if a.index == @user.index
+              total = 0
+              [:ATTACK, :DEFENSE, :SPECIAL_ATTACK, :SPECIAL_DEFENSE, :SPEED, :ACCURACY, :EVASION].each do |st|
+                stage = (a.stages[st] rescue 0)
+                total += stage if stage > 0
+              end
+              bonus += total * 8  # Each copied positive stage ~ +8 score
+            end
+          rescue
+          end
+        else
+          bonus += 5
+        end
+      when :HOSPITALITY
+        if @battle && @user
+          begin
+            user_side = @user.idxOwnSide rescue (@user.index & 1)
+            @battle.battlers.each do |a|
+              next unless a && !a.fainted?
+              a_side = a.idxOwnSide rescue (a.index & 1)
+              next if a_side != user_side
+              next if a.index == @user.index
+              hp_missing = 1.0 - (a.hp.to_f / [a.totalhp, 1].max)
+              bonus += (hp_missing * 30).to_i  # Up to +30 if ally is at 0%
+            end
+          rescue
+          end
+        else
+          bonus += 5
+        end
+      when :COMMANDER
+        if @battle && @user
+          begin
+            user_side = @user.idxOwnSide rescue (@user.index & 1)
+            has_dondozo_ally = @battle.battlers.any? do |b|
+              next false unless b && !b.fainted?
+              b_side = b.idxOwnSide rescue (b.index & 1)
+              b_side == user_side && b.index != @user.index && b.isSpecies?(:DONDOZO)
+            end
+            bonus += 50 if has_dondozo_ally  # +2 to ALL stats on Dondozo is huge
+          rescue
+          end
+        end
+      end
+
+      if pkmn.respond_to?(:item_id) && pkmn.item_id == :IRONBALL
+        spd = (pkmn.respond_to?(:speed) ? pkmn.speed : (pkmn.calcStats[:SPEED] rescue 0))
+        if @battle && (@battle.field.effects[PBEffects::TrickRoom] > 0 rescue false)
+          bonus += 10  # Halved Speed is good in Trick Room
+        elsif spd >= 90
+          bonus -= 20  # Crippling on fast attackers
+        else
+          bonus -= 5   # Mild penalty otherwise
+        end
+        types = (pkmn.types rescue [])
+        ab = pkmn.respond_to?(:ability_id) ? pkmn.ability_id : nil
+        if types.include?(:FLYING) || ab == :LEVITATE
+          bonus -= 15  # Loses Ground immunity
+        end
+      end
+    rescue
+    end
+    return bonus
+  end
+end
+
+AdvancedAI.log("Advanced Abilities System loaded", "Core")
+AdvancedAI.log("  - Snowball detection (Moxie, Beast Boost)", "Abilities")
+AdvancedAI.log("  - Gen 9 switch-in awareness (Zero to Hero, Booster Energy paradoxes)", "Abilities")
+AdvancedAI.log("  - Reverse abilities (Contrary, Defiant, Competitive)", "Abilities")
+AdvancedAI.log("  - Speed shift (Unburden, Speed Boost)", "Abilities")
+AdvancedAI.log("  - Switch abilities (Regenerator, Natural Cure)", "Abilities")

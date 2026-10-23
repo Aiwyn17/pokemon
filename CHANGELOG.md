@@ -17,6 +17,39 @@ En cas de bug plus tard, ce journal permet d'identifier immédiatement **quel fi
 ## 📅 Historique des Ajouts & Modifications
 
 
+### `[AGY-099]` — 2026-10-23 — Intégration d'Advanced AI System v2.0 (v2.7.2) pour Pokémon Essentials v21.1 & Compatibilité DBK
+- **Auteur** : `Antigravity`
+- **Catégorie** : IA de Combat Stratégique, Méta-Mécaniques & Plugins (`Plugins/[AAI] Advanced AI System/`)
+- **Demande Utilisateur** : 
+  - *« oui fais le necessaire »* (suite à l'analyse du plugin *[Plugin] Advanced AI System v2.0 — Master-Tier Intelligence for Pokémon Essentials* dans l'archive fournie `media_1792788928077_2b1285c6.zip`).
+- **Contenu Intégré & Optimisations** :
+  1. **Déploiement complet d'Advanced AI System v2.7.2** :
+     - 7 modules stratégiques déployés dans `Plugins/[AAI] Advanced AI System/` :
+       - `1_Core/` (`0_Settings.rb`, `Combat_Utilities.rb`, `Core.rb`, `Debug_Menu.rb`, `Illusion_Perception.rb`, `OptionsMenu.rb`, `Utilities.rb`)
+       - `2_Move_Intelligence/` (`0_Move_Scorer.rb`, `Disruption_Moves.rb`, `Move_Categories.rb`, `Move_Memory.rb`, `Special_Moves.rb`)
+       - `3_Combat_Mechanics/` (`Advanced_Abilities.rb`, `Field_Effects.rb`, `Recoil_Tracking.rb`, `Weather_Terrain_Wars.rb`)
+       - `4_Battle_Strategy/` (`Advanced_Items.rb`, `Item_Intelligence.rb`, `Prediction_System.rb`, `Role_Detection.rb`, `Setup_Recognition.rb`, `Strategic_Awareness.rb`, `Switch_Intelligence.rb`, `Tactical_Enhancements.rb`, `Team_Preview_Intelligence.rb`, `Threat_Assessment.rb`)
+       - `5_Format_Specific/` (`Doubles_Coordination.rb`, `Doubles_Strategy.rb`, `Pivot_Moves.rb`, `Priority_Tiers.rb`, `Speed_Tiers.rb`)
+       - `6_Meta_Mechanics/` (`Battle_Personalities.rb`, `Dynamax_Intelligence.rb`, `Endgame_Scenarios.rb`, `Mega_Intelligence.rb`, `Terastallization_Intelligence.rb`, `Win_Conditions.rb`, `ZMove_Intelligence.rb`)
+       - `7_Integration/` (`Console_Fix.rb`, `Custom_Content.rb`, `DBK_Compatibility.rb`, `Debug_Replacement.rb`, `Hotfixes.rb`, `Mechanics_Hooks.rb`, `Per_Trainer_Flags.rb`, `Switch_Determinism.rb`, `Switch_Turn_Guard.rb`)
+       - `meta.txt` (v2.7.2 par NoNoNever).
+  2. **Paramétrage & Équilibrage Fin dans `0_Settings.rb`** :
+     - `SHOW_MOVE_EXPLANATIONS = false` : désactivation de l'affichage textuel interne de débogage ("Thunder Wave (Paralyze fast threat)") pour que les dialogues de combat restent fluides et immersifs pour le joueur.
+     - `ENABLE_WILD_POKEMON_AI = false` : maintien d'une IA naturelle pour les créatures sauvages de Freljord (permet de capturer normalement les Pokémon sans subir d'anti-stratégie / switches hyper-compétitifs de bêtes sauvages de bas niveau).
+     - `MIN_SKILL_FOR_AUTO_ACTIVATION = 70` : Les dresseurs débutants de route restent accessibles, tandis que les Dresseurs d'Élite, Chefs d'Arène, Gardiens d'Épreuve et Commandants Noxiens (Kael, Valerius) activent l'intelligence Master-Tier.
+  3. **Synergie avec Deluxe Battle Kit & Mécaniques LoL** :
+     - Module `DBK_Compatibility.rb` natif synchronisé avec le `[DBK_000] Deluxe Battle Kit` installé.
+     - Prise en charge des drapeaux par dresseur dans `PBS/trainers.txt` (`Skill = 100`, etc.).
+     - Préservation complète des calculs d'Armure / Résistance Magique et Sorts d'Invocateur LoL.
+- **Fichiers créés / modifiés** :
+  - `Plugins/[AAI] Advanced AI System/` (ensemble des scripts v2.7.2)
+  - `CHANGELOG.md`
+- **Comment tester en jeu** :
+  - Lancer un combat contre un dresseur avec `Skill = 70` ou plus (ex: Chef Noxien ou Gardien d'Épreuve) : l'IA analyse les types, switch intelligemment, anticipe les menaces et utilise les synergies.
+- **Comment désactiver en cas de bug** :
+  - Mettre `ENABLED = false` dans `Plugins/[AAI] Advanced AI System/1_Core/0_Settings.rb` ou `git revert HEAD`
+
+
 ### `[AGY-098]` — 2026-10-23 — Intégration d'Item Crafting UI Plus v3.0.0 & Système de Forge d'Objets LoL
 - **Auteur** : `Antigravity`
 - **Catégorie** : Artisanat d'Objets, Forge & Plugins (`Plugins/Item Crafting UI Plus/`, `PBS/recipes.txt`, `Graphics/UI/Crafting/`)
