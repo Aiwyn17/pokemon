@@ -17,6 +17,39 @@ En cas de bug plus tard, ce journal permet d'identifier immédiatement **quel fi
 ## 📅 Historique des Ajouts & Modifications
 
 
+### `[AGY-097]` — 2026-10-23 — Déploiement des Quêtes Scénarisées de Freljord (Acte 1) & Quêtes Secondaires LoL
+- **Auteur** : `Antigravity`
+- **Catégorie** : Quêtes Scénarisées & Intégration Événements (`Plugins/MQS/005_Quest_MenuHandlers.rb`)
+- **Demande Utilisateur** : 
+  - *« tu sais mettre les quetes avec ce plugin pour mon jeu »*
+- **Contenu Intégré & Optimisations** :
+  1. **5 Quêtes Principales de l'Histoire (Scénario Acte 1 : Freljord & Menace Noxienne)** :
+     - `:Quest_Prologue` (*L'Éveil du Freljord*) : Choix du premier Pokémon, assaut du Dirigeable noxien sur le Sanctuaire d'Anivia, descente du sommet.
+     - `:Quest_Route1` (*La Traversée du Blizzard*) : Traversée des herbes hautes enneigées, affrontement des éclaireurs noxiens, arrivée aux portes de Havre-Givre.
+     - `:Quest_Refuge` (*Le Dernier Rempart*) : Réchauffement de l'équipe au coin du feu, ravitaillement au Poste de Traite, entretien avec l'Éclaireur de la Griffe.
+     - `:Quest_Epreuve` (*L'Épreuve des Quatre Démi-Dieux*) : Éveil des 4 Statues runiques (Volibear, Loup, Ornn, Anivia), matérialisation du Pont de Glace et affrontement du Gardien Ancestral.
+     - `:Quest_CrashNoxus` (*Le Siège de l'Épave*) : Infiltration de la carcasse fumante du Dirigeable noxien, duel tactique contre le Commandant Kael et sauvetage de l'Œuf d'Anivia.
+  2. **4 Quêtes Secondaires Immersives (LoL & Freljord)** :
+     - `:Quest_PoroPerdu` (*Un Poro dans la Tourmente*) : Recherche d'un Poro égaré sous les grands sapins de la Route 1 avec récompense Poro-Snax.
+     - `:Quest_ChasseursGivre` (*Le Bestiaire du Pergélisol*) : Recensement et capture des espèces endémiques de Freljord (Blizzapin, Givracorn, Cryocrust).
+     - `:Quest_BraisesOrnn` (*Les Vestiges de la Forge*) : Collecte de basalte ardent pour raviver l'antique enclume d'Ornn et forger la Cotte Épineuse.
+     - `:Quest_ZiggsExplosif` (*L'Artificier Déjanté*) : Enquête sur les explosions mystérieuses de la crête, duel contre Ziggs et déblaiement du passage.
+  3. **Connexions & Déclencheurs Automatiques dans l'Overworld** :
+     - Déclenchement automatique dès la sélection du Starter (`DiegoWTsStarterSelection` ou `pbFreljordStarterSelection`).
+     - Progression automatique au passage des cartes (`on_enter_map` : Route 1, Havre-Givre, Caverne de l'Épreuve).
+     - Avancement automatique lors du Soin au refuge (`pbHealAtHavreGivreRefuge`), des achats en boutique (`pbShopHavreGivre`) et de chaque statue activée (`pbActivateStatue`).
+- **Fichiers créés / modifiés** :
+  - `Plugins/MQS/005_Quest_MenuHandlers.rb`
+  - `CHANGELOG.md`
+- **Comment tester en jeu** :
+  - Ouvrir le Menu Pause (Échap / X) -> « Quêtes ».
+  - Ou exécuter en console / événement : `activateQuest(:Quest_Prologue, colorQuest("blue"), true)`.
+  - Observer la notification visuelle et sonore `New task added!` et l'actualisation sur la Carte Régionale.
+- **Comment désactiver en cas de bug** :
+  - `git revert HEAD`
+
+---
+
 ### `[AGY-096]` — 2026-10-23 — Intégration de Modern Quest System + UI v1.1.0 (Eevee Expo #709)
 - **Auteur** : `Antigravity`
 - **Catégorie** : Journal de Quêtes, Interface & Plugins (`Plugins/MQS/`, `Graphics/UI/QuestUI/`)
