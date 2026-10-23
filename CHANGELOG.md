@@ -17,6 +17,36 @@ En cas de bug plus tard, ce journal permet d'identifier immédiatement **quel fi
 ## 📅 Historique des Ajouts & Modifications
 
 
+### `[AGY-107]` — 2026-10-24 — Correctif Crash Combat NameError `calc_type` dans Deluxe Battle Kit (`[002] Damage Calc Refactor.rb`)
+- **Auteur** : `Antigravity`
+- **Catégorie** : Correctif Crash Moteur de Combat (`Plugins/[DBK_000] Deluxe Battle Kit/[000] Essentials Patches/[002] Damage Calc Refactor.rb`)
+- **Demande Utilisateur** : 
+  - Capture d'écran du crash en plein combat :
+    `Exception: NameError`
+    `Message: undefined local variable or method 'calc_type' for #<Battle::Move::FlinchTarget>`
+    `Backtrace:`
+    `[Deluxe Battle Kit] [002] Damage Calc Refactor.rb:307:in 'pbCalcDamageMultipliers'`
+    `[LoL Summoner Spells] 002_Summoner_Spells_BattleHooks.rb:69:in 'pbCalcDamageMultipliers'`
+    `[Deluxe Battle Kit] [002] Damage Calc Refactor.rb:355:in 'pbCalcDamage'`
+- **Cause identifiée** :
+  - Dans la méthode `Battle::Move#pbCalcDamageMultipliers` de Deluxe Battle Kit, des lignes relatives aux objets de League of Legends (`INFINITYEDGE`, `PHANTOMDANCER`, etc.) avaient été injectées en double exemplaire en dehors de toute condition de coup critique.
+  - Ces lignes faisaient appel à une variable inexistante `calc_type` (au lieu du paramètre `type`), provoquant un crash immédiat `NameError` dès qu'une capacité infligeant des dégâts était exécutée en combat (ici une attaque avec effet d'apeurement `FlinchTarget`).
+  - Les bonus de dégâts critiques des objets LoL sont déjà nativement et correctement gérés dans `pbCalcDamageMults_Random` (lignes 210-215) sous condition de coup critique effectif avec `user.hasActiveItem?`.
+- **Correctif appliqué** :
+  1. Suppression des blocs parasites dupliqués dans `Battle::Move#pbCalcDamageMultipliers`.
+  2. Nettoyage des lignes parasites injectées par erreur dans `Battle::AI::AIMove#calc_ability_mults` et `rough_damage`.
+  3. Sécurisation de `Battle::AI::AIMove#calc_random_mults` avec vérification préalable de `user.item_active?`.
+  4. Purge de `Data/PluginScripts.rxdata` pour forcer la recompilation des scripts de plugins.
+- **Fichiers modifiés** :
+  - `Plugins/[DBK_000] Deluxe Battle Kit/[000] Essentials Patches/[002] Damage Calc Refactor.rb`
+  - `CHANGELOG.md`
+- **Comment tester en jeu** :
+  - Lancer un combat (sauvage ou dresseur) et attaquer avec n'importe quelle capacité (ex: Morsure, Coup d'Boule, Éclair...).
+  - Le calcul des dégâts s'exécute fluidement sans aucune exception `NameError`.
+- **Comment désactiver en cas de bug** :
+  - `git revert HEAD`
+
+
 ### `[AGY-106]` — 2026-10-24 — Traduction Intégrale en Français du Modern Quest System (MQS)
 - **Auteur** : `Antigravity`
 - **Catégorie** : Localisation & Traduction UI (`Plugins/MQS/003_Quest_UI.rb`, `Plugins/MQS/002_Quest_Main.rb`)

@@ -303,19 +303,9 @@ class Battle::Move
     if target.effects[PBEffects::Minimize] && tramplesMinimize?
       multipliers[:final_damage_multiplier] *= 2
     end
-      # LoL Critical Damage Boosts for AI
-      multipliers[:final_damage_multiplier] *= 1.25 if !specialMove?(calc_type) && user.item_id == :INFINITYEDGE
-      multipliers[:final_damage_multiplier] *= 1.25 if !specialMove?(calc_type) && user.item_id == :PHANTOMDANCER
-      multipliers[:final_damage_multiplier] *= 1.25 if !specialMove?(calc_type) && user.item_id == :RAPIDFIRECANNON
-      multipliers[:final_damage_multiplier] *= 1.1 if !specialMove?(calc_type) && user.item_id == :ZEAL
     if defined?(PBEffects::GlaiveRush) && target.effects[PBEffects::GlaiveRush] > 0
       multipliers[:final_damage_multiplier] *= 2 
     end
-      # LoL Critical Damage Boosts for AI
-      multipliers[:final_damage_multiplier] *= 1.25 if !specialMove?(calc_type) && user.item_id == :INFINITYEDGE
-      multipliers[:final_damage_multiplier] *= 1.25 if !specialMove?(calc_type) && user.item_id == :PHANTOMDANCER
-      multipliers[:final_damage_multiplier] *= 1.25 if !specialMove?(calc_type) && user.item_id == :RAPIDFIRECANNON
-      multipliers[:final_damage_multiplier] *= 1.1 if !specialMove?(calc_type) && user.item_id == :ZEAL
     multipliers[:power_multiplier] = pbBaseDamageMultiplier(multipliers[:power_multiplier], user, target)
     multipliers[:final_damage_multiplier] = pbModifyDamage(multipliers[:final_damage_multiplier], user, target)
   end
@@ -548,11 +538,6 @@ class Battle::AI::AIMove
         if Effectiveness.resistant_type?(calc_type, *target.pbTypes(true))
           multipliers[:final_damage_multiplier] *= 2
         end
-      # LoL Critical Damage Boosts for AI
-      multipliers[:final_damage_multiplier] *= 1.25 if !specialMove?(calc_type) && user.item_id == :INFINITYEDGE
-      multipliers[:final_damage_multiplier] *= 1.25 if !specialMove?(calc_type) && user.item_id == :PHANTOMDANCER
-      multipliers[:final_damage_multiplier] *= 1.25 if !specialMove?(calc_type) && user.item_id == :RAPIDFIRECANNON
-      multipliers[:final_damage_multiplier] *= 1.1 if !specialMove?(calc_type) && user.item_id == :ZEAL
       else
         Battle::AbilityEffects.triggerDamageCalcFromUser(
           user.ability, user.battler, target.battler, @move, multipliers, base_dmg, calc_type
@@ -736,10 +721,12 @@ class Battle::AI::AIMove
         multipliers[:final_damage_multiplier] *= 2
       end
       # LoL Critical Damage Boosts for AI
-      multipliers[:final_damage_multiplier] *= 1.25 if !specialMove?(calc_type) && user.item_id == :INFINITYEDGE
-      multipliers[:final_damage_multiplier] *= 1.25 if !specialMove?(calc_type) && user.item_id == :PHANTOMDANCER
-      multipliers[:final_damage_multiplier] *= 1.25 if !specialMove?(calc_type) && user.item_id == :RAPIDFIRECANNON
-      multipliers[:final_damage_multiplier] *= 1.1 if !specialMove?(calc_type) && user.item_id == :ZEAL
+      if user.item_active? && !specialMove?(calc_type)
+        multipliers[:final_damage_multiplier] *= 1.25 if user.item_id == :INFINITYEDGE
+        multipliers[:final_damage_multiplier] *= 1.25 if user.item_id == :PHANTOMDANCER
+        multipliers[:final_damage_multiplier] *= 1.25 if user.item_id == :RAPIDFIRECANNON
+        multipliers[:final_damage_multiplier] *= 1.1 if user.item_id == :ZEAL
+      end
     end
     # Random variance - n/a
   end
@@ -862,19 +849,9 @@ class Battle::AI::AIMove
       if target.effects[PBEffects::Minimize] && @move.tramplesMinimize?
         multipliers[:final_damage_multiplier] *= 2
       end
-      # LoL Critical Damage Boosts for AI
-      multipliers[:final_damage_multiplier] *= 1.25 if !specialMove?(calc_type) && user.item_id == :INFINITYEDGE
-      multipliers[:final_damage_multiplier] *= 1.25 if !specialMove?(calc_type) && user.item_id == :PHANTOMDANCER
-      multipliers[:final_damage_multiplier] *= 1.25 if !specialMove?(calc_type) && user.item_id == :RAPIDFIRECANNON
-      multipliers[:final_damage_multiplier] *= 1.1 if !specialMove?(calc_type) && user.item_id == :ZEAL
       if defined?(PBEffects::GlaiveRush) && target.effects[PBEffects::GlaiveRush] > 0
         multipliers[:final_damage_multiplier] *= 2
       end
-      # LoL Critical Damage Boosts for AI
-      multipliers[:final_damage_multiplier] *= 1.25 if !specialMove?(calc_type) && user.item_id == :INFINITYEDGE
-      multipliers[:final_damage_multiplier] *= 1.25 if !specialMove?(calc_type) && user.item_id == :PHANTOMDANCER
-      multipliers[:final_damage_multiplier] *= 1.25 if !specialMove?(calc_type) && user.item_id == :RAPIDFIRECANNON
-      multipliers[:final_damage_multiplier] *= 1.1 if !specialMove?(calc_type) && user.item_id == :ZEAL
     end
     ##### Main damage calculation #####
     base_dmg = [(base_dmg * multipliers[:power_multiplier]).round, 1].max
