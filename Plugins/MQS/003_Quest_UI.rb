@@ -248,9 +248,9 @@ class QuestList_Scene
     if questStageLocation=="nil" || questStageLocation==""
       questStageLocation = "???"
     end
-    drawFormattedTextEx(@sprites["overlay3"].bitmap,38,320,
+    drawFormattedTextEx(@sprites["overlay3"].bitmap,38,175,
       436,"<c2=#{colorQuest("orange")}>Task:</c2> #{questStageDesc}",@base,@shadow)
-    drawFormattedTextEx(@sprites["overlay3"].bitmap,38,352,
+    drawFormattedTextEx(@sprites["overlay3"].bitmap,38,328,
       436,"<c2=#{colorQuest("purple")}>Location:</c2> #{questStageLocation}",@base,@shadow)
   end
 

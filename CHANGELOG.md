@@ -17,6 +17,27 @@ En cas de bug plus tard, ce journal permet d'identifier immédiatement **quel fi
 ## 📅 Historique des Ajouts & Modifications
 
 
+### `[AGY-104]` — 2026-10-23 — Correctif Chevauchement de Texte dans l'Interface de Détails de Quête (MQS `drawQuestDesc`)
+- **Auteur** : `Antigravity`
+- **Catégorie** : Correctif Graphique UI & Ergonomie Quêtes (`Plugins/MQS/003_Quest_UI.rb`)
+- **Demande Utilisateur** : 
+  - *« aussi a coté de location le texte etait buggue genre par dessus quand les details de la 1ere quete »*.
+- **Cause identifiée** :
+  - Dans l'écran de détails d'une quête (`drawQuestDesc` de `003_Quest_UI.rb`), MQS forçait l'affichage de l'objectif (`Task:`) à $Y = 320$ et de l'emplacement (`Location:`) à $Y = 352$ dans le petit bandeau inférieur de 58 px.
+  - Dès qu'un objectif s'étend sur 2 lignes de texte, la 2e ligne s'imprimait à $Y = 352$, venant écraser et superposer les caractères de `Location:` et de son lieu.
+- **Correctif appliqué** :
+  - **Repositionnement de `Task:` à $Y = 175$** : L'objectif en cours est maintenant placé dans la grande zone centrale (sous l'Overview), avec un dégagement vertical généreux (pouvant accueillir de 1 à 4 lignes sans risque de débordement).
+  - **Repositionnement de `Location:` à $Y = 328$** : L'emplacement de la quête occupe désormais à lui seul le bandeau inférieur, avec une lisibilité parfaite et sans aucun risque de collision.
+- **Fichiers modifiés** :
+  - `Plugins/MQS/003_Quest_UI.rb`
+  - `CHANGELOG.md`
+- **Comment tester en jeu** :
+  - Ouvrir le menu Quêtes, sélectionner la Quête 1 (*« Le Serment de Freljord »*) et appuyer sur Entrée pour ouvrir la page de détails.
+  - Le texte de l'Overview, de la Tâche (`Task:`) et du Lieu (`Location:`) s'affichent de façon aérée sans aucun chevauchement.
+- **Comment désactiver en cas de bug** :
+  - `git revert HEAD`
+
+
 ### `[AGY-103]` — 2026-10-23 — Résolution des 3 Erreurs Console (NoMethodError Scene_Map, ENOENT Battle throw) & Suppression des Boîtes de Dialogue Intrusives MQS
 - **Auteur** : `Antigravity`
 - **Catégorie** : Correctif Moteur & Quêtes Silencieuses (`Data/Scripts/003_Game processing/002_Scene_Map.rb`, `Data/Scripts/012_Overworld/009_Overworld_Cinematics_LoL.rb`, `Plugins/MQS/002_Quest_Main.rb`, `Plugins/MQS/005_Quest_MenuHandlers.rb`)
