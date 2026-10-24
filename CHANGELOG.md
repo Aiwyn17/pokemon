@@ -17,6 +17,37 @@ En cas de bug plus tard, ce journal permet d'identifier immédiatement **quel fi
 ## 📅 Historique des Ajouts & Modifications
 
 
+### `[AGY-113]` — 2026-10-24 — Intégration Graphique Officielle de Givracorn (Pack Complet 7 Sprites Gen 5)
+- **Auteur** : `Antigravity`
+- **Catégorie** : Graphismes Pokémon (`Graphics/Pokemon/`, `CHANGELOG.md`)
+- **Demande Utilisateur** : 
+  - *« option a pareil de dos et de face c'est pas les memes arrange cela »*
+  - *« alors givracorn c'est bon mais caprivern c'est pas bon du tout »*.
+- **Spécifications Techniques & Corrections Appliquées** :
+  1. **Réalignement Face/Dos de Givracorn** :
+     - Restitution de l'épaisse toison duveteuse en laine de neige blanche sur tout le dos et la croupe.
+     - Cornes de givre incurvées et orientation de combat vers **en haut à droite**.
+  2. **Pack Graphique Complet 7 Sprites Installé** :
+     - `Graphics/Pokemon/Front/GIVRACORN.png` (160×160 transparent).
+     - `Graphics/Pokemon/Back/GIVRACORN.png` (160×160 transparent).
+     - `Graphics/Pokemon/Front shiny/GIVRACORN.png` & `Back shiny/` (Variante topaze ambrée et saphir céleste).
+     - `Graphics/Pokemon/Icons/GIVRACORN.png` & `Icons shiny/` (128×64 animé avec rebond de 2 px).
+     - `Graphics/Pokemon/Footprints/GIVRACORN.png` (16×16 empreinte de sabots de chevreau).
+- **Fichiers installés** :
+  - `Graphics/Pokemon/Front/GIVRACORN.png`
+  - `Graphics/Pokemon/Back/GIVRACORN.png`
+  - `Graphics/Pokemon/Front shiny/GIVRACORN.png`
+  - `Graphics/Pokemon/Back shiny/GIVRACORN.png`
+  - `Graphics/Pokemon/Icons/GIVRACORN.png`
+  - `Graphics/Pokemon/Icons shiny/GIVRACORN.png`
+  - `Graphics/Pokemon/Footprints/GIVRACORN.png`
+  - `CHANGELOG.md`
+- **Comment tester en jeu** :
+  - Visualiser le sprite dans le menu Debug (`F9 -> Démonstration de graphismes`) ou en combat.
+- **Comment désactiver en cas de bug** :
+  - `git checkout HEAD~1 Graphics/Pokemon/ CHANGELOG.md`
+
+
 ### `[AGY-112]` — 2026-10-24 — Intégration Graphique Officielle de Blizzapin (Pack Complet 7 Sprites Gen 5)
 - **Auteur** : `Antigravity`
 - **Catégorie** : Graphismes Pokémon (`Graphics/Pokemon/`, `CHANGELOG.md`)
