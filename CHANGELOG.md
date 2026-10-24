@@ -17,6 +17,43 @@ En cas de bug plus tard, ce journal permet d'identifier immédiatement **quel fi
 ## 📅 Historique des Ajouts & Modifications
 
 
+### `[AGY-111]` — 2026-10-24 — Intégration Graphique Officielle de Lièvregivre (Pack Complet 7 Sprites Gen 5)
+- **Auteur** : `Antigravity`
+- **Catégorie** : Graphismes Pokémon (`Graphics/Pokemon/`, `CHANGELOG.md`)
+- **Demande Utilisateur** : 
+  - *« au lievregivre tu sais faire ce que jai demandé »*
+  - *« JE VEUX JUSTE QUE LE POKEMON REGARDE DU MEME COTE QUE TOUT LES AUTRES POKEMON QUAND JE LE POSSEDE ET QU4IL COMBAT IL REGARDE VERS EN HAUT A DROITE INSPIRE DES POKEMONS C PAS OCMPLIQU2 »*
+  - *« ALLEUIA C PARFAIT VALIDEE »*.
+- **Spécifications Techniques & Corrections Validées** :
+  1. **Sprite de Dos Officiel 160×160 (`Graphics/Pokemon/Back/LIEVREGIVRE.png`)** :
+     - Posture élancée, athlétique et bédipale haute sur pattes arrière (non accroupi).
+     - Orientation officielle de combat Gen 5 : regard et corps tournés vers **en haut à droite** droit vers le Pokémon adverse (aligné sur Lockpin, Lucario et Tyrakoup).
+     - Ramures de conifère boréal étagées conformes à la face avec calottes de neige immaculée.
+     - Queue pomme de pin givrée en blanc et reflets cyan glacé (**0% brun**).
+     - Détourage transparent propre 32-bit sans fond.
+  2. **Sprite de Face Officiel 160×160 (`Graphics/Pokemon/Front/LIEVREGIVRE.png`)** :
+     - Détourage transparent et calibrage officiel sur la grille 160×160 posé au sol.
+  3. **Déclinaison Shiny Officielle 160×160 (`Front shiny/` & `Back shiny/`)** :
+     - Teinte *Mélèze Doré Boréal* (aiguilles d'ambre et d'or scintillant) et reflets aurore boréale lilas.
+  4. **Icônes d'Équipe Animées 128×64 (`Icons/` & `Icons shiny/`)** :
+     - Deux frames de 64×64 animées avec rebond de 2 px.
+  5. **Empreinte de Pas 16×16 (`Footprints/LIEVREGIVRE.png`)** :
+     - Traces de pattes de lièvre arctique 16×16.
+- **Fichiers installés** :
+  - `Graphics/Pokemon/Front/LIEVREGIVRE.png`
+  - `Graphics/Pokemon/Back/LIEVREGIVRE.png`
+  - `Graphics/Pokemon/Front shiny/LIEVREGIVRE.png`
+  - `Graphics/Pokemon/Back shiny/LIEVREGIVRE.png`
+  - `Graphics/Pokemon/Icons/LIEVREGIVRE.png`
+  - `Graphics/Pokemon/Icons shiny/LIEVREGIVRE.png`
+  - `Graphics/Pokemon/Footprints/LIEVREGIVRE.png`
+  - `CHANGELOG.md`
+- **Comment tester en jeu** :
+  - Observer les sprites dans le Pokédex, en combat ou via le menu Debug (`F9 -> Démonstration de graphismes`).
+- **Comment désactiver en cas de bug** :
+  - `git checkout HEAD~1 Graphics/Pokemon/ CHANGELOG.md`
+
+
 ### `[AGY-110]` — 2026-10-24 — Audit Global d'Équilibrage : Stats, Movesets de Départ & Formules des Starters Freljord
 - **Auteur** : `Antigravity`
 - **Catégorie** : Game Design & Équilibrage Compétitif (`PBS/pokemon.txt`, `CHANGELOG.md`)
