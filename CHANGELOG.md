@@ -1,4 +1,4 @@
-# 📋 CHANGELOG.md — Journal de Traçabilité du Projet (Antigravity & Jules AI)
+﻿# 📋 CHANGELOG.md — Journal de Traçabilité du Projet (Antigravity & Jules AI)
 
 Ce fichier garde une **trace exacte et chronologique de chaque ajout ou modification** effectuée sur le jeu (que ce soit en local avec **Antigravity** ou sur GitHub avec **Jules AI**).
 En cas de bug plus tard, ce journal permet d'identifier immédiatement **quel fichier** et **quel commit Git** est responsable, et comment le tester ou l'annuler.
@@ -16,6 +16,42 @@ En cas de bug plus tard, ce journal permet d'identifier immédiatement **quel fi
 
 ## 📅 Historique des Ajouts & Modifications
 
+
+### `[AGY-114]` — 2026-10-24 — Recadrage et Intégration Officielle de Caprivern (Pack Complet 7 Sprites Gen 5)
+- **Auteur** : `Antigravity`
+- **Catégorie** : Graphismes Pokémon (`Graphics/Pokemon/`, `CHANGELOG.md`)
+- **Demande Utilisateur** : 
+  - *« alors givracorn c'est bon mais caprivern c'est pas bon du tout »*
+  - *« JE VOIS TJS PAS JTE FIAS CONFIANCE FAIS BIEN »*.
+- **Spécifications Techniques & Corrections Appliquées** :
+  1. **Recadrage Intégral du Sprite de Dos de Combat (Caprivern)** :
+     - Correction de l'angle : orientation de combat 3/4 vers **en haut à droite** (exit la vue de cul plate 0°).
+     - Restitution de la tête de bélier en 3/4 profil tournée vers l'adversaire avec œil doré fier et barbiche de stalactites de glace.
+     - Restitution des deux cornes massives en spirale de basalte noir gravées de runes freljordiennes cyan lumineuses avec calotte de neige.
+     - Carrure colossale et trapue avec manteau de laine gris-bleu dense et plaques d'armure rocheuses polygonales sur le dos et les cuisses.
+     - Toison blanche de neige sur l'arrière-train, petite queue touffue et sabots marron cerclés de laine blanche.
+  2. **Pack Graphique Complet 7 Sprites Installé** :
+     - `Graphics/Pokemon/Front/CAPRIVERN.png` (160×160 transparent).
+     - `Graphics/Pokemon/Back/CAPRIVERN.png` (160×160 transparent).
+     - `Graphics/Pokemon/Front shiny/CAPRIVERN.png` & `Back shiny/` (Variante topaze ambrée et saphir céleste harmonisée avec Givracorn).
+     - `Graphics/Pokemon/Icons/CAPRIVERN.png` & `Icons shiny/` (128×64 animé avec rebond de 2 px).
+     - `Graphics/Pokemon/Footprints/CAPRIVERN.png` (16×16 empreinte de sabots de grand bélier de montagne).
+- **Fichiers installés** :
+  - `Graphics/Pokemon/Front/CAPRIVERN.png`
+  - `Graphics/Pokemon/Back/CAPRIVERN.png`
+  - `Graphics/Pokemon/Front shiny/CAPRIVERN.png`
+  - `Graphics/Pokemon/Back shiny/CAPRIVERN.png`
+  - `Graphics/Pokemon/Icons/CAPRIVERN.png`
+  - `Graphics/Pokemon/Icons shiny/CAPRIVERN.png`
+  - `Graphics/Pokemon/Footprints/CAPRIVERN.png`
+  - `CHANGELOG.md`
+- **Comment tester en jeu** :
+  - Lancer le jeu en Debug, faire évoluer Givracorn en Caprivern ou déclencher un combat sauvage avec `pbWildBattle(:CAPRIVERN, 36)`.
+  - Observer le dos de combat : le bélier colossal est campé sur ses 4 pattes, tourné vers en haut à droite avec ses cornes runiques et son regard fixé sur l'adversaire.
+- **Comment désactiver en cas de bug** :
+  - `git revert HEAD` pour restaurer l'état précédent.
+
+---
 
 ### `[AGY-113]` — 2026-10-24 — Intégration Graphique Officielle de Givracorn (Pack Complet 7 Sprites Gen 5)
 - **Auteur** : `Antigravity`
