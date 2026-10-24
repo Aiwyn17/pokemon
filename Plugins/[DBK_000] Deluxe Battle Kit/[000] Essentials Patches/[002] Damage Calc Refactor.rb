@@ -346,9 +346,7 @@ class Battle::Move
     baseDmg = [(baseDmg * multipliers[:power_multiplier]).round, 1].max
     atk     = [(atk     * multipliers[:attack_multiplier]).round, 1].max
     defense = [(defense * multipliers[:defense_multiplier]).round, 1].max
-    # League of Legends Damage Formula Calculation
-    raw_damage = ((((2.0 * user.level / 5) + 2).floor * baseDmg * atk / 50.0).floor / 50).floor + 2
-    damage  = (raw_damage * (100.0 / (100.0 + defense))).floor
+    damage  = ((((2.0 * user.level / 5) + 2).floor * baseDmg * atk / defense).floor / 50).floor + 2
     damage  = [(damage * multipliers[:final_damage_multiplier]).round, 1].max
     target.damageState.calcDamage = damage
   end
@@ -857,9 +855,7 @@ class Battle::AI::AIMove
     base_dmg = [(base_dmg * multipliers[:power_multiplier]).round, 1].max
     atk      = [(atk      * multipliers[:attack_multiplier]).round, 1].max
     defense  = [(defense  * multipliers[:defense_multiplier]).round, 1].max
-    # League of Legends Damage Formula Calculation
-    raw_damage = ((((2.0 * user.level / 5) + 2).floor * base_dmg * atk / 50.0).floor / 50).floor + 2
-    damage   = (raw_damage * (100.0 / (100.0 + defense))).floor
+    damage   = ((((2.0 * user.level / 5) + 2).floor * base_dmg * atk / defense).floor / 50).floor + 2
     damage   = [(damage * multipliers[:final_damage_multiplier]).round, 1].max
     ret = damage.floor
     ret = target.hp - 1 if @move.nonLethal?(user.battler, target.battler) && ret >= target.hp

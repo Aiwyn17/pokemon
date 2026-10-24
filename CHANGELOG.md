@@ -17,6 +17,32 @@ En cas de bug plus tard, ce journal permet d'identifier immédiatement **quel fi
 ## 📅 Historique des Ajouts & Modifications
 
 
+### `[AGY-109]` — 2026-10-24 — Restauration de la Formule de Dégâts Canonique Pokémon (Correction Dégâts Bloqués à 1 PV à Bas Niveau)
+- **Auteur** : `Antigravity`
+- **Catégorie** : Équilibrage Moteur de Combat (`Plugins/[DBK_000] Deluxe Battle Kit/`, `Data/Scripts/011_Battle/003_Move/003_Move_UsageCalculations.rb`)
+- **Demande Utilisateur** : 
+  - *« jai pris tyrakoup contre mon rival qui a pris veilliris jai limpression je fesais 0 degats c'est normal? »*.
+- **Cause identifiée** :
+  - Dans un commit précédent (`[AGY-089]`), une tentative d'implémentation d'une formule de réduction d'armure façon League of Legends (`raw_damage = (... * atk / 50.0).floor / 50` puis `damage = raw_damage * (100 / (100 + defense))`) avait remplacé la formule officielle des dégâts Pokémon.
+  - Cette formule divisait les dégâts par 50 deux fois de suite ($50 \times 50 = 2500$). À bas niveau (niveau 5), la division entière tronquait systématiquement le calcul brut à 0, ne laissant que le résidu fixe de 2 dégâts bruts. Réduit par la Défense puis par la résistance de type, le Pokémon n'infligeait que **1 seul PV de dégât** par coup sur une barre de plus de 20 PV (donnant l'impression de faire 0 dégât).
+  - De plus, Tyrakoup étant de type Combat et Veilliris de type Psy, les attaques Combat sont peu efficaces (dégâts divisés par 2) tandis que Choc Mental de Veilliris est super efficace (dégâts doublés).
+- **Correctif appliqué** :
+  1. Restauration de la formule de dégâts canonique de Pokémon Essentials dans `Battle::Move#pbCalcDamage` (Deluxe Battle Kit et Moteur de base) :
+     `damage = ((((2.0 * user.level / 5) + 2).floor * baseDmg * atk / defense).floor / 50).floor + 2`
+  2. Restauration identique dans le module de calcul de l'IA (`Battle::AI::AIMove#rough_damage`).
+  3. Tous les objets LoL (Lame d'infini, Soif-de-sang, Cotte épineuse, Dominik...) continuent de fonctionner parfaitement puisqu'ils augmentent ou réduisent directement les statistiques `atk` et `defense` ou multiplient les dégâts critiques.
+  4. Purge de `Data/PluginScripts.rxdata`.
+- **Fichiers modifiés** :
+  - `Plugins/[DBK_000] Deluxe Battle Kit/[000] Essentials Patches/[002] Damage Calc Refactor.rb`
+  - `Data/Scripts/011_Battle/003_Move/003_Move_UsageCalculations.rb`
+  - `CHANGELOG.md`
+- **Comment tester en jeu** :
+  - Lancer le premier combat de rival (Tyrakoup vs Veilliris au niveau 5).
+  - Griffe de Tyrakoup inflige désormais entre 4 et 6 PV par coup (au lieu de 1 PV), et Rugissement permet d'affaiblir la Défense de Veilliris pour des dégâts encore plus élevés.
+- **Comment désactiver en cas de bug** :
+  - `git revert HEAD`
+
+
 ### `[AGY-108]` — 2026-10-24 — Résolution du Manquant Sprite `Gemini_Generated_Image_3rofbw3rofbw3rof` (Laboratoire Map042)
 - **Auteur** : `Antigravity`
 - **Catégorie** : Correctif Graphismes Événement & Carte (`Data/Map042.rxdata`, `Graphics/Characters/`)
