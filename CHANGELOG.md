@@ -17,6 +17,32 @@ En cas de bug plus tard, ce journal permet d'identifier immédiatement **quel fi
 ## 📅 Historique des Ajouts & Modifications
 
 
+### `[AGY-110]` — 2026-10-24 — Audit Global d'Équilibrage : Stats, Movesets de Départ & Formules des Starters Freljord
+- **Auteur** : `Antigravity`
+- **Catégorie** : Game Design & Équilibrage Compétitif (`PBS/pokemon.txt`, `CHANGELOG.md`)
+- **Demande Utilisateur** : 
+  - *« verifie si tout les calculs,les formules et les stats des pokemon sont bien equilibreés »*.
+- **Résultats de l'Audit & Ajustements Appliqués** :
+  1. **Équilibrage du Moveset de Départ de Veilliris (`[VEILLIRIS]`)** :
+     - *Problème identifié* : Veilliris apprenait *Choc Mental* (Confusion, 50 BP Spécial Psy) dès le niveau 1. Face à Tyrakoup (type Combat, faiblesse Psy x2), l'attaque avait une puissance effective monstrueuse de 150 BP au niveau 5, rendant le combat de rival asymétrique et frustrant.
+     - *Ajustement canonique* : Veilliris démarre au niveau 1 avec *Étonnement* (30 BP Spectre) et *Rugissement* (baisse d'Attaque). Il débloque *Armure* au niveau 5, et apprend son premier STAB Psy *Choc Mental* au niveau 7 sur la Route 1. Le duel de niveau 5 est désormais équitable et hautement stratégique.
+  2. **Harmonisation du Moveset de Départ de Geloupiot (`[GELOUPIOT]`)** :
+     - *Ajustement* : Poudreuse (40 BP Glace) décalée du niveau 4 au niveau 6, afin que les trois starters débloquent leur première attaque élémentaire sur la Route 1 (Geloupiot niv. 6, Veilliris niv. 7, Tyrakoup niv. 8).
+  3. **Équilibrage des Stats Finales de Fenrimas (`[FENRIMAS]`)** :
+     - *Problème identifié* : Fenrimas possédait un total de base (BST) démesuré de 570 (85/115/75/120/75/100), surclassant anormalement les deux autres starters stade 3 (Ragnarune 535, Volibjorn 545).
+     - *Ajustement* : Alignement à **535 BST** (`85, 115, 75, 80, 75, 105`) : Attaque Spéciale superflue ramenée à 80, et Vitesse portée à 105. Fenrimas devient un pur chasseur physique rapide, en parfaite parité avec Volibjorn (545, titan bruiser) et Ragnarune (535, forteresse tellurique).
+  4. **Validation des Objets & Formules LoL** :
+     - Formule de dégâts canonique validée et fonctionnelle.
+     - Objets LoL équilibrés avec bonus de stats de base cohérents (Composants : +5 à +20 stats plates / Légendaires : +30 à +60 stats plates).
+- **Fichiers modifiés** :
+  - `PBS/pokemon.txt`
+  - `CHANGELOG.md`
+- **Comment tester en jeu** :
+  - Démarrer une nouvelle partie ou relancer le combat de rival : le combat Tyrakoup vs Veilliris au niveau 5 est parfaitement équilibré.
+- **Comment désactiver en cas de bug** :
+  - `git revert HEAD`
+
+
 ### `[AGY-109]` — 2026-10-24 — Restauration de la Formule de Dégâts Canonique Pokémon (Correction Dégâts Bloqués à 1 PV à Bas Niveau)
 - **Auteur** : `Antigravity`
 - **Catégorie** : Équilibrage Moteur de Combat (`Plugins/[DBK_000] Deluxe Battle Kit/`, `Data/Scripts/011_Battle/003_Move/003_Move_UsageCalculations.rb`)
