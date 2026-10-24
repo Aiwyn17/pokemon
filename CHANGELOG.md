@@ -23,13 +23,14 @@ En cas de bug plus tard, ce journal permet d'identifier immédiatement **quel fi
 - **Demande Utilisateur** : 
   - *« alors givracorn c'est bon mais caprivern c'est pas bon du tout »*
   - *« JE VOIS TJS PAS JTE FIAS CONFIANCE FAIS BIEN »*.
+  - *« LA COULEUR DE SON CORPS NEST PAS LA MEME ET LA TETE NE REGARDE PAS DANS LA BONNE DIRECTION FAUT QU4IL REGARDE QUE LE NOUVEAU DOS B »*.
 - **Spécifications Techniques & Corrections Appliquées** :
   1. **Recadrage Intégral du Sprite de Dos de Combat (Caprivern)** :
-     - Correction de l'angle : orientation de combat 3/4 vers **en haut à droite** (exit la vue de cul plate 0°).
+     - Adoption définitive du **Nouveau Dos B** (tête tournée fermement vers en haut à droite fixant l'adversaire).
      - Restitution de la tête de bélier en 3/4 profil tournée vers l'adversaire avec œil doré fier et barbiche de stalactites de glace.
      - Restitution des deux cornes massives en spirale de basalte noir gravées de runes freljordiennes cyan lumineuses avec calotte de neige.
      - Carrure colossale et trapue avec manteau de laine gris-bleu dense et plaques d'armure rocheuses polygonales sur le dos et les cuisses.
-     - Toison blanche de neige sur l'arrière-train, petite queue touffue et sabots marron cerclés de laine blanche.
+     - Toison harmonisée avec la Face : pelage argenté / gris-bleu (#a0b2c2 / #c8d6e2) identique à la Face (exit la toison blanche), petite queue touffue et sabots marron cerclés de laine blanche.
   2. **Pack Graphique Complet 7 Sprites Installé** :
      - `Graphics/Pokemon/Front/CAPRIVERN.png` (160×160 transparent).
      - `Graphics/Pokemon/Back/CAPRIVERN.png` (160×160 transparent).
