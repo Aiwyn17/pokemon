@@ -26,7 +26,10 @@ En cas de bug plus tard, ce journal permet d'identifier immédiatement **quel fi
   - *« LA COULEUR DE SON CORPS NEST PAS LA MEME ET LA TETE NE REGARDE PAS DANS LA BONNE DIRECTION FAUT QU4IL REGARDE QUE LE NOUVEAU DOS B »*.
 - **Spécifications Techniques & Corrections Appliquées** :
   1. **Recadrage Intégral du Sprite de Dos de Combat (Caprivern)** :
-     - Adoption définitive du **Nouveau Dos B** (tête tournée fermement vers en haut à droite fixant l'adversaire).
+     - Adoption définitive du **Nouveau Dos B** avec **clonage exact de la palette de Face** :
+       - Peau du visage et museau recalibrés sur les teintes sage-grey argentées (#BDC0B7 / #D2E2E1) de la face officielle (exit les teintes taupe/brunes).
+       - Toison du corps ajustée sur les nuances toundra (#BAC1B9 / #698086) de la face officielle.
+       - Tête et regard doré fermement tournés vers en haut à droite.
      - Restitution de la tête de bélier en 3/4 profil tournée vers l'adversaire avec œil doré fier et barbiche de stalactites de glace.
      - Restitution des deux cornes massives en spirale de basalte noir gravées de runes freljordiennes cyan lumineuses avec calotte de neige.
      - Carrure colossale et trapue avec manteau de laine gris-bleu dense et plaques d'armure rocheuses polygonales sur le dos et les cuisses.
