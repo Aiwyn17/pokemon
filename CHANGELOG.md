@@ -17,6 +17,39 @@ En cas de bug plus tard, ce journal permet d'identifier immédiatement **quel fi
 ## 📅 Historique des Ajouts & Modifications
 
 
+### `[AGY-112]` — 2026-10-24 — Intégration Graphique Officielle de Blizzapin (Pack Complet 7 Sprites Gen 5)
+- **Auteur** : `Antigravity`
+- **Catégorie** : Graphismes Pokémon (`Graphics/Pokemon/`, `CHANGELOG.md`)
+- **Demande Utilisateur** : 
+  - *« la suite des sprite smtn »*
+  - *« blizzapin c'est vraiment bien juste les petites branche de pin a larreire de loreille enleve »*
+  - *« ecoute fais juste des oreilles blanches et c bno »*.
+- **Spécifications Techniques & Corrections Appliquées** :
+  1. **Oreilles Blanches Épurées Face & Dos** :
+     - Face et Dos dotés d'oreilles blanches immaculées sans branchettes de pin superflues.
+     - Dos orienté vers **en haut à droite** droit vers l'adversaire (standard officiel Pokémon de combat).
+     - Moustaches de givre sur les joues et queue en pomme de pin givrée conservées.
+  2. **Pack Graphique Complet 7 Sprites Installé** :
+     - `Graphics/Pokemon/Front/BLIZZAPIN.png` (160×160 transparent).
+     - `Graphics/Pokemon/Back/BLIZZAPIN.png` (160×160 transparent).
+     - `Graphics/Pokemon/Front shiny/BLIZZAPIN.png` & `Back shiny/` (Variante *Mélèze Doré Boréal* assortie à Lièvregivre).
+     - `Graphics/Pokemon/Icons/BLIZZAPIN.png` & `Icons shiny/` (128×64 animé avec rebond de 2 px).
+     - `Graphics/Pokemon/Footprints/BLIZZAPIN.png` (16×16 empreinte de patte de lièvre).
+- **Fichiers installés** :
+  - `Graphics/Pokemon/Front/BLIZZAPIN.png`
+  - `Graphics/Pokemon/Back/BLIZZAPIN.png`
+  - `Graphics/Pokemon/Front shiny/BLIZZAPIN.png`
+  - `Graphics/Pokemon/Back shiny/BLIZZAPIN.png`
+  - `Graphics/Pokemon/Icons/BLIZZAPIN.png`
+  - `Graphics/Pokemon/Icons shiny/BLIZZAPIN.png`
+  - `Graphics/Pokemon/Footprints/BLIZZAPIN.png`
+  - `CHANGELOG.md`
+- **Comment tester en jeu** :
+  - Visualiser le sprite dans le menu Debug (`F9 -> Démonstration de graphismes`) ou en combat.
+- **Comment désactiver en cas de bug** :
+  - `git checkout HEAD~1 Graphics/Pokemon/ CHANGELOG.md`
+
+
 ### `[AGY-111]` — 2026-10-24 — Intégration Graphique Officielle de Lièvregivre (Pack Complet 7 Sprites Gen 5)
 - **Auteur** : `Antigravity`
 - **Catégorie** : Graphismes Pokémon (`Graphics/Pokemon/`, `CHANGELOG.md`)
