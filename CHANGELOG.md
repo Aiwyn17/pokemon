@@ -1,3 +1,14 @@
+### `[JULES-002]` — 2026-10-29 — Ajout de tests unitaires pour `InverseRestriction#isValid?`
+- **Auteur** : `Jules AI`
+- **Catégorie** : Tests (Minitest)
+- **Fichiers ajoutés** : `test/challenge_generator_data_test.rb`
+- **Description** : Ajout de tests pour la méthode `isValid?` de la classe `InverseRestriction` afin d'améliorer la couverture de test (100% de la logique couverte pour cette méthode).
+- **Comment tester** : Lancer la commande `ruby test/challenge_generator_data_test.rb`
+- **Comment désactiver en cas de bug** : Supprimer le fichier `test/challenge_generator_data_test.rb`.
+
+---
+
+
 ﻿# 📋 CHANGELOG.md — Journal de Traçabilité du Projet (Antigravity & Jules AI)
 
 Ce fichier garde une **trace exacte et chronologique de chaque ajout ou modification** effectuée sur le jeu (que ce soit en local avec **Antigravity** ou sur GitHub avec **Jules AI**).
