@@ -1,6 +1,6 @@
 # Audio, Graphics and Plugins folders
-#Audio/
-#Graphics/
+Audio/
+Graphics/
 Plugins/
 Screenshots/
 
@@ -9,8 +9,6 @@ Data/*
 !Data/Scripts.rxdata
 !Data/Scripts/
 !Data/messages_core.dat
-!Data/Map*.rxdata
-!Data/MapInfos.rxdata
 
 # Files in the main project folder
 errorlog.txt
